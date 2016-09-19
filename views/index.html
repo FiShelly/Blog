@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Fishelly Idx</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="yes" name="apple-touch-fullscreen"/>
+    <meta content="telephone=no,email=no" name="format-detection"/>
+    <meta name="App-Config" content="fullscreen=yes,useHistoryState=yes,transition=yes"/>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/index.css">
+</head>
+<body class="ease2">
+<article class="container-fluid" ng-controller="indexController">
+    <div class="row">
+        <div class="col-xs-offset-1 col-xs-10 col-sm-offset-3 col-sm-6 col-md-offset-3 col-md-6 idx-box ease1"
+             ng-class="{true:'idx-box-open',false:'idx-box-close'}[clickValue]" id="idx-box">
+            <div class="content">
+                <div class="up-arrow" id="up-arrow" ng-click="openAndClose()" >
+                    <span class="triangle " id="triangle" ng-class="{true:'triangle-up',false:'triangle-down'}[clickValue]">
+                </span>
+                </div>
+                <div class="idx-title" id="idx-title" ng-show="clickValue">
+                    <a class="link" href="">FiShelly Idx.</a><br>
+                    <a class="link" href="">谢福成的个人主页.</a>
+                </div>
+                <div class="split-line" ng-show="clickValue"></div>
+                <div class="idx-content " id="idx-content" ng-class="{true:'idx-content',false:'idx-content-close'}[clickValue]" >
+                    <span ng-repeat="item in urlMapping">
+                        <span ng-show="$first">→</span>
+                        <a class="link ease1" href="{{item.url}}">{{item.name}}</a>
+                        <span ng-show="!$last">/</span>
+                    </span>
+
+                </div>
+                <div class="split-line" ng-show="clickValue"></div>
+                <div class="idx-content idx-footer" id="idx-footer" ng-show="clickValue">
+                    <span><a class="link ease1" href="">Contact</a></span>
+                    <span>/</span>
+                    <span>fishelly.com</span>
+                    <span>←</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+</body>
+<script src="/javascripts/angular.js"></script>
+<script>
+    (function(angular){
+        var app = angular.module('myApp',[]);
+        app.controller('indexController',['$scope', '$http',function($scope, $http){
+            $scope.urlMapping = [
+                {name:'Blog',url:'/blog'},
+                {name:'Github',url:'https://github.com/FiShelly'},
+                {name:'About',url:'#/about'}
+            ];
+            $scope.clickValue = true;
+            $scope.openAndClose = function(){
+                $scope.clickValue = !$scope.clickValue;
+            }
+        }]);
+    })(angular);
+</script>
+</html>

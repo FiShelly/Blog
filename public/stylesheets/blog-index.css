@@ -1,0 +1,107 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+    font-size: 100px;
+}
+
+body {
+    background: #ebebeb;
+    padding-bottom: 0.25rem;
+}
+
+header {
+    width: 100%;
+    background: #FFF;
+    height: 0.8rem;
+    border-bottom: 2px solid #e1e1e1;
+}
+
+.blog-head-title {
+    float: left;
+}
+
+.search-box {
+    margin-top: 0.25rem;
+    float: right;
+}
+
+.left-box {
+    padding: 0 0.1rem 0.1rem 0.1rem;
+    margin-top: 0.25rem;
+    border-radius: 0.2rem;
+    background-color: #FFF;
+    -webkit-box-shadow: 0 0 0.1rem #4e4e4e;
+    -moz-box-shadow: 0 0 0.1rem #4e4e4e;
+    box-shadow: 0 0 0.1rem #4e4e4e;
+}
+
+.left-box-title {
+    padding: 0.15rem 0 0.1rem 0;
+    font-size: 0.2rem;
+    font-weight: bold;
+    border-bottom: 1px #e1e1e1 solid;
+}
+
+ul {
+    margin-left: 0.15rem;
+    list-style-position: inside;
+}
+
+ul li {
+    height: 0.35rem;
+    line-height: 0.35rem;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.new-article-box {
+    padding: 0.1rem 0.1rem 0.3rem 0.1rem;
+    overflow: hidden;
+    margin-top: 0.25rem;
+    background-color: #FFF;
+    -webkit-box-shadow: 0 0 0.1rem #4e4e4e;
+    -moz-box-shadow: 0 0 0.1rem #4e4e4e;
+    box-shadow: 0 0 0.1rem #4e4e4e;
+    border-radius: 0.2rem;
+}
+.article-box-sample{
+    overflow: hidden;
+    border-bottom: 1px #e1e1e1 solid;
+    padding-bottom: 0.1rem;
+}
+.article-box-title{
+    padding-bottom: 0.1rem;
+    border-bottom: 1px #e1e1e1 solid;
+}
+.article-box-type{
+    float: right;
+}
+.article-box-post{
+    padding-top: 0.1rem;
+    float: left;
+    width: 100%;
+}
+.img-head {
+    position: relative;
+    left: 50%;
+    margin: 0.1rem 0 0.05rem -0.35rem;
+    border-radius: 0.7rem;
+    width: 0.7rem;
+    height: 0.7rem;
+    background-color: pink;
+}
+.about-msg{
+    font-size: 0.17rem;
+}
+.type-detail{
+    float: right;
+    margin-right: 0.15rem;
+}
