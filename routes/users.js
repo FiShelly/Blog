@@ -3,6 +3,6 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.render('blog-index', { title: 'Express' });
+  res.render('Blog/blog-index', { title: 'Express' });
 });
 module.exports = router;
