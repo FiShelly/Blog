@@ -90,6 +90,7 @@ ul li {
     width: 100%;
 }
 .img-head {
+    border: 1px solid #d6b2e1;
     position: relative;
     left: 50%;
     margin: 0.1rem 0 0.05rem -0.35rem;

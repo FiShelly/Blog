@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="myApp">
+<html ng-app="indexApp">
 <head lang="en">
     <meta charset="UTF-8">
     <title>Fishelly Idx</title>
@@ -49,7 +49,7 @@
 <script src="/javascripts/angular.js"></script>
 <script>
     (function(angular){
-        var app = angular.module('myApp',[]);
+        var app = angular.module('indexApp',[]);
         app.controller('indexController',['$scope', '$http',function($scope, $http){
             $scope.urlMapping = [
                 {name:'Blog',url:'/blog'},

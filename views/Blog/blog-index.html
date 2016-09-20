@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="blogIndexApp">
 <head>
     <meta charset="UTF-8">
     <title>Fishelly Idx</title>
@@ -14,7 +14,7 @@
     <!--<link rel="stylesheet" type="text/css" href="../../public/stylesheets/blog-index.css">-->
 </head>
 <body>
-<div class="container-fluid">
+<div class="container-fluid" ng-controller="blogIndexController">
     <div class="row">
         <header >
             <div class="col-md-offset-1 col-md-10 ">
@@ -31,72 +31,71 @@
             </div>
         </header>
         <article class="col-sm-12 col-md-7 col-md-push-4   article-box">
+
             <div class="new-article-box">
                 <h2 class="article-box-title">
-                    我是标题.
+                    {{article.title}}
                 </h2>
                 <div class="article-box-sample">
                     <div>
-                        <p class="about-msg ">文章内容简介文章内容简介文章内容简介文章内容简介</p>
+                        <p class="about-msg ">{{article.abstract}}</p>
                     </div>
                     <div>
-                        <p class="about-msg"><span>→</span><a href="#">阅读全文</a></p>
+                        <p class="about-msg"><span>→</span><a href="{{article.url}}">阅读全文</a></p>
                     </div>
                     <div class="article-box-type about-msg">
-                        <span>分类:</span><a href="#">我是分类</a><span>←</span>
+                        <span>分类:</span><a href="{{article.type.url}}">{{article.type.name}}</a><span>←</span>
                     </div>
                 </div>
                 <div class="article-box-post about-msg">
-                    发表于：<span>xxx</span>&nbsp;<span>2016-09-19</span>
+                    发表于：<span>{{article.author}}</span>&nbsp;<span>{{article.date}}</span>
                 </div>
             </div>
+
             <div class="new-article-box">
                 <h2 class="article-box-title">
                     近期文章.
                 </h2>
                 <ul class="about-msg">
-                    <li><span>2016-09-19</span><span>&nbsp;&nbsp;→&nbsp;&nbsp;</span><a href="#">article1</a></li>
-                    <li><span>2016-09-19</span><span>&nbsp;&nbsp;→&nbsp;&nbsp;</span><a href="#">article2</a></li>
-                    <li><span>2016-09-19</span><span>&nbsp;&nbsp;→&nbsp;&nbsp;</span><a href="#">article3</a></li>
-                    <li><span>2016-09-19</span><span>&nbsp;&nbsp;→&nbsp;&nbsp;</span><a href="#">article4</a></li>
-                    <li><span>2016-09-19</span><span>&nbsp;&nbsp;→&nbsp;&nbsp;</span><a href="#">article5</a></li>
-                    <li><span>2016-09-19</span><span>&nbsp;&nbsp;→&nbsp;&nbsp;</span><a href="#">article6</a></li>
-                    <li><span>2016-09-19</span><span>&nbsp;&nbsp;→&nbsp;&nbsp;</span><a href="#">article7</a></li>
+                    <li ng-repeat='article in articleList'>
+                        <span>{{article.date}}</span>
+                        <span>&nbsp;&nbsp;→&nbsp;&nbsp;</span>
+                        <a href="{{article.url}}">{{article.title}}</a>
+                    </li>
+
                 </ul>
                 <div class="type-detail about-msg">
-                    <span>→</span><a  href="#">查看更多...</a>
+                    <span>→</span><a  href="#more">查看更多...</a>
                 </div>
             </div>
+
         </article>
         <nav class="col-sm-12  col-md-3 col-md-pull-6   left-bar">
             <div class="left-box  col-sm-5 col-md-12  col-lg-10">
                 <div class="left-box-title">
                     <span>分类.</span>
-
                 </div>
                 <ul>
-                    <li><a href="#">type1</a></li>
-                    <li><a href="#">type2</a></li>
-                    <li><a href="#">type3</a></li>
-                    <li><a href="#">type4</a></li>
-                    <li><a href="#">type5</a></li>
-                    <li><a href="#">type6</a></li>
-                    <li><a href="#">type7type7type7type7type7</a></li>
+                    <li ng-repeat="type in types">
+                        <a href="{{type.url}}">{{type.name}}</a>
+                    </li>
                 </ul>
                 <div class="type-detail">
-                    <span>→</span><a  href="#">详情</a>
+                    <span>→</span><a  href="#detailType">详情</a>
                 </div>
             </div>
 
             <div class="left-box col-sm-offset-2 col-sm-5 col-md-offset-0 col-md-12 col-lg-offset-0 col-lg-10">
                 <div class="left-box-title">关于.</div>
-                <div class="img-head"></div>
+                <img class="img-head" ng-src="{{myself.headImg}}">
                 <p class="about-msg">
-                    some of my message, introduce me.
+                    {{myself.introduce}}
                 </p>
                 <p class="about-msg">follow me:</p>
                 <ul>
-                    <li><a href="#">github</a></li>
+                    <li ng-repeat="follow in myself.follow">
+                        <a href="{{follow.url}}" target="_blank">{{follow.name}}</a>
+                    </li>
                     <!--<li><a href="#">github</a>&nbsp;&nbsp;&nbsp;<a href="#">微博</a></li>-->
                 </ul>
             </div>
@@ -104,4 +103,45 @@
     </div>
 </div>
 </body>
+<script src="/javascripts/angular.js"></script>
+<script>
+    (function(angular){
+        var app = angular.module('blogIndexApp',[]);
+        app.controller('blogIndexController',['$scope', '$http',function($scope, $http){
+            $scope.article = {
+                title:'我是标题',
+                abstract:'文章内容简介文章内容简介文章内容简介文章内容简介',
+                type:{name:'我是分类',url:'#myType'},
+                url:'#articleF',
+                date:'2016-09-20',
+                author:'Fishelly.'
+            };
+            $scope.articleList = [
+                {date:'2016-09-20',title:'article1',url:'#article1'},
+                {date:'2016-09-19',title:'article2',url:'#article2'},
+                {date:'2016-09-18',title:'article3',url:'#article3'},
+                {date:'2016-09-17',title:'article4',url:'#article4'},
+                {date:'2016-09-16',title:'article5',url:'#article5'},
+                {date:'2016-09-15',title:'article6',url:'#article6'},
+                {date:'2016-09-14',title:'article7',url:'#article7'}
+            ];
+            $scope.types = [
+                {name:'type1',url:'#/type1'},
+                {name:'type2',url:'#/type2'},
+                {name:'type3',url:'#/type3'},
+                {name:'type4',url:'#/type4'},
+                {name:'type5',url:'#/type5'},
+                {name:'type6',url:'#/type6'},
+                {name:'type7',url:'#/type7'},
+                {name:'type8',url:'#/type8'}
+
+            ];
+           $scope.myself = {
+                headImg:'/images/fish1.jpg',
+                introduce:'some of my message, introduce me.',
+                follow:[{name:'Github',url:'https://github.com/FiShelly'}]
+           };
+        }]);
+    })(angular);
+</script>
 </html>
