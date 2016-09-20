@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>类别详情</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="yes" name="apple-touch-fullscreen"/>
+    <meta content="telephone=no,email=no" name="format-detection"/>
+    <meta name="App-Config" content="fullscreen=yes,useHistoryState=yes,transition=yes"/>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/blog-index.css">
+    <style>
+        .type-title{
+            box-sizing: border-box;
+            padding: 0.1rem 0.1rem 0 0.3rem;
+        }
+        h2{
+            border-bottom: 1px solid #d1d1d1;
+        }
+        .type-article-list{
+            margin-top: 0.3rem;
+            padding-left: 0.3rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid" ng-controller="blogIndexController">
+    <div class="row">
+        <header>
+            <div class="col-md-offset-1 col-md-10 ">
+                <h1 class="blog-head-title">
+                    Idx.
+                </h1>
+                <form class="form-inline search-box hidden-xs">
+                    <div class="form-group  has-feedback">
+                        <input type="text" class="form-control" id="search" placeholder="搜索">
+                        <label for="search" style="cursor: pointer"><span
+                                class="glyphicon glyphicon-search form-control-feedback"></span></label>
+                    </div>
+                </form>
+            </div>
+        </header>
+        <article>
+            <div class="col-md-offset-1 col-sm-12 col-md-6 ">
+                <div class="new-article-box type-title">
+                    <p class="about-msg"><span>类别：</span>sometype→共有xx文章</p>
+                </div>
+                <div class="type-article-list">
+                    <h2>2016</h2>
+                    <ul>
+                        <li><span></span></li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+    </div>
+</div>
+</body>
+</html>
