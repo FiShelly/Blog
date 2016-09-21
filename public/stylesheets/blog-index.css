@@ -36,9 +36,6 @@ header {
     margin-top: 0.25rem;
     border-radius: 0.2rem;
     background-color: #FFF;
-    -webkit-box-shadow: 0 0 0.1rem #4e4e4e;
-    -moz-box-shadow: 0 0 0.1rem #4e4e4e;
-    box-shadow: 0 0 0.1rem #4e4e4e;
 }
 
 .left-box-title {
@@ -67,9 +64,6 @@ ul li {
     overflow: hidden;
     margin-top: 0.25rem;
     background-color: #FFF;
-    -webkit-box-shadow: 0 0 0.1rem #4e4e4e;
-    -moz-box-shadow: 0 0 0.1rem #4e4e4e;
-    box-shadow: 0 0 0.1rem #4e4e4e;
     border-radius: 0.2rem;
 }
 .article-box-sample{
@@ -105,4 +99,9 @@ ul li {
 .type-detail{
     float: right;
     margin-right: 0.15rem;
+}
+.border-shadow{
+    -webkit-box-shadow: 0 0 0.1rem #4e4e4e;
+    -moz-box-shadow: 0 0 0.1rem #4e4e4e;
+    box-shadow: 0 0 0.1rem #4e4e4e;
 }
