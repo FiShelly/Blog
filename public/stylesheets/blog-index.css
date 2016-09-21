@@ -105,3 +105,18 @@ ul li {
     -moz-box-shadow: 0 0 0.1rem #4e4e4e;
     box-shadow: 0 0 0.1rem #4e4e4e;
 }
+
+.type-title{
+    box-sizing: border-box;
+    padding: 0.1rem 0.1rem 0 0.3rem;
+}
+h2,h4{
+    border-bottom: 1px solid #d1d1d1;
+    padding: 0.1rem 0;
+}
+
+.type-article-list{
+    background-color: #FFF;
+    margin-top: 0.3rem;
+    padding-left: 0.3rem;
+}
