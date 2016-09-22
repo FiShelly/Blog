@@ -8,8 +8,8 @@ var ejs = require('ejs');
 var routes = require('./routes/index');
 var blog = require('./routes/blog');
 
-var app = express();
 
+var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.engine(".html", ejs.renderFile);
