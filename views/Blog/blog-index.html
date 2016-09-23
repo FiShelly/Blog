@@ -30,76 +30,79 @@
                 </form>
             </div>
         </header>
-        <article class="col-sm-12 col-md-7 col-md-push-4   article-box">
+        <div class="content-box">
+            <article class="col-sm-12 col-md-7 col-md-push-4   article-box">
 
-            <div class="new-article-box border-shadow">
-                <h2 class="article-box-title">
-                    {{article.title}}
-                </h2>
-                <div class="article-box-sample">
-                    <div>
-                        <p class="about-msg ">{{article.abstract}}</p>
+                <div class="new-article-box border-shadow">
+                    <h2 class="article-box-title">
+                        {{article.title}}
+                    </h2>
+                    <div class="article-box-sample">
+                        <div>
+                            <p class="about-msg ">{{article.abstract}}</p>
+                        </div>
+                        <div>
+                            <p class="about-msg"><span>→</span><a href="{{article.url}}">阅读全文</a></p>
+                        </div>
+                        <div class="article-box-type about-msg">
+                            <span>分类:</span><a href="{{article.type.url}}">{{article.type.name}}</a><span>←</span>
+                        </div>
                     </div>
-                    <div>
-                        <p class="about-msg"><span>→</span><a href="{{article.url}}">阅读全文</a></p>
-                    </div>
-                    <div class="article-box-type about-msg">
-                        <span>分类:</span><a href="{{article.type.url}}">{{article.type.name}}</a><span>←</span>
+                    <div class="article-box-post about-msg">
+                        发表于：<span>{{article.author}}</span>&nbsp;<span>{{article.date}}</span>
                     </div>
                 </div>
-                <div class="article-box-post about-msg">
-                    发表于：<span>{{article.author}}</span>&nbsp;<span>{{article.date}}</span>
-                </div>
-            </div>
 
-            <div class="new-article-box border-shadow">
-                <h2 class="article-box-title">
-                    近期文章.
-                </h2>
-                <ul class="about-msg">
-                    <li ng-repeat='article in articleList'>
-                        <span>{{article.date}}</span>
-                        <span>&nbsp;&nbsp;→&nbsp;&nbsp;</span>
-                        <a href="{{article.url}}">{{article.title}}</a>
-                    </li>
+                <div class="new-article-box border-shadow">
+                    <h2 class="article-box-title">
+                        近期文章.
+                    </h2>
+                    <ul class="about-msg">
+                        <li ng-repeat='article in articleList'>
+                            <span>{{article.date}}</span>
+                            <span>&nbsp;&nbsp;→&nbsp;&nbsp;</span>
+                            <a href="{{article.url}}">{{article.title}}</a>
+                        </li>
 
-                </ul>
-                <div class="type-detail about-msg">
-                    <span>→</span><a  href="#more">查看更多...</a>
+                    </ul>
+                    <div class="type-detail about-msg">
+                        <span>→</span><a  href="#more">查看更多...</a>
+                    </div>
                 </div>
-            </div>
 
-        </article>
-        <nav class="col-sm-12  col-md-3 col-md-pull-6   left-bar">
-            <div class="left-box  col-sm-5 col-md-12  col-lg-10 border-shadow">
-                <div class="left-box-title ">
-                    <span>分类.</span>
+            </article>
+            <nav class="col-sm-12  col-md-3 col-md-pull-6   left-bar">
+                <div class="left-box  col-sm-5 col-md-12  col-lg-10 border-shadow">
+                    <div class="left-box-title ">
+                        <span>分类.</span>
+                    </div>
+                    <ul>
+                        <li ng-repeat="type in types">
+                            <a href="{{type.url}}">{{type.name}}</a>
+                        </li>
+                    </ul>
+                    <div class="type-detail">
+                        <span>→</span><a  href="blog/detail/type">详情</a>
+                    </div>
                 </div>
-                <ul>
-                    <li ng-repeat="type in types">
-                        <a href="{{type.url}}">{{type.name}}</a>
-                    </li>
-                </ul>
-                <div class="type-detail">
-                    <span>→</span><a  href="blog/detail/type">详情</a>
-                </div>
-            </div>
 
-            <div class="left-box col-sm-offset-2 col-sm-5 col-md-offset-0 col-md-12 col-lg-offset-0 col-lg-10 border-shadow">
-                <div class="left-box-title">关于.</div>
-                <img class="img-head" ng-src="{{myself.headImg}}">
-                <p class="about-msg">
-                    {{myself.introduce}}
-                </p>
-                <p class="about-msg">follow me:</p>
-                <ul>
-                    <li ng-repeat="follow in myself.follow">
-                        <a href="{{follow.url}}" target="_blank">{{follow.name}}</a>
-                    </li>
-                    <!--<li><a href="#">github</a>&nbsp;&nbsp;&nbsp;<a href="#">微博</a></li>-->
-                </ul>
-            </div>
-        </nav>
+                <div class="left-box col-sm-offset-2 col-sm-5 col-md-offset-0 col-md-12 col-lg-offset-0 col-lg-10 border-shadow">
+                    <div class="left-box-title">关于.</div>
+                    <img class="img-head" ng-src="{{myself.headImg}}">
+                    <p class="about-msg">
+                        {{myself.introduce}}
+                    </p>
+                    <p class="about-msg">follow me:</p>
+                    <ul>
+                        <li ng-repeat="follow in myself.follow">
+                            <a href="{{follow.url}}" target="_blank">{{follow.name}}</a>
+                        </li>
+                        <!--<li><a href="#">github</a>&nbsp;&nbsp;&nbsp;<a href="#">微博</a></li>-->
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
     </div>
 </div>
 </body>

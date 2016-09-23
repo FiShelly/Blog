@@ -16,12 +16,16 @@ body {
 }
 
 header {
+    position: fixed;
     width: 100%;
     background: #FFF;
     height: 0.8rem;
     border-bottom: 2px solid #e1e1e1;
+    z-index: 33;
 }
-
+.content-box{
+    margin-top: 0.8rem;
+}
 .blog-head-title {
     float: left;
 }
