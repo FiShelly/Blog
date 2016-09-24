@@ -17,10 +17,10 @@
     </style>
 </head>
 <body>
-<div class="container-fluid" ng-controller="blogIndexController">
+<div class="container-fluid " ng-controller="blogIndexController">
     <div class="row">
         <header >
-            <div class="col-md-offset-1 col-md-10 ">
+            <div class="col-md-offset-1 col-md-10 ease1">
                 <h1 class="blog-head-title">
                      Fishelly Idx.
                 </h1>
@@ -33,15 +33,16 @@
                 </form>
             </div>
         </header>
-        <nav class="left-function col-sm-12 left-function-position ">
-            <a href="/"><span class="glyphicon glyphicon-home fc-item fc-item-index "></span></a>
-            <a href="/blog"><span class="glyphicon glyphicon-thumbs-up fc-item fc-item-blog "></span></a>
-            <a href="/blog/detail/type"><span class="glyphicon glyphicon-list-alt fc-item fc-item-type "></span></a>
+        <nav class="left-function col-sm-12 left-function-position ease1">
+            <a href="/"><span class="glyphicon glyphicon-home fc-item fc-item-index ease1"></span></a>
+            <a href="/blog"><span class="glyphicon glyphicon-thumbs-up fc-item fc-item-blog ease1"></span></a>
+            <a href="#"><span class="glyphicon glyphicon-file fc-item fc-item-article ease1"></span></a>
+            <a href="/blog/detail/type"><span class="glyphicon glyphicon-list-alt fc-item fc-item-type ease1"></span></a>
         </nav>
-        <div class="content-box">
-            <article class="col-sm-12 col-md-7 col-md-push-4   article-box">
+        <div class="content-box ">
+            <article class="col-sm-12 col-md-7 col-md-push-4 article-box ease1">
 
-                <div class="new-article-box border-shadow">
+                <div class="new-article-box border-shadow ">
                     <h2 class="article-box-title">
                         {{article.title}}
                     </h2>
@@ -79,7 +80,7 @@
                 </div>
 
             </article>
-            <nav class="col-sm-12  col-md-3 col-md-pull-6   left-bar">
+            <nav class="col-sm-12  col-md-3 col-md-pull-6   left-bar ">
                 <div class="left-box  col-sm-5 col-md-12  col-lg-10 border-shadow">
                     <div class="left-box-title ">
                         <span>分类.</span>

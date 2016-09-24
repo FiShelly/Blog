@@ -20,8 +20,8 @@ header {
     width: 100%;
     background: #FFF;
     height: 0.6rem;
-    border-bottom: 2px solid #e1e1e1;
-    z-index: 33;
+    border-bottom: 1px solid #e1e1e1;
+    z-index: 36;
 }
 
 .blog-head-title {
@@ -199,6 +199,76 @@ h2,h4{
     .content-box{
         margin-top: 0.85rem;
     }
+
+    .left-function>a{
+        display: inline-block;
+        line-height: 0.4rem;
+        width: 0.4rem;
+        height: 0.4rem;
+        margin-bottom: 0.25rem;
+    }
+
+
+    .fc-item-index:hover:after{
+        content: "主页";
+        display: inline-block;
+        width: 0.4rem;
+        height: 0.2rem;
+        background-color: #bfbfbf;
+        position: absolute;
+        float: right;
+        margin-left: 0.15rem;
+        line-height: 0.15rem;
+        font-size: 0.12rem;
+        border-radius: 0.05rem;
+        text-align: center;
+        font-weight: bold;
+    }
+    .fc-item-blog:hover:after{
+        content: "博客";
+        display: inline-block;
+        width: 0.4rem;
+        height: 0.2rem;
+        background-color: #bfbfbf;
+        position: absolute;
+        float: right;
+        margin-left: 0.15rem;
+        line-height: 0.15rem;
+        font-size: 0.12rem;
+        border-radius: 0.05rem;
+        text-align: center;
+        font-weight: bold;
+    }
+    .fc-item-type:hover:after{
+        content: "分类";
+        display: inline-block;
+        width: 0.4rem;
+        height: 0.2rem;
+        background-color: #bfbfbf;
+        position: absolute;
+        float: right;
+        margin-left: 0.15rem;
+        line-height: 0.15rem;
+        font-size: 0.12rem;
+        border-radius: 0.05rem;
+        text-align: center;
+        font-weight: bold;
+    }
+    .fc-item-article:hover:after{
+        content: "文章";
+        display: inline-block;
+        width: 0.4rem;
+        height: 0.2rem;
+        background-color: #bfbfbf;
+        position: absolute;
+        float: right;
+        margin-left: 0.15rem;
+        line-height: 0.15rem;
+        font-size: 0.12rem;
+        border-radius: 0.05rem;
+        text-align: center;
+        font-weight: bold;
+    }
 }
 @media (max-width:991px){
     .left-function-position{
@@ -209,58 +279,40 @@ h2,h4{
     .content-box{
         margin-top: 1.15rem;
     }
+    .left-function>a{
+        display: inline-block;
+        line-height: 0.3rem;
+        width: 0.3rem;
+        height: 0.3rem;
+        margin-right: 0.25rem;
+    }
+
 }
+
+
+
 
 .fc-item{
     display: inline-block;
     font-size: 0.2rem;
     width: 0.2rem;
     height: 0.2rem;
-    margin-bottom: 0.25rem;
-    margin-right: 0.25rem;
+
 }
-.fc-item-index:hover:after{
-    content: "主页";
-    display: inline-block;
-    width: 0.4rem;
-    height: 0.2rem;
-    background-color: #bfbfbf;
-    position: absolute;
-    float: right;
-    margin-left: 0.15rem;
-    line-height: 0.15rem;
-    font-size: 0.12rem;
-    border-radius: 0.05rem;
-    text-align: center;
-    font-weight: bold;
+
+
+
+.ease1{
+    -webkit-transition: All 1s ease;
+    -moz-transition: All 1s ease;
+    -o-transition: All 1s ease;
+    -ms-transition: All 1s ease;
+    transition: All 1s ease;
 }
-.fc-item-blog:hover:after{
-    content: "博客";
-    display: inline-block;
-    width: 0.4rem;
-    height: 0.2rem;
-    background-color: #bfbfbf;
-    position: absolute;
-    float: right;
-    margin-left: 0.15rem;
-    line-height: 0.15rem;
-    font-size: 0.12rem;
-    border-radius: 0.05rem;
-    text-align: center;
-    font-weight: bold;
-}
-.fc-item-type:hover:after{
-    content: "分类";
-    display: inline-block;
-    width: 0.4rem;
-    height: 0.2rem;
-    background-color: #bfbfbf;
-    position: absolute;
-    float: right;
-    margin-left: 0.15rem;
-    line-height: 0.15rem;
-    font-size: 0.12rem;
-    border-radius: 0.05rem;
-    text-align: center;
-    font-weight: bold;
+.ease2{
+    -webkit-transition: All 2s ease;
+    -moz-transition: All 2s ease;
+    -o-transition: All 2s ease;
+    -ms-transition: All 2s ease;
+    transition: All 2s ease;
 }
