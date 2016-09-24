@@ -12,6 +12,9 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/blog-index.css">
     <!--<link rel="stylesheet" type="text/css" href="../../public/stylesheets/bootstrap.min.css">-->
     <!--<link rel="stylesheet" type="text/css" href="../../public/stylesheets/blog-index.css">-->
+    <style>
+
+    </style>
 </head>
 <body>
 <div class="container-fluid" ng-controller="blogIndexController">
@@ -19,9 +22,9 @@
         <header >
             <div class="col-md-offset-1 col-md-10 ">
                 <h1 class="blog-head-title">
-                     Idx.
+                     Fishelly Idx.
                 </h1>
-                <form class="form-inline search-box hidden-xs">
+                <form class="form-inline search-box hidden-xs ">
                     <div class="form-group  has-feedback">
                         <input type="text" class="form-control" id="search" placeholder="搜索">
                         <label for="search" style="cursor: pointer"><span
@@ -30,6 +33,11 @@
                 </form>
             </div>
         </header>
+        <nav class="left-function col-sm-12 left-function-position ">
+            <a href="/"><span class="glyphicon glyphicon-home fc-item fc-item-index "></span></a>
+            <a href="/blog"><span class="glyphicon glyphicon-thumbs-up fc-item fc-item-blog "></span></a>
+            <a href="/blog/detail/type"><span class="glyphicon glyphicon-list-alt fc-item fc-item-type "></span></a>
+        </nav>
         <div class="content-box">
             <article class="col-sm-12 col-md-7 col-md-push-4   article-box">
 
