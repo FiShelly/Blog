@@ -200,14 +200,17 @@ h2,h4{
         margin-top: 0.85rem;
     }
 
-    .left-function>a{
+    .left-function>div>a{
         display: inline-block;
         line-height: 0.4rem;
         width: 0.4rem;
         height: 0.4rem;
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.1rem;
     }
-
+    .login-nav{
+        position: absolute;
+        bottom: 0.4rem;
+    }
 
     .fc-item-index:hover:after{
         content: "主页";
@@ -269,6 +272,66 @@ h2,h4{
         text-align: center;
         font-weight: bold;
     }
+    .fc-item-user:hover:after{
+        content: "个人资料";
+        display: inline-block;
+        width: 0.6rem;
+        height: 0.2rem;
+        background-color: #bfbfbf;
+        position: absolute;
+        float: right;
+        margin-left: 0.15rem;
+        line-height: 0.15rem;
+        font-size: 0.12rem;
+        border-radius: 0.05rem;
+        text-align: center;
+        font-weight: bold;
+    }
+    .fc-item-articleMan:hover:after{
+        content: "文章管理";
+        display: inline-block;
+        width: 0.6rem;
+        height: 0.2rem;
+        background-color: #bfbfbf;
+        position: absolute;
+        float: right;
+        margin-left: 0.15rem;
+        line-height: 0.15rem;
+        font-size: 0.12rem;
+        border-radius: 0.05rem;
+        text-align: center;
+        font-weight: bold;
+    }
+    .fc-item-typeMan:hover:after{
+        content: "分类管理";
+        display: inline-block;
+        width: 0.6rem;
+        height: 0.2rem;
+        background-color: #bfbfbf;
+        position: absolute;
+        float: right;
+        margin-left: 0.15rem;
+        line-height: 0.15rem;
+        font-size: 0.12rem;
+        border-radius: 0.05rem;
+        text-align: center;
+        font-weight: bold;
+    }
+    .fc-item-comment:hover:after{
+        content: "评论管理";
+        display: inline-block;
+        width: 0.6rem;
+        height: 0.2rem;
+        background-color: #bfbfbf;
+        position: absolute;
+        float: right;
+        margin-left: 0.15rem;
+        line-height: 0.15rem;
+        font-size: 0.12rem;
+        border-radius: 0.05rem;
+        text-align: center;
+        font-weight: bold;
+    }
 }
 @media (max-width:991px){
     .left-function-position{
@@ -279,7 +342,7 @@ h2,h4{
     .content-box{
         margin-top: 1.15rem;
     }
-    .left-function>a{
+    .left-function>div>a{
         display: inline-block;
         line-height: 0.3rem;
         width: 0.3rem;

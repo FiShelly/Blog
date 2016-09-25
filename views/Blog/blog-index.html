@@ -19,11 +19,12 @@
 <body>
 <div class="container-fluid " ng-controller="blogIndexController">
     <div class="row">
-        <header >
+        <header>
             <div class="col-md-offset-1 col-md-10 ease1">
                 <h1 class="blog-head-title">
-                     Fishelly Idx.
+                    Fishelly Idx.
                 </h1>
+
                 <form class="form-inline search-box hidden-xs ">
                     <div class="form-group  has-feedback">
                         <input type="text" class="form-control" id="search" placeholder="搜索">
@@ -34,10 +35,19 @@
             </div>
         </header>
         <nav class="left-function col-sm-12 left-function-position ease1">
-            <a href="/"><span class="glyphicon glyphicon-home fc-item fc-item-index ease1"></span></a>
-            <a href="/blog"><span class="glyphicon glyphicon-thumbs-up fc-item fc-item-blog ease1"></span></a>
-            <a href="#"><span class="glyphicon glyphicon-file fc-item fc-item-article ease1"></span></a>
-            <a href="/blog/detail/type"><span class="glyphicon glyphicon-list-alt fc-item fc-item-type ease1"></span></a>
+            <div class="normal-nav">
+                <a href="/"><span class="glyphicon glyphicon-home fc-item fc-item-index ease1"></span></a>
+                <a href="/blog"><span class="glyphicon glyphicon-thumbs-up fc-item fc-item-blog ease1"></span></a>
+                <a href="#"><span class="glyphicon glyphicon-file fc-item fc-item-article ease1"></span></a>
+                <a href="/blog/detail/type"><span
+                        class="glyphicon glyphicon-list-alt fc-item fc-item-type ease1"></span></a>
+            </div>
+            <div class="login-nav">
+                <a href="#/back/user"><span class="glyphicon glyphicon-user fc-item fc-item-user ease1"></span></a>
+                <a href="#/back/blog"><span class="glyphicon glyphicon-th fc-item fc-item-articleMan ease1"></span></a>
+                <a href="#/back/type"><span class="glyphicon glyphicon-tags fc-item fc-item-typeMan ease1"></span></a>
+                <a href="#/back/comment"><span class="glyphicon glyphicon-comment fc-item fc-item-comment ease1"></span></a>
+            </div>
         </nav>
         <div class="content-box ">
             <article class="col-sm-12 col-md-7 col-md-push-4 article-box ease1">
@@ -46,6 +56,7 @@
                     <h2 class="article-box-title">
                         {{article.title}}
                     </h2>
+
                     <div class="article-box-sample">
                         <div>
                             <p class="about-msg ">{{article.abstract}}</p>
@@ -75,7 +86,7 @@
 
                     </ul>
                     <div class="type-detail about-msg">
-                        <span>→</span><a  href="#more">查看更多...</a>
+                        <span>→</span><a href="#more">查看更多...</a>
                     </div>
                 </div>
 
@@ -91,16 +102,18 @@
                         </li>
                     </ul>
                     <div class="type-detail">
-                        <span>→</span><a  href="blog/detail/type">详情</a>
+                        <span>→</span><a href="blog/detail/type">详情</a>
                     </div>
                 </div>
 
                 <div class="left-box col-sm-offset-2 col-sm-5 col-md-offset-0 col-md-12 col-lg-offset-0 col-lg-10 border-shadow">
                     <div class="left-box-title">关于.</div>
                     <img class="img-head" ng-src="{{myself.headImg}}">
+
                     <p class="about-msg">
                         {{myself.introduce}}
                     </p>
+
                     <p class="about-msg">follow me:</p>
                     <ul>
                         <li ng-repeat="follow in myself.follow">
@@ -117,42 +130,49 @@
 </body>
 <script src="/javascripts/angular.js"></script>
 <script>
-    (function(angular){
-        var app = angular.module('blogIndexApp',[]);
-        app.controller('blogIndexController',['$scope', '$http',function($scope, $http){
+    (function (angular) {
+        var app = angular.module('blogIndexApp', []);
+        app.controller('blogIndexController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
             $scope.article = {
-                title:'我是标题',
-                abstract:'文章内容简介文章内容简介文章内容简介文章内容简介',
-                type:{name:'我是分类',url:'#myType'},
-                url:'#articleF',
-                date:'2016-09-20',
-                author:'Fishelly.'
+                title: '我是标题',
+                abstract: '文章内容简介文章内容简介文章内容简介文章内容简介',
+                type: {name: '我是分类', url: '#myType'},
+                url: '#articleF',
+                date: '2016-09-20',
+                author: 'Fishelly.'
             };
             $scope.articleList = [
-                {date:'2016-09-20',title:'article1',url:'#article1'},
-                {date:'2016-09-19',title:'article2',url:'#article2'},
-                {date:'2016-09-18',title:'article3',url:'#article3'},
-                {date:'2016-09-17',title:'article4',url:'#article4'},
-                {date:'2016-09-16',title:'article5',url:'#article5'},
-                {date:'2016-09-15',title:'article6',url:'#article6'},
-                {date:'2016-09-14',title:'article7',url:'#article7'}
+                {date: '2016-09-20', title: 'article1', url: '#article1'},
+                {date: '2016-09-19', title: 'article2', url: '#article2'},
+                {date: '2016-09-18', title: 'article3', url: '#article3'},
+                {date: '2016-09-17', title: 'article4', url: '#article4'},
+                {date: '2016-09-16', title: 'article5', url: '#article5'},
+                {date: '2016-09-15', title: 'article6', url: '#article6'},
+                {date: '2016-09-14', title: 'article7', url: '#article7'}
             ];
             $scope.types = [
-                {name:'type1',url:'#/type1'},
-                {name:'type2',url:'#/type2'},
-                {name:'type3',url:'#/type3'},
-                {name:'type4',url:'#/type4'},
-                {name:'type5',url:'#/type5'},
-                {name:'type6',url:'#/type6'},
-                {name:'type7',url:'#/type7'},
-                {name:'type8',url:'#/type8'}
+                {name: 'type1', url: '#/type1'},
+                {name: 'type2', url: '#/type2'},
+                {name: 'type3', url: '#/type3'},
+                {name: 'type4', url: '#/type4'},
+                {name: 'type5', url: '#/type5'},
+                {name: 'type6', url: '#/type6'},
+                {name: 'type7', url: '#/type7'},
+                {name: 'type8', url: '#/type8'}
 
             ];
-           $scope.myself = {
-                headImg:'/images/fish1.jpg',
-                introduce:'some of my message, introduce me.',
-                follow:[{name:'Github',url:'https://github.com/FiShelly'}]
-           };
+            $scope.loaction = $location;
+            $scope.$watch('location.path()', function () {
+                if ($location.path() == '/login') {
+                    window.location.href='/back/login';
+                }
+            });
+
+            $scope.myself = {
+                headImg: '/images/fish1.jpg',
+                introduce: 'some of my message, introduce me.',
+                follow: [{name: 'Github', url: 'https://github.com/FiShelly'}]
+            };
         }]);
     })(angular);
 </script>
