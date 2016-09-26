@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>博客后台管理登录</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="yes" name="apple-touch-fullscreen"/>
+    <meta content="telephone=no,email=no" name="format-detection"/>
+    <meta name="App-Config" content="fullscreen=yes,useHistoryState=yes,transition=yes"/>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/index.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/blog-index.css">
+
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <header>
+            <div class="col-md-offset-1 col-md-10 ">
+                <h1 class="blog-head-title">
+                    Fishelly Idx.
+                </h1>
+
+                <form class="form-inline search-box hidden-xs">
+                    <div class="form-group  has-feedback">
+                        <input type="text" class="form-control" id="search" placeholder="搜索">
+                        <label for="search" style="cursor: pointer"><span
+                                class="glyphicon glyphicon-search form-control-feedback"></span></label>
+                    </div>
+                </form>
+            </div>
+        </header>
+        <nav class="left-function col-sm-12 left-function-position ease1">
+            <div class="normal-nav">
+                <a href="/"><span class="glyphicon glyphicon-home fc-item fc-item-index ease1"></span></a>
+                <a href="/blog"><span class="glyphicon glyphicon-thumbs-up fc-item fc-item-blog ease1"></span></a>
+                <a href="#"><span class="glyphicon glyphicon-file fc-item fc-item-article ease1"></span></a>
+                <a href="/blog/detail/type"><span
+                        class="glyphicon glyphicon-list-alt fc-item fc-item-type ease1"></span></a>
+            </div>
+            <div class="login-nav">
+                <a href="#/back/user"><span class="glyphicon glyphicon-user fc-item fc-item-user ease1"></span></a>
+                <a href="#/back/blog"><span class="glyphicon glyphicon-th fc-item fc-item-articleMan ease1"></span></a>
+                <a href="#/back/type"><span class="glyphicon glyphicon-tags fc-item fc-item-typeMan ease1"></span></a>
+                <a href="#/back/comment"><span class="glyphicon glyphicon-comment fc-item fc-item-comment ease1"></span></a>
+            </div>
+        </nav>
+        <div class=" col-xs-5  login_frame ">
+            <!--start class login_frame_head div-->
+            <div class="col-xs-12 login_frame_head ">
+                <h1>FiShelly Idx后台管理</h1>
+                <div id="error_text" class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span id="etc"></span>
+                </div>
+
+            </div>
+            <!--end class login_frame_head div-->
+
+            <!--start class form-horizontal form-->
+            <form class="form-horizontal"  method="post">
+                <div class="form-group ">
+                    <label class="control-label col-xs-2" for="loginId">
+                        <span class="glyphicon glyphicon-user" ></span>
+                    </label>
+                    <div class="col-xs-9">
+                        <input type="text" class="form-control cancelBorder" name="loginId" id="loginId" required oninput="setCustomValidity('');"
+                               oninvalid="setCustomValidity('请输入用户名')" placeholder="请输入用户名">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-2 control-label" for="password">
+                        <span class="glyphicon glyphicon-lock" ></span>
+                    </label>
+                    <div class="col-xs-9">
+                        <input type="password" class="form-control cancelBorder" name="password" id="password" required oninput="setCustomValidity('');"
+                               oninvalid="setCustomValidity('请输入密码')" placeholder="请输入密码">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="checkbox col-xs-offset-2 col-xs-3">
+                        <label>
+                            <input type="checkbox" class=" cancelBorder">记住密码
+                        </label>
+                    </div>
+                </div>
+                <div class="imgbtn_style">
+                    <input type="submit"  value="登录" class="sub_btn ease1" id="sub_btn">
+                </div>
+            </form>
+            <!--end class form-horizontal form-->
+        </div>
+    </div>
+</div>
+</body>
+</html>
