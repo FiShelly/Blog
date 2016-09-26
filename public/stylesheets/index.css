@@ -187,14 +187,14 @@ a:link{
     bottom: 0;
     right: -30px;
 }
-.sub_btn:hover {
-    background-color: #00aaff;
-}
 .sub_btn {
     display: inline-block;
     text-align: center;
     font-size: 20px;
     line-height:60px;
+}
+.sub_btn:hover {
+    background-color: #00aaff;
 }
 .sub_btn {
     display: inline-block;
