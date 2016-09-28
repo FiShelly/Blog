@@ -196,6 +196,10 @@ h2,h4{
         padding: 1rem 0.1rem 0 0.1rem;
 
     }
+    .bootom-function{
+        height: 50%;
+        bottom: 0;
+    }
     .content-box{
         margin-top: 0.85rem;
     }
@@ -209,9 +213,8 @@ h2,h4{
     }
     .login-nav{
         position: absolute;
-        bottom: 0.4rem;
+        bottom: 0.3rem;
     }
-
     .fc-item-index:hover:after{
         content: "主页";
         display: inline-block;
@@ -338,29 +341,21 @@ h2,h4{
         margin-top: 0.59rem;
         line-height: 0.35rem;
         border-bottom: 1px solid #e1e1e1;
+        padding: 0;
     }
-    .normal-nav{
-        float: left;
-    }
-    .login-nav{
-        float: right;
-    }
+
     .content-box{
-        margin-top: 1.15rem;
+        margin-top: 1.45rem;
     }
     .left-function>div>a{
         display: inline-block;
         line-height: 0.3rem;
-        width: 0.3rem;
+        width: 24%;
         height: 0.3rem;
+        text-align: center;
     }
-    .normal-nav>a{
-        margin-left: 0.3rem;
-        margin-right: 0;
-    }
-    .login-nav>a{
-        margin-left: 0;
-        margin-right: 0.3rem;
+    .bootom-function{
+        margin-top: 0.89rem;
     }
 }
 

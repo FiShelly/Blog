@@ -12,13 +12,41 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/index.css">
     <link rel="stylesheet" type="text/css" href="/stylesheets/blog-index.css">
     <style>
-        .personal-box{
+        .personal-box {
             background-color: #FFF;
-            height: 2rem;
+            height: auto;
             padding: 0.1rem;
+            margin-bottom: 0.3rem;
+            overflow: hidden;
         }
-        .personal-box-title{
 
+        .personal-box-title {
+
+        }
+
+        .fix-float {
+            overflow: hidden;
+        }
+
+        .fix-tag {
+            padding: 0 0.3rem 0 0;
+        }
+        .info-box-top{
+            width: 50%;
+        }
+        .user-img{
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 1.5rem;
+            background-color: #00aaff;
+            position: absolute;
+            right: 25%  ;
+            top:0;
+            margin-top: 0.5rem;
+            margin-right: -0.75rem;
+        }
+        input[type=file]{
+            opacity: 0;
         }
     </style>
 </head>
@@ -48,6 +76,8 @@
                 <a href="/blog/detail/type"><span
                         class="glyphicon glyphicon-list-alt fc-item fc-item-type ease1"></span></a>
             </div>
+        </nav>
+        <nav class="left-function bootom-function col-sm-12 left-function-position ease1">
             <div class="login-nav">
                 <a href="/back/personal"><span class="glyphicon glyphicon-user fc-item fc-item-user ease1"></span></a>
                 <a href="#/back/blog"><span class="glyphicon glyphicon-th fc-item fc-item-articleMan ease1"></span></a>
@@ -61,6 +91,48 @@
                     <span class="glyphicon glyphicon-paperclip"></span>
                     个人资料
                 </h2>
+                <form role="form " class="col-xs-12">
+                    <div class="info-box">
+                        <div class="info-box-top">
+                            <div class="form-group">
+                                <label for="name">昵称/name</label>
+                                <input type="text" class="form-control" id="name" placeholder="名称/name">
+                            </div>
+                            <div class="form-group">
+                                <label for="position">职位/position</label>
+                                <input type="text" class="form-control" id="position" placeholder="职位/position">
+                            </div>
+                            <div class="form-group">
+                                <label for="position">个性签名/personalized signature</label>
+                                <input type="text" class="form-control" id="signature"
+                                       placeholder="个性签名/personalized signature">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="user-img">
+
+                            </div>
+                            <input type="file" class="user-img">
+                        </div>
+                        <div class="form-group fix-float ">
+                            <label class="col-xs-12 fix-tag">标签：</label>
+                            <div class="col-xs-4 fix-tag">
+                                <input class="form-control  " type="text" name="tag1"/>
+                            </div>
+                            <div class="col-xs-4 fix-tag">
+                                <input class="form-control  " type="text" name="tag2"/>
+                            </div>
+                            <div class="col-xs-4 fix-tag">
+                                <input class="form-control  " type="text" name="tag3"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="introduce">自我介绍/Introduce Myself</label>
+                            <textarea id="introduce" class="form-control" rows="9"
+                                      placeholder="自我介绍/Introduce Myself"></textarea></div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
