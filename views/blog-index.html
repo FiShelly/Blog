@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="BlogIndexApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Fishelly Idx</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="yes" name="apple-touch-fullscreen"/>
+    <meta content="telephone=no,email=no" name="format-detection"/>
+    <meta name="App-Config" content="fullscreen=yes,useHistoryState=yes,transition=yes"/>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/blog-index.css">
+    <link rel="stylesheet" type="text/css" href="/markdown/css/editormd.css"/>
+    <script src="/javascripts/angular.js"></script>
+    <script src="/javascripts/angular-route.js"></script>
+</head>
+<body>
+<div class="container-fluid " ng-controller="AppController">
+    <div class="row">
+        <header>
+            <div class="col-md-offset-1 col-md-10 ease1">
+                <h1 class="blog-head-title">
+                    Fishelly Idx.
+                </h1>
+
+                <form class="form-inline search-box hidden-xs ">
+                    <div class="form-group  has-feedback">
+                        <input type="text" class="form-control" id="search" placeholder="搜索">
+                        <label for="search" style="cursor: pointer"><span
+                                class="glyphicon glyphicon-search form-control-feedback"></span></label>
+                    </div>
+                </form>
+            </div>
+        </header>
+        <div class="nav-box">
+            <nav class="left-function col-sm-12 left-function-position ease1">
+                <div class="normal-nav">
+                    <a href="/"><span class="glyphicon glyphicon-home fc-item fc-item-index ease1"></span></a>
+                    <a href="#/index"><span class="glyphicon glyphicon-thumbs-up fc-item fc-item-blog ease1"></span></a>
+                    <a href="#/article"><span class="glyphicon glyphicon-file fc-item fc-item-article ease1"></span></a>
+                    <a href="#/type"><span
+                            class="glyphicon glyphicon-list-alt fc-item fc-item-type ease1"></span></a>
+                </div>
+            </nav>
+            <nav class="left-function bootom-function col-sm-12 left-function-position ease1" ng-show="isLogin">
+                <div class="login-nav">
+                    <a href="#/back/personal"><span class="glyphicon glyphicon-user fc-item fc-item-user ease1"></span></a>
+                    <a href="#/back/article/list"><span
+                            class="glyphicon glyphicon-th fc-item fc-item-articleMan ease1"></span></a>
+                    <a href="#/back/type"><span class="glyphicon glyphicon-tags fc-item fc-item-typeMan ease1"></span></a>
+                    <a href="#/back/comment"><span class="glyphicon glyphicon-comment fc-item fc-item-comment ease1"></span></a>
+                </div>
+            </nav>
+        </div>
+
+        <div class="content-box " ng-view>
+
+        </div>
+
+    </div>
+</div>
+</body>
+<script src="/markdown/examples/js/jquery.min.js"></script>
+<script src="/markdown/editormd.js"></script>
+<script src="/javascripts/controller/blog-index-controller.js"></script>
+<script src="/javascripts/controller/blog-type-controller.js"></script>
+<script src="/javascripts/controller/blog-article-controller.js"></script>
+<script src="/javascripts/controller/back-personal-controller.js"></script>
+<script src="/javascripts/controller/back-articleList-controller.js"></script>
+<script src="/javascripts/controller/back-articleEdit-controller.js"></script>
+<script src="/javascripts/controller/back-typetag-controller.js"></script>
+<script src="/javascripts/controller/back-comment-controller.js"></script>
+<script src="http://cdn.bootcss.com/angular-ui-bootstrap/0.11.2/ui-bootstrap-tpls.js"></script>
+<script>
+    (function (angular) {
+        var app = angular.module('BlogIndexApp', [
+            'ngRoute',
+            'blog.index',
+            'blog.type',
+            'blog.article',
+            'blog.back.personal',
+            'blog.back.articleList',
+            'blog.back.articleEdit',
+            'blog.back.typetag',
+            'blog.back.comment'
+        ]);
+
+        app.config(['$routeProvider', function ($routeProvider) {
+            console.log("entern route");
+            $routeProvider.otherwise({redirectTo: '/index'});
+        }]);
+
+        app.controller('AppController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+            console.log("enter AppController");
+//            $scope.article = {
+//                title: '我是标题',
+//                abstract: '文章内容简介文章内容简介文章内容简介文章内容简介',
+//                type: {name: '我是分类', url: '#myType'},
+//                url: '#articleF',
+//                date: '2016-09-20',
+//                author: 'Fishelly.'
+//            };
+//            $scope.articleList = [
+//                {date: '2016-09-20', title: 'article1', url: '#article1'},
+//                {date: '2016-09-19', title: 'article2', url: '#article2'},
+//                {date: '2016-09-18', title: 'article3', url: '#article3'},
+//                {date: '2016-09-17', title: 'article4', url: '#article4'},
+//                {date: '2016-09-16', title: 'article5', url: '#article5'},
+//                {date: '2016-09-15', title: 'article6', url: '#article6'},
+//                {date: '2016-09-14', title: 'article7', url: '#article7'}
+//            ];
+//            $scope.types = [
+//                {name: 'type1', url: '#/type1'},
+//                {name: 'type2', url: '#/type2'},
+//                {name: 'type3', url: '#/type3'},
+//                {name: 'type4', url: '#/type4'},
+//                {name: 'type5', url: '#/type5'},
+//                {name: 'type6', url: '#/type6'},
+//                {name: 'type7', url: '#/type7'},
+//                {name: 'type8', url: '#/type8'}
+//
+//            ];
+//            $scope.loaction = $location;
+//            $scope.$watch('location.path()', function () {
+//                if ($location.path() == '/login') {
+//                    window.location.href = '/back/login';
+//                }
+//            });
+//
+//            $scope.myself = {
+//                headImg: '/images/fish1.jpg',
+//                introduce: 'some of my message, introduce me.',
+//                follow: [{name: 'Github', url: 'https://github.com/FiShelly'}]
+//            };
+        }]);
+    })(angular);
+</script>
+</html>
