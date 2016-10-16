@@ -7,6 +7,11 @@ var bodyParser = require('body-parser');
 var ejs = require('ejs');
 var routes = require('./routes/index');
 var blog = require('./routes/blog');
+var users = require('./routes/users');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
+var settings = require('./settings');
+var util = require('util');
 
 var app = express();
 // view engine setup
@@ -21,8 +26,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+  secret: settings.cookieSecret,
+  key: settings.db,
+  store: new MongoStore({
+    url:util.format("mongodb://%s:%s@%s:%s/%s",settings.user,settings.pwd,settings.host,settings.port,settings.db)
+  })
+}));
+
+
 app.use('/', routes);
 app.use('/blog', blog);
+app.use('/user',users);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
