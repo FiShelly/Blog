@@ -20,11 +20,14 @@
         '$routeParams',
         '$http',
         function ($scope, $route, $routeParams, $http) {
-            console.log("enter BlogArticleController ~");
-            $http.post('/user/getUser/fishelly.',{}).success(function(data,status,headers,config){
+            $scope.oldPw = "";
+            $scope.newPw = "";
+            $scope.rNewPw = "";
+            $http.post('/user/getUser/fishelly',{}).success(function(data,status,headers,config){
                 if(data.status == '0'){
                     $scope.isUpdate = false;
                     $scope.user = {
+                        loginId:"fishelly",
                         name : "fishelly.",
                         position : "Java开发工程师 & Web前端工程师",
                         signature : "耐得住寂寞，经得起诱惑，受得起挫折.",
@@ -47,8 +50,6 @@
                     isUpdate:$scope.isUpdate,
                     user:$scope.user
                 }).success(function(data,status,headers,config){
-                    console.log(data);
-                    console.log("success");
                     if(data.status == '0'){
                         console.log("save fialed");
                     } else {
@@ -60,7 +61,59 @@
                     console.log(data);
                     console.log("fail");
                 });
-            }
+            };
+
+            $scope.updatePwd = function(){
+                console.log("333333333333");
+                console.log($scope.newPw );
+                console.log($scope.rNewPw );
+                if($scope.newPw != $scope.rNewPw){
+                    return;
+                }
+                console.log("333333333333");
+                $http.post('/user/updatePwd',{
+                    loginId:$scope.user.loginId,
+                    password:$scope.newPw
+                }).success(function(data,status,headers,config){
+                    if(data.status == '0'){
+                        console.log("updatePwd fialed");
+                    } else {
+                        $scope.oldPw = "";
+                        $scope.newPw = "";
+                        $scope.rNewPw = "";
+                    }
+                }).error(function(data,status,headers,config){
+                    $scope.errorMsg = data.msg;
+                    console.log(data);
+                    console.log("fail");
+                });
+            };
+
+            $scope.uploadHeadImg = function(){
+                console.log(123);
+                var formData = new FormData(document.getElementById('personal_form'));
+                formData.append('loginId',$scope.user.loginId);
+                formData.append( "CustomField", "This is some extra data" );
+                $http({
+                    method:'POST',
+                    url: '/user/uploadHeadImg',
+                    data: formData,
+                    transformRequest: angular.identity,
+                    headers: {
+                        "Content-Type": function () {
+                            return undefined;
+                        }
+                    }
+                }).success(function(data,status,headers,config) {
+                    //请求成功
+                    $scope.user.headImg = data.headImg;
+                    console.log("upload success");
+                }).error(function(data,status,headers,config) {
+                    console.log("upload faild");
+                });
+
+
+            };
         }
     ]);
-})(angular);
+})(angular,document);

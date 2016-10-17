@@ -16,6 +16,8 @@
     "serve-favicon": "~2.3.0",
     "express-session":"1.9.1",
     "connect-mongo":"0.8.2",
+    "multiparty": "4.1.2",
+    "moment": "2.13.0",
     "mongodb": "2.0.42"
   }
 }
