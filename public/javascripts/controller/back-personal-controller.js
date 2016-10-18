@@ -15,46 +15,34 @@
     }]);
     //控制器
     module.controller('BackPersonalController', [
+        '$rootScope',
         '$scope',
         '$route',
         '$routeParams',
         '$http',
-        function ($scope, $route, $routeParams, $http) {
+        function ($rootScope,$scope, $route, $routeParams, $http) {
+            console.log($rootScope.user);
             $scope.oldPw = "";
             $scope.newPw = "";
             $scope.rNewPw = "";
-            $http.post('/user/getUser/fishelly',{}).success(function(data,status,headers,config){
-                if(data.status == '0'){
-                    $scope.isUpdate = false;
-                    $scope.user = {
-                        loginId:"fishelly",
-                        name : "fishelly.",
-                        position : "Java开发工程师 & Web前端工程师",
-                        signature : "耐得住寂寞，经得起诱惑，受得起挫折.",
-                        label : ['Java','Web前端','工程师'],
-                        introduce : "~~~耐得住寂寞，经得起诱惑，受得起挫折.",
-                        headImg : "images/fish1.jpg"
-                    }
-                } else {
-                    console.log("get data");
-                    $scope.isUpdate = true;
-                    $scope.user = data.user;
-                }
-            }).error(function(data,status,headers,config){
-                $scope.errorMsg = data.msg;
-            });
+            if(!$rootScope.user){
+                $rootScope.user = JSON.parse(localStorage.getItem("user"));
+                //缓存被清空的情况
+            }
+
 
             $scope.saveOrUpdate = function(){
                 console.log($scope.user);
                 $http.post('/user/saveOrUpdateUser',{
-                    isUpdate:$scope.isUpdate,
-                    user:$scope.user
+                    isUpdate:true,
+                    user:$rootScope.user
                 }).success(function(data,status,headers,config){
+                    console.log(data);
                     if(data.status == '0'){
                         console.log("save fialed");
                     } else {
-                        $scope.isUpdate = true;
-                        $scope.user = data.user;
+                        localStorage.setItem("user",JSON.stringify($rootScope.user));
+                        $rootScope.user = data.user;
                     }
                 }).error(function(data,status,headers,config){
                     $scope.errorMsg = data.msg;
@@ -64,17 +52,15 @@
             };
 
             $scope.updatePwd = function(){
-                console.log("333333333333");
-                console.log($scope.newPw );
-                console.log($scope.rNewPw );
                 if($scope.newPw != $scope.rNewPw){
                     return;
                 }
-                console.log("333333333333");
                 $http.post('/user/updatePwd',{
-                    loginId:$scope.user.loginId,
+                    loginId:$rootScope.user.loginId,
+                    oldPwd:$scope.oldPw,
                     password:$scope.newPw
                 }).success(function(data,status,headers,config){
+                    console.log(data);
                     if(data.status == '0'){
                         console.log("updatePwd fialed");
                     } else {
@@ -116,4 +102,4 @@
             };
         }
     ]);
-})(angular,document);
+})(angular,document,localStorage);

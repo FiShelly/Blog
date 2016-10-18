@@ -5,7 +5,7 @@
             <span class="title-text">分类管理</span>
             <div class="article-btn-group">
                 <div class="btn-group">
-                    <a ng-click="open('md',true)"  class="btn btn-success">
+                    <a ng-click="open('md',true,false)"  class="btn btn-success">
                         <span class="glyphicon glyphicon-plus"></span>
                     </a>
                     <a href="#/back/tag" class="btn btn-info">
@@ -28,33 +28,19 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>EcmScrpt6浅析</td>
-                    <td>6</td>
-                    <td>2016-10-12 21:39</td>
+                <tr ng-repeat="type in typetags">
+                    <td>{{$index+1}}</td>
+                    <td>{{type.name}}</td>
+                    <td>{{type.count}}</td>
+                    <td>{{type.date}}</td>
                     <td>
-                        <button class="btn btn-info article-list-btn">
+                        <button class="btn btn-info article-list-btn" ng-click="open('md',true);">
                             <span class="glyphicon glyphicon-pencil "></span>
                         </button>
-                        <button class="btn btn-danger article-list-btn">
+                        <button class="btn btn-danger article-list-btn" ng-click="delete(type.id);">
                             <span class="glyphicon glyphicon glyphicon-trash "></span>
                         </button>
                     </td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>EcmScrpt6浅析</td>
-                    <td>6</td>
-                    <td>2016-10-12 21:39</td>
-                    <th>
-                        <button class="btn btn-info article-list-btn">
-                            <span class="glyphicon glyphicon-pencil "></span>
-                        </button>
-                        <button class="btn btn-danger article-list-btn">
-                            <span class="glyphicon glyphicon glyphicon-trash "></span>
-                        </button>
-                    </th>
                 </tr>
                 </tbody>
                 <tfoot>
@@ -64,10 +50,6 @@
                             <ul class="pagination">
                                 <li><a href="#">&laquo;</a></li>
                                 <li class="active"><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
                                 <li><a href="#">&raquo;</a></li>
                             </ul>
                         </nav>

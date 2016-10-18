@@ -1,12 +1,12 @@
 <div class="modal-header">
-    <h3 class="modal-title"><span class="glyphicon glyphicon-plus"></span>&nbsp;{{obj.flag?'添加分类/Add Type':'添加标签/Add Tag'}}</h3>
+    <h3 class="modal-title"><span class="glyphicon glyphicon-plus"></span>&nbsp;{{obj.type?'添加分类/Add Type':'添加标签/Add Tag'}}</h3>
 </div>
 <div class="modal-body">
     <form  role="form">
         <div class="form-group">
-            <label for="typeName">{{obj.flag?'分类名称/Type Name':'标签名称/Tag Name'}}</label>
+            <label for="typeName">{{obj.type?'分类名称/Type Name':'标签名称/Tag Name'}}</label>
             <div >
-                <input type="text" class="form-control" id="typeName" placeholder="{{obj.flag?'分类名称/Type Name':'标签名称/Tag Name'}}" ng-model="obj.typeName">
+                <input type="text" class="form-control" id="typeName" placeholder="{{obj.type?'分类名称/Type Name':'标签名称/Tag Name'}}" ng-model="obj.name">
             </div>
         </div>
     </form>

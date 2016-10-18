@@ -10,6 +10,7 @@
     <meta name="App-Config" content="fullscreen=yes,useHistoryState=yes,transition=yes"/>
     <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/stylesheets/blog-index.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/login.css">
     <link rel="stylesheet" type="text/css" href="/markdown/css/editormd.css"/>
     <script src="/javascripts/angular.js"></script>
     <script src="/javascripts/angular-route.js"></script>
@@ -42,12 +43,12 @@
                             class="glyphicon glyphicon-list-alt fc-item fc-item-type ease1"></span></a>
                 </div>
             </nav>
-            <nav class="left-function bootom-function col-sm-12 left-function-position ease1" >
+            <nav class="left-function bootom-function col-sm-12 left-function-position ease1" ng-show="isLogin">
                 <div class="login-nav">
                     <a href="#/back/personal"><span class="glyphicon glyphicon-user fc-item fc-item-user ease1"></span></a>
                     <a href="#/back/article/list"><span
                             class="glyphicon glyphicon-th fc-item fc-item-articleMan ease1"></span></a>
-                    <a href="#/back/type"><span class="glyphicon glyphicon-tags fc-item fc-item-typeMan ease1"></span></a>
+                    <a href="#/back/type/1"><span class="glyphicon glyphicon-tags fc-item fc-item-typeMan ease1"></span></a>
                     <a href="#/back/comment"><span class="glyphicon glyphicon-comment fc-item fc-item-comment ease1"></span></a>
                 </div>
             </nav>
@@ -70,6 +71,7 @@
 <script src="/javascripts/controller/back-articleEdit-controller.js"></script>
 <script src="/javascripts/controller/back-typetag-controller.js"></script>
 <script src="/javascripts/controller/back-comment-controller.js"></script>
+<script src="/javascripts/controller/back-login-controller.js"></script>
 <script src="http://cdn.bootcss.com/angular-ui-bootstrap/0.11.2/ui-bootstrap-tpls.js"></script>
 <script>
     (function (angular) {
@@ -82,6 +84,7 @@
             'blog.back.articleList',
             'blog.back.articleEdit',
             'blog.back.typetag',
+            'blog.back.login',
             'blog.back.comment'
         ]);
 

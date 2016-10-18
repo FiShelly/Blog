@@ -1,4 +1,6 @@
+'use strict';
 var express = require('express');
+var crypto = require('crypto');
 var multiparty = require('multiparty');
 var util = require('util');
 var fs = require('fs');
@@ -6,18 +8,39 @@ var moment = require("moment");
 var router = express.Router();
 var User = require('../models/user.js');
 /* GET users listing. */
-router.post('/getUser/:loginId', function (req, res, next) {
-    User.get(req.params.loginId, function (err, user) {
+router.post('/login', function (req, res, next) {
+
+    User.get(req.body.loginId, function (err, user) {
         if (!user) {
             console.log("the user is not exits");
             res.json({status: '0'});
+            return;
+        }
+        console.log(req.body.password);
+        let md5 = crypto.createHash('md5'),
+            password = md5.update(req.body.password).digest('hex');
+        if(password == user.password){
+            req.session.user= user;
+            res.json({status: '1',user:user});
         } else {
-            res.json({status: '1', user: user});
+            res.json({status: '-1'});
         }
     });
 });
-
+function checkLogin(req, res, next) {
+    if (!req.session.user) {
+        res.json({status:'-2'});
+        return;
+    }
+    next();
+}
+router.post('/saveOrUpdateUser', checkLogin);
 router.post('/saveOrUpdateUser', function (req, res, next) {
+    if(req.body.password){
+        var md5 = crypto.createHash('md5'),
+            password = md5.update(req.body.password).digest('hex');
+        req.body.user.password = password;
+    }
     User.saveOrUpdate(req.body.isUpdate,req.body.user, function (err, user) {
         if (!user) {
             console.log("save failed");
@@ -28,19 +51,29 @@ router.post('/saveOrUpdateUser', function (req, res, next) {
         }
     });
 });
-
+router.post('/updatePwd', checkLogin);
 router.post('/updatePwd', function (req, res, next) {
-    User.updatePw(req.body.loginId,req.body.password, function (err, user) {
-        if (err) {
-            console.log("updatePwd failed");
-            res.json({status: '0'});
-        } else {
-            console.log("updatePwd success");
-            res.json({status: '1'});
-        }
-    });
-});
+    var password = crypto.createHash('md5').update(req.body.password).digest('hex');
+    console.log(password);
+    var oldPw = crypto.createHash('md5').update(req.body.oldPwd).digest('hex');
+    console.log(oldPw);
 
+    if(oldPw == req.session.user.password){
+        User.updatePw(req.body.loginId,password, function (err, user) {
+            if (err) {
+                console.log("updatePwd failed");
+                res.json({status: '0'});
+            } else {
+                console.log("updatePwd success");
+                res.json({status: '1'});
+            }
+        });
+    } else {
+        res.json({status: '-3'});
+    }
+
+});
+router.post('/uploadHeadImg', checkLogin);
 router.post('/uploadHeadImg', function (req, res, next) {
     var form = new multiparty.Form({uploadDir: '../public/upload/'});
     form.parse(req, function (err, fields, files) {
