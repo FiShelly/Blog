@@ -20,7 +20,7 @@ router.post('/save', function (req, res, next) {
     var id = md5.update(typetagTmp.name).digest('hex');
     typetagTmp.id = id;
     typetagTmp.count = 0;
-    typetagTmp.date = moment().format("YYYY-MM-DD HH:mm");
+    typetagTmp.date = moment().format("YYYY-MM-DD HH:mm:ss");
     TypeTag.save(typetagTmp, function (err, typetag) {
         if (!typetag) {
             console.log("save failed");
@@ -34,8 +34,9 @@ router.post('/save', function (req, res, next) {
 
 //router.post('/updateName', checkLogin);
 router.post('/updateName', function (req, res, next) {
-    TypeTag.updateName(req.body.id,req.body.name, function (err) {
-        if (!err) {
+    console.log("update Name");
+    TypeTag.updateName(req.body.typetag, function (err) {
+        if (err) {
             console.log("updateName failed");
             res.json({status: '0'});
         } else {
@@ -52,18 +53,27 @@ router.post('/updateCounut', function (req, res, next) {
 
 //router.post('/delete', checkLogin);
 router.post('/delete', function (req, res, next) {
-
+    console.log("delete entry");
+    TypeTag.delete(req.body.id, function (err) {
+        if (err) {
+            console.log("delete failed");
+            res.json({status: '0'});
+        } else {
+            console.log("delete success");
+            res.json({status: '1'});
+        }
+    });
 });
 //router.post('/page/:page', checkLogin);
-router.post('/page/:page', function (req, res, next) {
+router.post('/page/:page/:size', function (req, res, next) {
     console.log("enter page type tag");
-    TypeTag.getTypeTagByPage(req.body.type,req.params.page, function (err,typetags,total) {
+    TypeTag.getTypeTagByPage(req.body.type,req.params.page,req.params.size, function (err,typetags,total,size) {
         if (err) {
             console.log(err);
             console.log("the server has error ");
             res.json({status: '0'});
         } else {
-            res.json({status: '1',typetags:typetags,total:total});
+            res.json({status: '1',typetags:typetags,total:total,size:size});
         }
 
     });

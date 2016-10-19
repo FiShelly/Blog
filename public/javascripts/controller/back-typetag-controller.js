@@ -8,10 +8,10 @@
     ]);
     // 配置模块的路由
     module.config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/back/type/:page', {
+        $routeProvider.when('/back/type/:page/:size', {
             templateUrl: 'template/back-type-template.html',
             controller: 'BackTypetagController'
-        }).when('/back/tag/:page', {
+        }).when('/back/tag/:page/:size', {
             templateUrl: 'template/back-tag-template.html',
             controller: 'BackTypetagController'
         });
@@ -25,8 +25,8 @@
         '$modal',
         function ($scope, $route, $routeParams, $http,$modal) {
             console.log("enter BackTypetagController ~");
-            $scope.obj = {name:"",type:true,isUpdate:false};
-            $scope.open = function (size,flag,isUpdate) {  //打开模态
+            $scope.obj = {name:"",id:"",type:true,isUpdate:false};
+            $scope.open = function (size,flag,isUpdate,name,id) {  //打开模态
                 var modalInstance = $modal.open({
                     templateUrl: '/template/modal-type-tag.html',  //指向上面创建的视图
                     controller: 'ModalInstanceCtrl',// 初始化模态范围
@@ -35,6 +35,10 @@
                         obj: function () {
                             $scope.obj.type = flag;
                             $scope.obj.isUpdate = isUpdate;
+                            if(name){
+                                $scope.obj.name=name;
+                                $scope.obj.id=id;
+                            }
                             return  $scope.obj;
                         }
                     }
@@ -52,16 +56,7 @@
                         if(data.status == '0'){
                             console.log("save fialed");
                         } else {
-                            //reload
-                            if(curPage == 1){
-                                $scope.typetags.unshift(data.typetag);
-                                if($scope.typetags.length > 10){
-                                    $scope.typetags.pop();
-                                }
-                            } else {
-                                $route.updateParams({ page: 1 });
-                            }
-
+                            $route.reload();
                         }
                     }).error(function(data,status,headers,config){
                         $scope.errorMsg = data.msg;
@@ -71,9 +66,13 @@
                     console.log('Modal dismissed at: ' + new Date());
                 });
             };
-            var curPage =  parseInt($routeParams.page);
-            console.log("curPage" + curPage);
-            $http.post('/typetag/page/'+curPage,{
+
+            $scope.page = [];
+            $scope.curPage =  parseInt($routeParams.page);
+            $scope.lineSize = parseInt($routeParams.size);
+
+
+            $http.post('/typetag/page/'+$scope.curPage + "/" +$scope.lineSize ,{
                 type:$scope.obj.type
             }).success(function(data,status,headers,config){
                 console.log(data);
@@ -81,15 +80,38 @@
                     console.log("page fialed");
                 } else {
                     $scope.typetags = data.typetags;
-                    $scope.total = data.total;
+                    for(var i = 1;i<=data.size;i++){
+                        $scope.page.push(i);
+                    }
                 }
             }).error(function(data,status,headers,config){
                 $scope.errorMsg = data.msg;
                 console.log("fail");
             });
+
+            $scope.delete = function(id){
+                $http.post('/typetag/delete' ,{
+                    id:id
+                }).success(function(data,status,headers,config){
+                    console.log(data);
+                    if(data.status == '0'){
+                        console.log("delete fialed");
+                    } else {
+                        $route.reload();
+                    }
+                }).error(function(data,status,headers,config){
+                    $scope.errorMsg = data.msg;
+                    console.log("fail");
+                });
+            };
+
             $scope.go = function(page){
-                if (page >= 1 && page <= $scope.total){
-                    $route.updateParams({ page: page });
+                console.log("=====================================pages");
+                console.log(page);
+                console.log("=====================================pagee");
+                if (page >= 1 && page <= $scope.page.length){
+                    console.log(123);
+                    $route.updateParams({ page: page,size:$scope.lineSize });
                 }
             }
         }

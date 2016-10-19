@@ -13,6 +13,8 @@ var TypeTag = function (typeTag) {
 module.exports = TypeTag;
 
 TypeTag.save = function (typeTag, callback) {
+    var saveEntry = new TypeTag(typeTag);
+    console.log(saveEntry);
     mongodb.open(function (err, db) {
         db.authenticate(settings.user, settings.pwd, function () {
             db.collection('typetag', function (err, collection) {
@@ -20,7 +22,7 @@ TypeTag.save = function (typeTag, callback) {
                     mongodb.close();
                     return callback(err);
                 }
-                collection.insert(typeTag, {safe: true}, function (err, typeTag) {
+                collection.insert(saveEntry, {safe: true}, function (err, typeTag) {
                     mongodb.close();
                     if (err) {
                         return callback(err);
@@ -34,6 +36,7 @@ TypeTag.save = function (typeTag, callback) {
 
 TypeTag.updateName = function (typeTag, callback) {
     mongodb.open(function (err, db) {
+        console.log("update Name mongo");
         db.authenticate(settings.user, settings.pwd, function () {
             db.collection('typetag', function (err, collection) {
                 if (err) {
@@ -80,7 +83,7 @@ TypeTag.updateCount = function (typeTag, callback) {
     });
 };
 
-TypeTag.delete = function (typeTag, callback) {
+TypeTag.delete = function (id, callback) {
     mongodb.open(function (err, db) {
         db.authenticate(settings.user, settings.pwd, function () {
             db.collection('typetag', function (err, collection) {
@@ -88,7 +91,7 @@ TypeTag.delete = function (typeTag, callback) {
                     mongodb.close();
                     return callback(err);
                 }
-                collection.remove({id: typeTag.id}, {w: 1}, function (err) {
+                collection.remove({id: id}, {w: 1}, function (err) {
                     mongodb.close();
                     if (err) {
                         return callback(err);
@@ -120,7 +123,7 @@ TypeTag.getTypeTagById = function (id, callback) {
     });
 };
 
-TypeTag.getTypeTagByPage = function (type, page, callback) {
+TypeTag.getTypeTagByPage = function (type, page,ls, callback) {
     //打开数据库
     mongodb.open(function (err, db) {
         db.authenticate(settings.user, settings.pwd, function () {
@@ -138,8 +141,8 @@ TypeTag.getTypeTagByPage = function (type, page, callback) {
                 collection.count(query, function (err, total) {
                     //根据 query 对象查询，并跳过前 (page-1)*10 个结果，返回之后的 10 个结果
                     collection.find(query, {
-                        skip: (page - 1) * 10,
-                        limit: 10
+                        skip: (page - 1) * ls,
+                        limit: ls
                     }).sort({
                         date: -1
                     }).toArray(function (err, docs) {
@@ -149,7 +152,7 @@ TypeTag.getTypeTagByPage = function (type, page, callback) {
                             console.log(err);
                             return callback(err);
                         }
-                        callback(null, docs, total);
+                        callback(null, docs, total,parseInt(total/ls)+1);
                     });
                 });
             });

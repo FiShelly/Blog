@@ -8,7 +8,7 @@
                     <a ng-click="open('md',true,false)"  class="btn btn-success">
                         <span class="glyphicon glyphicon-plus"></span>
                     </a>
-                    <a href="#/back/tag" class="btn btn-info">
+                    <a href="#/back/tag/1/5" class="btn btn-info">
                         <span class="glyphicon glyphicon-arrow-right"></span>
                         <span class="hidden-xs">前往标签管理</span>
                     </a>
@@ -34,7 +34,7 @@
                     <td>{{type.count}}</td>
                     <td>{{type.date}}</td>
                     <td>
-                        <button class="btn btn-info article-list-btn" ng-click="open('md',true);">
+                        <button class="btn btn-info article-list-btn" ng-click="open('md',true,true,type.name,type.id);">
                             <span class="glyphicon glyphicon-pencil "></span>
                         </button>
                         <button class="btn btn-danger article-list-btn" ng-click="delete(type.id);">
@@ -48,9 +48,11 @@
                     <td colspan="8">
                         <nav>
                             <ul class="pagination">
-                                <li><a href="#">&laquo;</a></li>
-                                <li class="active"><a href="#">1</a></li>
-                                <li><a href="#">&raquo;</a></li>
+                                <li ng-class="{true:'disabled'}[1==curPage]"><a href="" ng-click="go(curPage-1);">&laquo;</a></li>
+                                <li ng-repeat="link in page" ng-class="{true:'active'}[link==curPage]">
+                                    <a href="" ng-click="go(link);">{{link}}</a>
+                                </li>
+                                <li ng-class="{true:'disabled'}[page.length==curPage]"><a href="" ng-click="go(curPage+1);" >&raquo;</a></li>
                             </ul>
                         </nav>
                     </td>

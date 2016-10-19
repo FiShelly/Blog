@@ -1,5 +1,9 @@
 <div class="modal-header">
-    <h3 class="modal-title"><span class="glyphicon glyphicon-plus"></span>&nbsp;{{obj.type?'添加分类/Add Type':'添加标签/Add Tag'}}</h3>
+    <h3 class="modal-title">
+        <span class="glyphicon glyphicon-plus"></span>&nbsp;
+        <span ng-hide="obj.isUpdate">{{obj.type?'添加分类/Add Type':'添加标签/Add Tag'}}</span>
+        <span ng-show="obj.isUpdate">{{obj.type?'修改分类/Update Type':'修改标签/Update Tag'}}</span>
+    </h3>
 </div>
 <div class="modal-body">
     <form  role="form">
