@@ -103,7 +103,7 @@ TypeTag.delete = function (id, callback) {
     });
 };
 
-TypeTag.getTypeTagById = function (id, callback) {
+TypeTag.getTypeTagByName = function (name, type, callback) {
     mongodb.open(function (err, db) {
         db.authenticate(settings.user, settings.pwd, function () {
             db.collection('typetag', function (err, collection) {
@@ -111,7 +111,7 @@ TypeTag.getTypeTagById = function (id, callback) {
                     mongodb.close();
                     return callback(err);
                 }
-                collection.findOne({id: id}, function (err, typeTag) {
+                collection.findOne({name: name, type: type}, function (err, typeTag) {
                     mongodb.close();
                     if (err) {
                         return callback(err);
@@ -123,7 +123,7 @@ TypeTag.getTypeTagById = function (id, callback) {
     });
 };
 
-TypeTag.getTypeTagByPage = function (type, page,ls, callback) {
+TypeTag.getTypeTagByPage = function (type, page, ls, callback) {
     //打开数据库
     mongodb.open(function (err, db) {
         db.authenticate(settings.user, settings.pwd, function () {
@@ -136,7 +136,7 @@ TypeTag.getTypeTagByPage = function (type, page,ls, callback) {
                     mongodb.close();
                     return callback(err);
                 }
-                var query = {type:type};
+                var query = {type: type};
 
                 collection.count(query, function (err, total) {
                     //根据 query 对象查询，并跳过前 (page-1)*10 个结果，返回之后的 10 个结果
@@ -152,7 +152,13 @@ TypeTag.getTypeTagByPage = function (type, page,ls, callback) {
                             console.log(err);
                             return callback(err);
                         }
-                        callback(null, docs, total,parseInt(total/ls)+1);
+                        var size = total % ls;
+                        if (size == 0) {
+                            size = total / ls;
+                        } else {
+                            size = parseInt(total / ls) + 1;
+                        }
+                        callback(null, docs, total, size);
                     });
                 });
             });

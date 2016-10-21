@@ -7,8 +7,9 @@ var TypeTag = require('../models/TypeTag.js');
 /* GET users listing. */
 
 function checkLogin(req, res, next) {
+    console.log("enter validate login");
     if (!req.session.user) {
-        res.json({status:'-2'});
+        res.json({status: '-2'});
         return;
     }
     next();
@@ -64,16 +65,33 @@ router.post('/delete', function (req, res, next) {
         }
     });
 });
-//router.post('/page/:page', checkLogin);
+router.post('/page/:page/:size', checkLogin);
 router.post('/page/:page/:size', function (req, res, next) {
     console.log("enter page type tag");
-    TypeTag.getTypeTagByPage(req.body.type,req.params.page,req.params.size, function (err,typetags,total,size) {
+    TypeTag.getTypeTagByPage(req.body.type, req.params.page, req.params.size, function (err, typetags, total, size) {
         if (err) {
             console.log(err);
             console.log("the server has error ");
             res.json({status: '0'});
         } else {
-            res.json({status: '1',typetags:typetags,total:total,size:size});
+            res.json({status: '1', typetags: typetags, total: total, size: size});
+        }
+
+    });
+});
+
+router.post('/getByName', checkLogin);
+router.post('/getByName', function (req, res, next) {
+    console.log("enter getByName type tag");
+    TypeTag.getTypeTagByName(req.body.name, req.body.type, function (err, typetag) {
+        if (err) {
+            console.log(err);
+            console.log("the server has error ");
+            res.json({status: '0'});
+        } else if (typetag == null) {
+            res.json({status: '2'});
+        } else {
+            res.json({status: '1', typetag: typetag});
         }
 
     });

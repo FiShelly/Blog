@@ -19,9 +19,9 @@ router.post('/login', function (req, res, next) {
         console.log(req.body.password);
         let md5 = crypto.createHash('md5'),
             password = md5.update(req.body.password).digest('hex');
-        if(password == user.password){
-            req.session.user= user;
-            res.json({status: '1',user:user});
+        if (password == user.password) {
+            req.session.user = user;
+            res.json({status: '1', user: user});
         } else {
             res.json({status: '-1'});
         }
@@ -29,19 +29,19 @@ router.post('/login', function (req, res, next) {
 });
 function checkLogin(req, res, next) {
     if (!req.session.user) {
-        res.json({status:'-2'});
+        res.json({status: '-2'});
         return;
     }
     next();
 }
 router.post('/saveOrUpdateUser', checkLogin);
 router.post('/saveOrUpdateUser', function (req, res, next) {
-    if(req.body.password){
+    if (req.body.password) {
         var md5 = crypto.createHash('md5'),
             password = md5.update(req.body.password).digest('hex');
         req.body.user.password = password;
     }
-    User.saveOrUpdate(req.body.isUpdate,req.body.user, function (err, user) {
+    User.saveOrUpdate(req.body.isUpdate, req.body.user, function (err, user) {
         if (!user) {
             console.log("save failed");
             res.json({status: '0'});
@@ -58,8 +58,8 @@ router.post('/updatePwd', function (req, res, next) {
     var oldPw = crypto.createHash('md5').update(req.body.oldPwd).digest('hex');
     console.log(oldPw);
 
-    if(oldPw == req.session.user.password){
-        User.updatePw(req.body.loginId,password, function (err, user) {
+    if (oldPw == req.session.user.password) {
+        User.updatePw(req.body.loginId, password, function (err, user) {
             if (err) {
                 console.log("updatePwd failed");
                 res.json({status: '0'});
@@ -88,12 +88,12 @@ router.post('/uploadHeadImg', function (req, res, next) {
                 var fileName = files.headImg[0].originalFilename.split(".")[1];
                 dstPath = 'upload/' + "_" + moment().format("YYYYMMDDHHmmss") + "." + fileName;
                 //重命名为真实文件名
-                fs.rename(files.headImg[0].path,"../public/"+dstPath, function (err) {
+                fs.rename(files.headImg[0].path, "../public/" + dstPath, function (err) {
                     if (err) {
                         console.log('rename error: ' + err);
                     } else {
                         console.log('rename ok');
-                        User.updateHeadImg(fields.loginId[0],dstPath, function (err) {
+                        User.updateHeadImg(fields.loginId[0], dstPath, function (err) {
                             if (err) {
                                 console.log("uplopad faild failed");
                                 res.json({status: '0'});
