@@ -59,7 +59,7 @@ TypeTag.updateName = function (typeTag, callback) {
     });
 };
 
-TypeTag.updateCount = function (typeTag, callback) {
+TypeTag.updateCount = function (name,type, callback) {
     mongodb.open(function (err, db) {
         db.authenticate(settings.user, settings.pwd, function () {
             db.collection('typetag', function (err, collection) {
@@ -67,16 +67,17 @@ TypeTag.updateCount = function (typeTag, callback) {
                     mongodb.close();
                     return callback(err);
                 }
-                collection.update({id: typeTag.id}, {
-                    $set: {
-                        "count": typeTag.count
+                console.log(name + " ==== " + type);
+                collection.update({name: name,type:type}, {
+                    $inc: {
+                        "count": 1
                     }
                 }, function (err) {
                     mongodb.close();
                     if (err) {
-                        return callback(err, null);
+                        return callback(err);
                     }
-                    callback(null, typeTag);
+                    callback(null);
                 });
             });
         });
@@ -136,7 +137,10 @@ TypeTag.getTypeTagByPage = function (type, page, ls, callback) {
                     mongodb.close();
                     return callback(err);
                 }
-                var query = {type: type};
+                var query = {};
+                if(typeof(type) == 'boolean'){
+                    query = {type: type};
+                }
 
                 collection.count(query, function (err, total) {
                     //根据 query 对象查询，并跳过前 (page-1)*10 个结果，返回之后的 10 个结果

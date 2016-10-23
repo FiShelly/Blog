@@ -48,8 +48,17 @@ router.post('/updateName', function (req, res, next) {
 });
 
 //router.post('/updateCounut', checkLogin);
-router.post('/updateCounut', function (req, res, next) {
-
+router.post('/updateCount', function (req, res, next) {
+    TypeTag.updateCount(req.body.name,req.body.type,function (err) {
+        if (err) {
+            console.log(err);
+            console.log("updateCount failed");
+            res.json({status: '0'});
+        } else {
+            console.log("updateCount success");
+            res.json({status: '1'});
+        }
+    });
 });
 
 //router.post('/delete', checkLogin);
@@ -65,13 +74,13 @@ router.post('/delete', function (req, res, next) {
         }
     });
 });
-router.post('/page/:page/:size', checkLogin);
+//router.post('/page/:page/:size', checkLogin);
 router.post('/page/:page/:size', function (req, res, next) {
     console.log("enter page type tag");
     TypeTag.getTypeTagByPage(req.body.type, req.params.page, req.params.size, function (err, typetags, total, size) {
         if (err) {
             console.log(err);
-            console.log("the server has error ");
+            console.log("the server has error " + req.body.type);
             res.json({status: '0'});
         } else {
             res.json({status: '1', typetags: typetags, total: total, size: size});

@@ -1,11 +1,14 @@
-<div class="col-md-offset-1 col-md-10 col-lg-offset-2 col-lg-8  ">
+<div class="col-md-offset-1 col-md-10   ">
     <div class="personal-box border-shadow ">
         <h2 class="personal-box-title">
             <span class="glyphicon glyphicon-th"></span>
             <span class="title-text">文章管理</span>
-            <a href="#/back/article/edit" class="btn btn-success article-btn-add">
+            <a href="#/back/article/edit/0" class="btn btn-success article-btn-add">
                 <span class="glyphicon glyphicon-plus"></span>
             </a>
+            <button ng-click="filterArticle(0);" class="btn btn-danger article-btn-add "><span>已删除</span></button>
+            <button ng-click="filterArticle(1);" class="btn btn-info article-btn-add"><span>草稿</span></button>
+            <button ng-click="filterArticle(2);" class="btn btn-success article-btn-add"><span>已发布</span></button>
         </h2>
         <div class="col-xs-12 table-responsive">
             <table class="table table-striped table-style">
@@ -22,36 +25,23 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>EcmScrpt6浅析</td>
-                    <td>js</td>
-                    <td>2016-10-12 21:39</td>
-                    <td>20</td>
-                    <td>20</td>
-                    <td>已发表</td>
+                <tr ng-repeat="article in articles | filter: {'status':status}">
+                    <td>{{$index+1}}</td>
+                    <td>{{article.title}}</td>
+                    <td>{{article.type}}</td>
+                    <td>{{article.date}}</td>
+                    <td>{{article.readCount}}</td>
+                    <td>{{article.commentCount}}</td>
                     <td>
-                        <button class="btn btn-info article-list-btn">
-                            <span class="glyphicon glyphicon-pencil "></span>
-                        </button>
-                        <button class="btn btn-danger article-list-btn">
-                            <span class="glyphicon glyphicon glyphicon-trash "></span>
-                        </button>
+                        <span ng-show="article.status == 2">已发布</span>
+                        <span ng-show="article.status == 1">已发布</span>
+                        <span ng-show="article.status == 0">已发布</span>
                     </td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>EcmScrpt6浅析</td>
-                    <td>js</td>
-                    <td>2016-10-12 21:39</td>
-                    <td>20</td>
-                    <td>20</td>
-                    <td>已发表</td>
                     <td>
-                        <button class="btn btn-info article-list-btn">
+                        <button ng-click="goEdit(article.id);"  class="btn btn-info article-list-btn">
                             <span class="glyphicon glyphicon-pencil "></span>
                         </button>
-                        <button class="btn btn-danger article-list-btn">
+                        <button ng-hide="article.status==0" class="btn btn-danger article-list-btn" ng-click="delete(article.id);">
                             <span class="glyphicon glyphicon glyphicon-trash "></span>
                         </button>
                     </td>
@@ -62,13 +52,11 @@
                     <td colspan="8">
                         <nav>
                             <ul class="pagination">
-                                <li ><a href="#">&laquo;</a></li>
-                                <li class="active"><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                                <li><a href="#">&raquo;</a></li>
+                                <li ng-class="{true:'disabled'}[1==curPage]"><a href="" ng-click="go(curPage-1);">&laquo;</a></li>
+                                <li ng-repeat="link in page" ng-class="{true:'active'}[link==curPage]">
+                                    <a href="" ng-click="go(link);">{{link}}</a>
+                                </li>
+                                <li ng-class="{true:'disabled'}[page.length==curPage]"><a href="" ng-click="go(curPage+1);" >&raquo;</a></li>
                             </ul>
                         </nav>
                     </td>

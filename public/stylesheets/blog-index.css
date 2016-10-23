@@ -175,6 +175,9 @@ h2,h4{
     padding:0 0.3rem 0.2rem 0;
 
 }
+.search-bar{
+    overflow: hidden;
+}
 .comment{
 
 }
@@ -450,5 +453,6 @@ th, td {
 }
 
 .article-btn-add {
+    margin-left: 0.15rem;
     float: right;
 }

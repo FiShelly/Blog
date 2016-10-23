@@ -9,6 +9,7 @@ var routes = require('./routes/index');
 var blog = require('./routes/blog');
 var users = require('./routes/users');
 var typetag = require('./routes/typeTag');
+var article = require('./routes/article');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var settings = require('./settings');
@@ -39,6 +40,7 @@ app.use('/', routes);
 app.use('/blog', blog);
 app.use('/user',users);
 app.use('/typetag',typetag);
+app.use('/article',article);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

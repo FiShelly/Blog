@@ -3,12 +3,13 @@
  */
 (function (angular,editormd) {
     var module = angular.module('blog.back.articleEdit', [
-        'ngRoute'
+        'ngRoute',
+        'ui.select'
     ]);
 
     // 配置模块的路由
     module.config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/back/article/edit', {
+        $routeProvider.when('/back/article/edit/:id', {
             templateUrl: 'template/back-articleEdit-template.html',
             controller: 'BackArticleEditController'
         });
@@ -19,7 +20,11 @@
         '$route',
         '$routeParams',
         '$http',
-        function ($scope, $route, $routeParams, $http) {
+        '$filter',
+        '$interval',
+        '$location',
+        '$rootScope',
+        function ($scope, $route, $routeParams, $http,$filter,$interval,$location,$rootScope) {
             console.log("enter BackArticleEditController ~");
             var testEditor = editormd("test-editormd", {
                 width: "100%",
@@ -36,6 +41,7 @@
                 imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
                 imageUploadURL: "/upload?test=dfdf",
                 onload: function () {
+                    this.setMarkdown($scope.article.articleMd);
                     var barHeight = document.querySelector('.editormd-toolbar-container').offsetHeight + 1;
                     document.querySelector('.CodeMirror').style.marginTop = barHeight + 'px';
                 }
@@ -48,6 +54,108 @@
                  }
                  */
             });
+            var queryPage = function () {
+                $http.post('/typetag/page/1/1000000', {
+                    type: null
+                }).success(function (data, status, headers, config) {
+                    console.log(data);
+                    if (data.status == '0') {
+                        console.log("page fialed");
+                    } else {
+                        $scope.data = data.typetags;
+                    }
+                }).error(function (data, status, headers, config) {
+                    $scope.errorMsg = data.msg;
+                    console.log("fail");
+                });
+            };
+            queryPage();
+            if($routeParams.id == 0){
+                $scope.article = {date:$filter('date')(new Date(),'yyyy-MM-dd HH:mm')};
+            }
+
+            $interval(function(){
+                $scope.article.date =  $filter('date')(new Date(),'yyyy-MM-dd HH:mm');
+            },60000);
+
+            $scope.delete = function(status){
+                console.log($scope.article.id);
+                if($scope.article.id){
+                    $scope.updateStatus(status);
+                    return;
+                }
+                $location.path('/back/article/list')
+            };
+            $scope.publish = function(status){
+                if($scope.article.id){
+                    $scope.updateStatus(status);
+                    return;
+                }
+                $scope.article.status = status;
+                $scope.article.articleHtml = testEditor.getHTML();
+                $scope.article.articleMd = testEditor.getMarkdown();
+                $scope.article.readCount = 0;
+                $scope.article.commentCount = 0;
+
+                $http.post('/article/save', {
+                    article:$scope.article
+                }).success(function (data, status, headers, config) {
+                    console.log(data);
+                    if (data.status == '0') {
+                        console.log("page fialed");
+                    } else {
+                        $scope.article = data.article;
+                        updateCount(data.article.type,true);
+                        console.log($scope.article.tag[0].name);
+                        for(var i = 0;i<$scope.article.tag.length;i++){
+                            updateCount($scope.article.tag[i].name,false);
+                        }
+                    }
+                }).error(function (data, status, headers, config) {
+                    $scope.errorMsg = data.msg;
+                    console.log("fail");
+                });
+                console.log($scope.article);
+            };
+
+            var updateCount = function(name,type){
+                $http.post('/typetag/updateCount', {
+                    name:name,
+                    type:type
+                }).success(function (data, status, headers, config) {
+                    if (data.status == '0') {
+                        console.log("page fialed");
+                    } else {
+                        console.log(data);
+                    }
+                }).error(function (data, status, headers, config) {
+                    $scope.errorMsg = data.msg;
+                    console.log("fail");
+                });
+                console.log($scope.article);
+            };
+
+            $scope.updateStatus = function(status){
+                $scope.article.status = status;
+                $scope.article.articleHtml = testEditor.getHTML();
+                $scope.article.articleMd = testEditor.getMarkdown();
+                console.log("updateStatus");
+                console.log($scope.article.articleMd);
+                $http.post('/article/update', {
+                    article:$scope.article
+                }).success(function (data, status, headers, config) {
+                    console.log(data);
+                    if (data.status == '0') {
+                        console.log("page fialed");
+                    } else {
+                        $scope.article = data.article;
+                    }
+                }).error(function (data, status, headers, config) {
+                    $scope.errorMsg = data.msg;
+                    console.log("fail");
+                });
+                console.log($scope.article);
+            };
         }
     ]);
 

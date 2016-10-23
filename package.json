@@ -18,6 +18,7 @@
     "connect-mongo":"0.8.2",
     "multiparty": "4.1.2",
     "moment": "2.13.0",
+    "ui-select":"0.19.5",
     "mongodb": "2.0.42"
   }
 }
