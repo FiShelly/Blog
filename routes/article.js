@@ -1,0 +1,95 @@
+/**
+ * Created by FiShelly on 2016/10/23.
+ */
+'use strict';
+var express = require('express');
+var crypto = require('crypto');
+var moment = require("moment");
+var router = express.Router();
+var Article = require('../models/article.js');
+/* GET users listing. */
+
+function checkLogin(req, res, next) {
+    console.log("enter validate login");
+    if (!req.session.user) {
+        res.json({status: '-2'});
+        return;
+    }
+    next();
+}
+//router.post('/save', checkLogin);
+router.post('/save', function (req, res, next) {
+    var articleTmp = req.body.article;
+    var md5 = crypto.createHash('md5');
+    var id = md5.update(articleTmp.title).digest('hex');
+    articleTmp.id = id;
+    Article.save(articleTmp, function (err, article) {
+        if (!article) {
+            console.log("save failed");
+            res.json({status: '0'});
+        } else {
+            console.log("save success");
+            res.json({status: '1', article: article});
+        }
+    });
+});
+
+//router.post('/updateName', checkLogin);
+router.post('/update', function (req, res, next) {
+    Article.update(req.body.article, function (err) {
+        if (err) {
+            console.log("update failed");
+            res.json({status: '0'});
+        } else {
+            console.log("update success");
+            res.json({status: '1'});
+        }
+    });
+});
+
+//router.post('/updateName', checkLogin);
+router.post('/delete', function (req, res, next) {
+    Article.delete(req.body.id,req.body.status, function (err) {
+        if (err) {
+            console.log("delete failed");
+            res.json({status: '0'});
+        } else {
+            console.log("delete success");
+            res.json({status: '1'});
+        }
+    });
+});
+
+//router.post('/page/:page/:size', checkLogin);
+router.post('/page/:page/:size', function (req, res, next) {
+    console.log("enter page type article");
+
+    Article.getArticleByPage(req.params.page, req.params.size, function (err, articles, total, size) {
+        if (err) {
+            console.log(err);
+            console.log("the server has error " + req.body.type);
+            res.json({status: '0'});
+        } else {
+            res.json({status: '1', articles: articles, total: total, size: size});
+        }
+
+    });
+});
+
+//router.post('/getArticleById', checkLogin);
+router.post('/getById/:id', function (req, res, next) {
+    console.log("enter getByName type tag");
+    Article.getArticleById(req.params.id, function (err, article) {
+        if (err) {
+            console.log(err);
+            console.log("the server has error ");
+            res.json({status: '0'});
+        } else if (article == null) {
+            res.json({status: '2'});
+        } else {
+            res.json({status: '1', article: article});
+        }
+
+    });
+});
+module.exports = router;
