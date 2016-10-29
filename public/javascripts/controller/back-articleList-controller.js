@@ -3,7 +3,9 @@
  */
 (function (angular) {
     var module = angular.module('blog.back.articleList', [
-        'ngRoute'
+        'ngRoute',
+        'blog.service.http',
+        'blog.service.modal'
     ]);
 
     // 配置模块的路由
@@ -15,19 +17,28 @@
     }]);
     //控制器
     module.controller('BackArticleListController', [
+        '$rootScope',
         '$scope',
         '$route',
         '$routeParams',
         '$http',
         '$location',
         '$rootScope',
-        function ($scope, $route, $routeParams, $http,$location,$rootScope) {
-            console.log("enter BackArticleListController ~");
+        'HttpService',
+        'ModalService',
+        function ($rootScope,$scope, $route, $routeParams, $http,$location,$rootScope,HttpService,ModalService) {
+            if(!sessionStorage.getItem("user")){
+                $location.path("/login/-1");
+            } else {
+                $scope.isLogin = true;
+                $rootScope.isReady = false;
+            }
             $scope.curPage = 1;
-            $scope.lineSize = 5;
+            $scope.lineSize = 500000;
             $scope.page = [];
 
             $scope.goEdit = function(id){
+                $rootScope.isReady = true;
                 for(var i = 0;i<$scope.articles.length;i++){
                     if($scope.articles[i].id == id){
                         $rootScope.article = $scope.articles[i];
@@ -38,44 +49,36 @@
             };
 
             $scope.delete = function (id) {
-                $http.post('/article/delete', {
-                    id: id,
-                    status:status
-                }).success(function (data, status, headers, config) {
-                    console.log(data);
-                    if (data.status == '0') {
-                        console.log("delete fialed");
-                    } else {
+                $rootScope.isReady = true;
+                HttpService.ajax('/article/delete',{id: id,status:status},function(data){
+                    if(data){
                         for(var i = 0;i<$scope.articles.length;i++){
                             if($scope.articles[i].id == id){
                                 $scope.articles[i].status = 0;
                                 break;
                             }
                         }
+                        var obj = function () {
+                            return data;
+                        };
+                        ModalService.open('/template/modal-tip-msg.html','ModalInstanceCtrl','md',obj);
+                        $rootScope.isReady = false;
                     }
-                }).error(function (data, status, headers, config) {
-                    $scope.errorMsg = data.msg;
-                    console.log("fail");
                 });
+
             };
 
             var queryPage = function (status) {
-                $http.post('/article/page/' + $scope.curPage + "/" + $scope.lineSize, {
-                    status: status
-                }).success(function (data, status, headers, config) {
-                    console.log(data);
-                    if (data.status == '0') {
-                        console.log("page fialed");
-                    } else {
+                $rootScope.isReady = true;
+                HttpService.ajax('/article/page/'+ $scope.curPage + "/" + $scope.lineSize,{status: status},function(data){
+                    if(data){
                         $scope.articles = data.articles;
                         $scope.status = 2;
                         for (var i = 1; i <= data.size; i++) {
                             $scope.page.push(i);
                         }
+                        $rootScope.isReady = false;
                     }
-                }).error(function (data, status, headers, config) {
-                    $scope.errorMsg = data.msg;
-                    console.log("fail");
                 });
             };
             $scope.go = function (page,status) {

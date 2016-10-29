@@ -12,6 +12,7 @@ html {
 
 body {
     background: #ebebeb;
+    /*height: 100%;*/
     padding-bottom: 0.25rem;
 }
 
@@ -455,4 +456,193 @@ th, td {
 .article-btn-add {
     margin-left: 0.15rem;
     float: right;
+}
+
+.loader {
+    background-color: #FFF;
+    box-sizing: border-box;
+    display: flex;
+    flex: 0 1 auto;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 25%;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    z-index: 99;
+    position: fixed;
+}
+
+@-webkit-keyframes ball-triangle-path-1 {
+    33% {
+        -webkit-transform: translate(25px, -50px);
+        transform: translate(25px, -50px);
+    }
+
+    66% {
+        -webkit-transform: translate(50px, 0px);
+        transform: translate(50px, 0px);
+    }
+
+    100% {
+        -webkit-transform: translate(0px, 0px);
+        transform: translate(0px, 0px);
+    }
+}
+
+@keyframes ball-triangle-path-1 {
+    33% {
+        -webkit-transform: translate(25px, -50px);
+        transform: translate(25px, -50px);
+    }
+
+    66% {
+        -webkit-transform: translate(50px, 0px);
+        transform: translate(50px, 0px);
+    }
+
+    100% {
+        -webkit-transform: translate(0px, 0px);
+        transform: translate(0px, 0px);
+    }
+}
+
+@-webkit-keyframes ball-triangle-path-2 {
+    33% {
+        -webkit-transform: translate(25px, 50px);
+        transform: translate(25px, 50px);
+    }
+
+    66% {
+        -webkit-transform: translate(-25px, 50px);
+        transform: translate(-25px, 50px);
+    }
+
+    100% {
+        -webkit-transform: translate(0px, 0px);
+        transform: translate(0px, 0px);
+    }
+}
+
+@keyframes ball-triangle-path-2 {
+    33% {
+        -webkit-transform: translate(25px, 50px);
+        transform: translate(25px, 50px);
+    }
+
+    66% {
+        -webkit-transform: translate(-25px, 50px);
+        transform: translate(-25px, 50px);
+    }
+
+    100% {
+        -webkit-transform: translate(0px, 0px);
+        transform: translate(0px, 0px);
+    }
+}
+
+@-webkit-keyframes ball-triangle-path-3 {
+    33% {
+        -webkit-transform: translate(-50px, 0px);
+        transform: translate(-50px, 0px);
+    }
+
+    66% {
+        -webkit-transform: translate(-25px, -50px);
+        transform: translate(-25px, -50px);
+    }
+
+    100% {
+        -webkit-transform: translate(0px, 0px);
+        transform: translate(0px, 0px);
+    }
+}
+
+@keyframes ball-triangle-path-3 {
+    33% {
+        -webkit-transform: translate(-50px, 0px);
+        transform: translate(-50px, 0px);
+    }
+
+    66% {
+        -webkit-transform: translate(-25px, -50px);
+        transform: translate(-25px, -50px);
+    }
+
+    100% {
+        -webkit-transform: translate(0px, 0px);
+        transform: translate(0px, 0px);
+    }
+}
+
+.ball-triangle-path {
+    position: relative;
+    -webkit-transform: translate(-25px, -25px);
+    -ms-transform: translate(-25px, -25px);
+    transform: translate(-25px, -25px);
+}
+
+.ball-triangle-path > div:nth-child(1) {
+    -webkit-animation-name: ball-triangle-path-1;
+    animation-name: ball-triangle-path-1;
+    -webkit-animation-delay: 0;
+    animation-delay: 0;
+    -webkit-animation-duration: 2s;
+    animation-duration: 2s;
+    -webkit-animation-timing-function: ease-in-out;
+    animation-timing-function: ease-in-out;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+}
+
+.ball-triangle-path > div:nth-child(2) {
+    -webkit-animation-name: ball-triangle-path-2;
+    animation-name: ball-triangle-path-2;
+    -webkit-animation-delay: 0;
+    animation-delay: 0;
+    -webkit-animation-duration: 2s;
+    animation-duration: 2s;
+    -webkit-animation-timing-function: ease-in-out;
+    animation-timing-function: ease-in-out;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+}
+
+.ball-triangle-path > div:nth-child(3) {
+    -webkit-animation-name: ball-triangle-path-3;
+    animation-name: ball-triangle-path-3;
+    -webkit-animation-delay: 0;
+    animation-delay: 0;
+    -webkit-animation-duration: 2s;
+    animation-duration: 2s;
+    -webkit-animation-timing-function: ease-in-out;
+    animation-timing-function: ease-in-out;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+}
+
+.ball-triangle-path > div {
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    position: absolute;
+    width: 0.15rem;
+    height: 0.15rem;
+    background-color: #5d5d5d;
+    border-radius: 100%;
+    border: 1px solid #5d5d5d;
+}
+
+.ball-triangle-path > div:nth-of-type(1) {
+    top: 50px;
+}
+
+.ball-triangle-path > div:nth-of-type(2) {
+    left: 25px;
+}
+
+.ball-triangle-path > div:nth-of-type(3) {
+    top: 50px;
+    left: 50px;
 }

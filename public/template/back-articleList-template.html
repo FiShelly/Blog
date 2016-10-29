@@ -34,8 +34,8 @@
                     <td>{{article.commentCount}}</td>
                     <td>
                         <span ng-show="article.status == 2">已发布</span>
-                        <span ng-show="article.status == 1">已发布</span>
-                        <span ng-show="article.status == 0">已发布</span>
+                        <span ng-show="article.status == 1">草稿</span>
+                        <span ng-show="article.status == 0">已删除</span>
                     </td>
                     <td>
                         <button ng-click="goEdit(article.id);"  class="btn btn-info article-list-btn">
@@ -47,21 +47,7 @@
                     </td>
                 </tr>
                 </tbody>
-                <tfoot>
-                <tr>
-                    <td colspan="8">
-                        <nav>
-                            <ul class="pagination">
-                                <li ng-class="{true:'disabled'}[1==curPage]"><a href="" ng-click="go(curPage-1);">&laquo;</a></li>
-                                <li ng-repeat="link in page" ng-class="{true:'active'}[link==curPage]">
-                                    <a href="" ng-click="go(link);">{{link}}</a>
-                                </li>
-                                <li ng-class="{true:'disabled'}[page.length==curPage]"><a href="" ng-click="go(curPage+1);" >&raquo;</a></li>
-                            </ul>
-                        </nav>
-                    </td>
-                </tr>
-                </tfoot>
+
             </table>
         </div>
     </div>

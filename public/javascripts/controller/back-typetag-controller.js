@@ -4,7 +4,10 @@
 (function (angular) {
     var module = angular.module('blog.back.typetag', [
         'ngRoute',
-        'ui.bootstrap'
+        'ui.bootstrap',
+        'blog.back.modal',
+        'blog.service.http',
+        'blog.service.modal'
     ]);
     // 配置模块的路由
     module.config(['$routeProvider', function ($routeProvider) {
@@ -18,69 +21,62 @@
     }]);
     //控制器
     module.controller('BackTypetagController', [
+        '$rootScope',
         '$scope',
         '$route',
         '$routeParams',
         '$http',
         '$location',
         '$modal',
-        function ($scope, $route, $routeParams, $http, $location, $modal) {
-            console.log("enter BackTypetagController ~");
+        'HttpService',
+        'ModalService',
+        function ( $rootScope,$scope, $route, $routeParams, $http, $location, $modal, HttpService, ModalService) {
+            if(!sessionStorage.getItem("user")){
+                $location.path("/login/-1");
+            } else {
+                $rootScope.isLogin = true;
+                $rootScope.isReady = false;
+            }
             $scope.obj = {name: "", id: "", type: true, isUpdate: false};
+
+            $scope.tip = function (data, size) {
+                var obj = function () {
+                    return data;
+                };
+                ModalService.open('/template/modal-tip-msg.html', 'ModalInstanceCtrl', size, obj);
+                $rootScope.isReady = false;
+            };
+
             $scope.open = function (size, flag, isUpdate, name, id) {  //打开模态
-                var modalInstance = $modal.open({
-                    templateUrl: '/template/modal-type-tag.html',  //指向上面创建的视图
-                    controller: 'ModalInstanceCtrl',// 初始化模态范围
-                    size: size, //大小配置
-                    resolve: {
-                        obj: function () {
-                            $scope.obj.type = flag;
-                            $scope.obj.isUpdate = isUpdate;
-                            if (name) {
-                                $scope.obj.name = name;
-                                $scope.obj.id = id;
-                            }
-                            return $scope.obj;
-                        }
+                var obj = function () {
+                    $scope.obj.type = flag;
+                    $scope.obj.isUpdate = isUpdate;
+                    if (name) {
+                        $scope.obj.name = name;
+                        $scope.obj.id = id;
                     }
-                });
+                    return $scope.obj;
+                };
+                var modalInstance = ModalService.open('/template/modal-type-tag.html', 'ModalInstanceCtrl', size, obj);
                 modalInstance.result.then(function (selectedItem) {
-                    console.log(selectedItem);
+                    $rootScope.isReady = true;
                     var url = '/typetag/save';
                     if (selectedItem.isUpdate) {
                         url = '/typetag/updateName'
                     }
-
-                    $http.post('/typetag/getByName', {
+                    HttpService.ajax('/typetag/getByName', {
                         name: selectedItem.name,
                         type: selectedItem.type
-                    }).success(function (data, status, headers, config) {
-                        console.log(data);
+                    }, function (data) {
                         if (data.status == '2') {
-                            $http.post(url, {
-                                typetag: selectedItem
-                            }).success(function (data, status, headers, config) {
-                                console.log(data);
-                                if (data.status == '0') {
-                                    console.log("save fialed");
-                                } else {
-                                    $route.reload();
-                                }
-                            }).error(function (data, status, headers, config) {
-                                $scope.errorMsg = data.msg;
-                                console.log("fail");
+                            HttpService.ajax(url, {typetag: selectedItem}, function (data) {
+                                $route.reload();
+                                $scope.tip(data, 'md');
                             });
                         } else if (data.status == '1') {
-                            console.log("the type or tag is exits,save fialed");
+                            $scope.tip(data, 'md');
                         }
-                    }).error(function (data, status, headers, config) {
-                        $scope.errorMsg = data.msg;
-                        console.log("fail");
                     });
-
-
-                }, function () {
-                    console.log('Modal dismissed at: ' + new Date());
                 });
             };
 
@@ -93,36 +89,20 @@
             }
 
             $scope.delete = function (id) {
-                $http.post('/typetag/delete', {
-                    id: id
-                }).success(function (data, status, headers, config) {
-                    console.log(data);
-                    if (data.status == '0') {
-                        console.log("delete fialed");
-                    } else {
-                        $route.reload();
-                    }
-                }).error(function (data, status, headers, config) {
-                    $scope.errorMsg = data.msg;
-                    console.log("fail");
+                $rootScope.isReady = true;
+                HttpService.ajax('/typetag/delete', {id: id}, function (data) {
+                    $route.reload();
+                    $scope.tip(data, 'md');
                 });
             };
             var queryPage = function () {
-                $http.post('/typetag/page/' + $scope.curPage + "/" + $scope.lineSize, {
-                    type: $scope.obj.type
-                }).success(function (data, status, headers, config) {
-                    console.log(data);
-                    if (data.status == '0') {
-                        console.log("page fialed");
-                    } else {
-                        $scope.typetags = data.typetags;
-                        for (var i = 1; i <= data.size; i++) {
-                            $scope.page.push(i);
-                        }
+                $rootScope.isReady = true;
+                HttpService.ajax('/typetag/page/' + $scope.curPage + "/" + $scope.lineSize, {type: $scope.obj.type}, function (data) {
+                    $scope.typetags = data.typetags;
+                    for (var i = 1; i <= data.size; i++) {
+                        $scope.page.push(i);
                     }
-                }).error(function (data, status, headers, config) {
-                    $scope.errorMsg = data.msg;
-                    console.log("fail");
+                    $rootScope.isReady = false;
                 });
             };
             $scope.go = function (page) {
@@ -135,14 +115,14 @@
         }
     ]);
 
-    module.controller('ModalInstanceCtrl', function ($scope, $modalInstance, obj) { //依赖于modalInstance
-        $scope.obj = obj;
-
-        $scope.ok = function () {
-            $modalInstance.close($scope.obj); //关闭并返回当前选项
-        };
-        $scope.cancel = function () {
-            $modalInstance.dismiss('cancel'); // 退出
-        }
-    });
+    //module.controller('ModalInstanceCtrl', function ($scope, $modalInstance, obj) { //依赖于modalInstance
+    //    $scope.obj = obj;
+    //
+    //    $scope.ok = function () {
+    //        $modalInstance.close($scope.obj); //关闭并返回当前选项
+    //    };
+    //    $scope.cancel = function () {
+    //        $modalInstance.dismiss('cancel'); // 退出
+    //    }
+    //});
 })(angular);

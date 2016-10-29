@@ -2,16 +2,14 @@
     <!--start class login_frame_head div-->
     <div class="col-xs-12 login_frame_head ">
         <h1>FiShelly Idx后台管理</h1>
-        <div id="error_text" class="alert alert-danger" role="alert">
+        <div  class="alert alert-danger" role="alert" ng-class="{true:'error_text'}[msg==null||msg==undefined]" >
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <span id="etc"></span>
+            <span id="etc">{{msg}}</span>
         </div>
-
     </div>
     <!--end class login_frame_head div-->
-
     <!--start class form-horizontal form-->
-    <form class="form-horizontal"  method="post">
+    <form class="form-horizontal"  method="post" ng-submit="loginValidate();">
         <div class="form-group ">
             <label class="control-label col-xs-2" for="loginId">
                 <span class="glyphicon glyphicon-user" ></span>
@@ -39,7 +37,7 @@
             </div>
         </div>
         <div class="imgbtn_style">
-            <input type="submit"  value="登录" class="sub_btn ease1" id="sub_btn" ng-click="loginValidate();">
+            <input type="submit"  value="登录" class="sub_btn ease1" id="sub_btn" >
         </div>
     </form>
     <!--end class form-horizontal form-->

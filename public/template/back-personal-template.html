@@ -24,7 +24,7 @@
                 <div>
                     <img ng-src="{{user.headImg}}" class="user-img"/>
                     <form enctype="multipart/form-data" id="personal_form">
-                        <input type="file" class="user-img upload-btn" id="headImg" name="headImg" onchange="angular.element(this).scope().uploadHeadImg()">
+                        <input type="file" class="user-img upload-btn" id="headImg" name="headImg" accept="image/*" onchange="angular.element(this).scope().uploadHeadImg()">
                     </form>
                 </div>
                 <div class="form-group">

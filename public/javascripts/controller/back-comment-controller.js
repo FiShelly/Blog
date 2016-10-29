@@ -15,13 +15,17 @@
     }]);
     //控制器
     module.controller('BackCommentController', [
+        '$rootScope',
         '$scope',
         '$route',
         '$routeParams',
         '$http',
-        function ($scope, $route, $routeParams, $http) {
-            console.log("enter BackCommentController ~");
-
+        function ($rootScope,$scope, $route, $routeParams, $http) {
+            if(!sessionStorage.getItem("user")){
+                $location.path("/login/-1");
+            } else {
+                $scope.isLogin = true;
+            }
         }
     ]);
 })(angular);

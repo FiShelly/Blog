@@ -28,7 +28,7 @@ router.post('/save', function (req, res, next) {
             res.json({status: '0'});
         } else {
             console.log("save success");
-            res.json({status: '1', typetag: typetag});
+            res.json({status: '1', typetag: typetag,msg:'新增类别/标签成功'});
         }
     });
 });
@@ -42,7 +42,7 @@ router.post('/updateName', function (req, res, next) {
             res.json({status: '0'});
         } else {
             console.log("updateName success");
-            res.json({status: '1'});
+            res.json({status: '1',msg:'更改名称成功'});
         }
     });
 });
@@ -70,7 +70,7 @@ router.post('/delete', function (req, res, next) {
             res.json({status: '0'});
         } else {
             console.log("delete success");
-            res.json({status: '1'});
+            res.json({status: '1',msg:'删除成功'});
         }
     });
 });
@@ -89,7 +89,7 @@ router.post('/page/:page/:size', function (req, res, next) {
     });
 });
 
-router.post('/getByName', checkLogin);
+//router.post('/getByName', checkLogin);
 router.post('/getByName', function (req, res, next) {
     console.log("enter getByName type tag");
     TypeTag.getTypeTagByName(req.body.name, req.body.type, function (err, typetag) {
@@ -100,7 +100,7 @@ router.post('/getByName', function (req, res, next) {
         } else if (typetag == null) {
             res.json({status: '2'});
         } else {
-            res.json({status: '1', typetag: typetag});
+            res.json({status: '1', typetag: typetag,msg:'类别名/标签名已存在，请重新输入！'});
         }
 
     });

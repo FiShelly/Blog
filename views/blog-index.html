@@ -17,8 +17,6 @@
     <link rel="stylesheet" href="/stylesheets/select.min.css"/>
     <!-- Latest compiled and minified CSS -->
 
-
-
     <script src="/javascripts/angular.js"></script>
     <script src="/javascripts/angular-route.js"></script>
     <script src="/javascripts/select.min.js"></script>
@@ -62,12 +60,19 @@
                 </div>
             </nav>
         </div>
-
+        <div class="loader" ng-show="isReady">
+            <div class="loader-inner ball-triangle-path">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
         <div class="content-box " ng-view>
 
         </div>
 
     </div>
+
 </div>
 </body>
 <script src="/markdown/examples/js/jquery.min.js"></script>
@@ -81,6 +86,9 @@
 <script src="/javascripts/controller/back-typetag-controller.js"></script>
 <script src="/javascripts/controller/back-comment-controller.js"></script>
 <script src="/javascripts/controller/back-login-controller.js"></script>
+<script src="/javascripts/service/http.js"></script>
+<script src="/javascripts/service/modal.js"></script>
+<script src="/javascripts/controller/modal-controller.js"></script>
 <script src="http://cdn.bootcss.com/angular-ui-bootstrap/0.11.2/ui-bootstrap-tpls.js"></script>
 <script>
     (function (angular) {
@@ -94,7 +102,10 @@
             'blog.back.articleEdit',
             'blog.back.typetag',
             'blog.back.login',
-            'blog.back.comment'
+            'blog.service.http',
+            'blog.service.modal',
+            'blog.back.comment',
+            'blog.back.modal'
         ]);
 
         app.config(['$routeProvider', function ($routeProvider) {

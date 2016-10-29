@@ -41,6 +41,8 @@ Article.save = function (article, callback) {
     });
 };
 
+
+
 Article.update = function (article, callback) {
     mongodb.open(function (err, db) {
         console.log("update Name mongo");
@@ -120,13 +122,13 @@ Article.getArticleById = function (id ,callback) {
 };
 
 Article.getArticleByPage = function (page, ls, callback) {
-    //´ò¿ªÊý¾Ý¿â
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½
     mongodb.open(function (err, db) {
         db.authenticate(settings.user, settings.pwd, function () {
             if (err) {
                 return callback(err);
             }
-            //¶ÁÈ¡ posts ¼¯ºÏ
+            //ï¿½ï¿½È¡ posts ï¿½ï¿½ï¿½ï¿½
             db.collection('articles', function (err, collection) {
                 if (err) {
                     mongodb.close();
@@ -135,7 +137,7 @@ Article.getArticleByPage = function (page, ls, callback) {
                 var query = {};
 
                 collection.count(query, function (err, total) {
-                    //¸ù¾Ý query ¶ÔÏó²éÑ¯£¬²¢Ìø¹ýÇ° (page-1)*10 ¸ö½á¹û£¬·µ»ØÖ®ºóµÄ 10 ¸ö½á¹û
+                    //ï¿½ï¿½ï¿½ï¿½ query ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç° (page-1)*10 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ï¿½ 10 ï¿½ï¿½ï¿½ï¿½ï¿½
                     collection.find(query, {
                         skip: (page - 1) * ls,
                         limit: ls
@@ -148,13 +150,13 @@ Article.getArticleByPage = function (page, ls, callback) {
                             console.log(err);
                             return callback(err);
                         }
-                        var size = total % ls;
-                        if (size == 0) {
-                            size = total / ls;
-                        } else {
-                            size = parseInt(total / ls) + 1;
-                        }
-                        callback(null, docs, total, size);
+                        //var size = total % ls;
+                        //if (size == 0) {
+                        //    size = total / ls;
+                        //} else {
+                        //    size = parseInt(total / ls) + 1;
+                        //}
+                        callback(null, docs);
                     });
                 });
             });

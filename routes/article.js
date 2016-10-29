@@ -12,7 +12,7 @@ var Article = require('../models/article.js');
 function checkLogin(req, res, next) {
     console.log("enter validate login");
     if (!req.session.user) {
-        res.json({status: '-2'});
+        res.json({status: '-2',msg:"你还未登录，请登录后再进行操作。"});
         return;
     }
     next();
@@ -23,26 +23,42 @@ router.post('/save', function (req, res, next) {
     var md5 = crypto.createHash('md5');
     var id = md5.update(articleTmp.title).digest('hex');
     articleTmp.id = id;
+    var msg = '';
+    if(req.body.article.status == 2){
+        msg = '发布成功！';
+    } else if(req.body.article.status == 1){
+        msg = '成功保存为草稿！';
+    } else{
+        msg = '删除成功';
+    }
     Article.save(articleTmp, function (err, article) {
         if (!article) {
             console.log("save failed");
             res.json({status: '0'});
         } else {
             console.log("save success");
-            res.json({status: '1', article: article});
+            res.json({status: '1', article: article,msg:msg});
         }
     });
 });
 
 //router.post('/updateName', checkLogin);
 router.post('/update', function (req, res, next) {
+    var msg = '';
+    if(req.body.article.status == 2){
+        msg = '发布成功！';
+    } else if(req.body.article.status == 1){
+        msg = '成功保存为草稿！';
+    } else{
+        msg = '删除成功';
+    }
     Article.update(req.body.article, function (err) {
         if (err) {
             console.log("update failed");
             res.json({status: '0'});
         } else {
             console.log("update success");
-            res.json({status: '1'});
+            res.json({status: '1',msg:msg,article:req.body.article});
         }
     });
 });
@@ -55,22 +71,22 @@ router.post('/delete', function (req, res, next) {
             res.json({status: '0'});
         } else {
             console.log("delete success");
-            res.json({status: '1'});
+            res.json({status: '1',msg:'删除成功'});
         }
     });
 });
 
-//router.post('/page/:page/:size', checkLogin);
+router.post('/page/:page/:size', checkLogin);
 router.post('/page/:page/:size', function (req, res, next) {
     console.log("enter page type article");
 
-    Article.getArticleByPage(req.params.page, req.params.size, function (err, articles, total, size) {
+    Article.getArticleByPage(req.params.page, req.params.size, function (err, articles) {
         if (err) {
             console.log(err);
             console.log("the server has error " + req.body.type);
             res.json({status: '0'});
         } else {
-            res.json({status: '1', articles: articles, total: total, size: size});
+            res.json({status: '1', articles: articles});
         }
 
     });

@@ -29,7 +29,7 @@
     margin: 0;
 }
 /*错误提示样式*/
-#error_text{
+.error_text{
     visibility: hidden;
 }
 .icon_title>img{

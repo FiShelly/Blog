@@ -11,19 +11,14 @@ var User = require('../models/user.js');
 router.post('/login', function (req, res, next) {
 
     User.get(req.body.loginId, function (err, user) {
-        if (!user) {
-            console.log("the user is not exits");
-            res.json({status: '0'});
-            return;
-        }
-        console.log(req.body.password);
-        let md5 = crypto.createHash('md5'),
+        console.log(user);
+        var md5 = crypto.createHash('md5'),
             password = md5.update(req.body.password).digest('hex');
-        if (password == user.password) {
+        if (user && password == user.password) {
             req.session.user = user;
             res.json({status: '1', user: user});
         } else {
-            res.json({status: '-1'});
+            res.json({status: '-1',msg:'账号密码错误,请重新输入。'});
         }
     });
 });
@@ -43,11 +38,10 @@ router.post('/saveOrUpdateUser', function (req, res, next) {
     }
     User.saveOrUpdate(req.body.isUpdate, req.body.user, function (err, user) {
         if (!user) {
-            console.log("save failed");
             res.json({status: '0'});
         } else {
             console.log("save success");
-            res.json({status: '1', user: user});
+            res.json({status: '1', user: user,msg:'修改个人信息成功'});
         }
     });
 });
@@ -65,7 +59,7 @@ router.post('/updatePwd', function (req, res, next) {
                 res.json({status: '0'});
             } else {
                 console.log("updatePwd success");
-                res.json({status: '1'});
+                res.json({status: '1',msg:'修改密码成功'});
             }
         });
     } else {
@@ -99,7 +93,7 @@ router.post('/uploadHeadImg', function (req, res, next) {
                                 res.json({status: '0'});
                             } else {
                                 console.log("save success");
-                                res.json({status: '1', headImg: dstPath});
+                                res.json({status: '1', headImg: dstPath,msg:'修改头像成功'});
                             }
                         });
                     }
