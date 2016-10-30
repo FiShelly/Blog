@@ -8,6 +8,17 @@ var moment = require("moment");
 var router = express.Router();
 var User = require('../models/user.js');
 /* GET users listing. */
+
+router.post('/getAuthor', function (req, res, next) {
+    User.get(req.body.loginId, function (err, user) {
+        if (user) {
+            res.json({status: '1', author: user});
+        } else {
+            res.json({status: '0',msg:'查询失败'});
+        }
+    });
+});
+
 router.post('/login', function (req, res, next) {
 
     User.get(req.body.loginId, function (err, user) {

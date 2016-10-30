@@ -8,8 +8,7 @@
 
     // 配置模块的路由
     module.config(['$routeProvider', function ($routeProvider) {
-        console.log('entern blog type controller route');
-        $routeProvider.when('/type', {
+        $routeProvider.when('/type/:id', {
             templateUrl: 'template/blog-typeDetail-template.html',
             controller: 'BlogTypeController'
         });

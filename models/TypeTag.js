@@ -1,8 +1,27 @@
 /**
  * Created by FiShelly on 2016/10/18.
  */
-var mongodb = require('./db');
+var Db = require('./db');
 var settings = require('../settings');
+var poolModule = require('generic-pool');
+var pool = poolModule.Pool({
+    name: 'mongoPool',
+    create: function (callback) {
+        console.log(callback);
+        var mongodb = Db();
+        mongodb.open(function (err, db) {
+            callback(err, db);
+        })
+    },
+    destroy: function (mongodb) {
+        pool.release(db);
+    },
+    max: 100,
+    min: 5,
+    idleTimeoutMillis: 30000,
+    log: true
+});
+
 var TypeTag = function (typeTag) {
     this.id = typeTag.id;
     this.type = typeTag.type;
@@ -15,15 +34,15 @@ module.exports = TypeTag;
 TypeTag.save = function (typeTag, callback) {
     var saveEntry = new TypeTag(typeTag);
     console.log(saveEntry);
-    mongodb.open(function (err, db) {
+    pool.acquire(function (err, db) {
         db.authenticate(settings.user, settings.pwd, function () {
             db.collection('typetag', function (err, collection) {
                 if (err) {
-                    mongodb.close();
+                    pool.release(db);
                     return callback(err);
                 }
                 collection.insert(saveEntry, {safe: true}, function (err, typeTag) {
-                    mongodb.close();
+                    pool.release(db);
                     if (err) {
                         return callback(err);
                     }
@@ -35,12 +54,12 @@ TypeTag.save = function (typeTag, callback) {
 };
 
 TypeTag.updateName = function (typeTag, callback) {
-    mongodb.open(function (err, db) {
+    pool.acquire(function (err, db) {
         console.log("update Name mongo");
         db.authenticate(settings.user, settings.pwd, function () {
             db.collection('typetag', function (err, collection) {
                 if (err) {
-                    mongodb.close();
+                    pool.release(db);
                     return callback(err);
                 }
                 collection.update({id: typeTag.id}, {
@@ -48,7 +67,7 @@ TypeTag.updateName = function (typeTag, callback) {
                         "name": typeTag.name
                     }
                 }, function (err) {
-                    mongodb.close();
+                    pool.release(db);
                     if (err) {
                         return callback(err, null);
                     }
@@ -59,21 +78,21 @@ TypeTag.updateName = function (typeTag, callback) {
     });
 };
 
-TypeTag.updateCount = function (name,type, callback) {
-    mongodb.open(function (err, db) {
+TypeTag.updateCount = function (name, type, callback) {
+    pool.acquire(function (err, db) {
         db.authenticate(settings.user, settings.pwd, function () {
             db.collection('typetag', function (err, collection) {
                 if (err) {
-                    mongodb.close();
+                    pool.release(db);
                     return callback(err);
                 }
                 console.log(name + " ==== " + type);
-                collection.update({name: name,type:type}, {
+                collection.update({name: name, type: type}, {
                     $inc: {
                         "count": 1
                     }
                 }, function (err) {
-                    mongodb.close();
+                    pool.release(db);
                     if (err) {
                         return callback(err);
                     }
@@ -85,15 +104,15 @@ TypeTag.updateCount = function (name,type, callback) {
 };
 
 TypeTag.delete = function (id, callback) {
-    mongodb.open(function (err, db) {
+    pool.acquire(function (err, db) {
         db.authenticate(settings.user, settings.pwd, function () {
             db.collection('typetag', function (err, collection) {
                 if (err) {
-                    mongodb.close();
+                    pool.release(db);
                     return callback(err);
                 }
                 collection.remove({id: id}, {w: 1}, function (err) {
-                    mongodb.close();
+                    pool.release(db);
                     if (err) {
                         return callback(err);
                     }
@@ -105,15 +124,15 @@ TypeTag.delete = function (id, callback) {
 };
 
 TypeTag.getTypeTagByName = function (name, type, callback) {
-    mongodb.open(function (err, db) {
+    pool.acquire(function (err, db) {
         db.authenticate(settings.user, settings.pwd, function () {
             db.collection('typetag', function (err, collection) {
                 if (err) {
-                    mongodb.close();
+                    pool.release(db);
                     return callback(err);
                 }
                 collection.findOne({name: name, type: type}, function (err, typeTag) {
-                    mongodb.close();
+                    pool.release(db);
                     if (err) {
                         return callback(err);
                     }
@@ -126,7 +145,9 @@ TypeTag.getTypeTagByName = function (name, type, callback) {
 
 TypeTag.getTypeTagByPage = function (type, page, ls, callback) {
     //打开数据库
-    mongodb.open(function (err, db) {
+    pool.acquire(function (err, db) {
+        console.log(db);
+        console.log("=============");
         db.authenticate(settings.user, settings.pwd, function () {
             if (err) {
                 return callback(err);
@@ -134,11 +155,11 @@ TypeTag.getTypeTagByPage = function (type, page, ls, callback) {
             //读取 posts 集合
             db.collection('typetag', function (err, collection) {
                 if (err) {
-                    mongodb.close();
+                    pool.release(db);
                     return callback(err);
                 }
                 var query = {};
-                if(typeof(type) == 'boolean'){
+                if (typeof(type) == 'boolean') {
                     query = {type: type};
                 }
 
@@ -150,8 +171,7 @@ TypeTag.getTypeTagByPage = function (type, page, ls, callback) {
                     }).sort({
                         date: -1
                     }).toArray(function (err, docs) {
-                        mongodb.close();
-                        console.log(docs);
+                        pool.release(db);
                         if (err) {
                             console.log(err);
                             return callback(err);

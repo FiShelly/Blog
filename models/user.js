@@ -2,8 +2,26 @@
  * Created by FiShelly on 2016/10/16.
  */
 
-var mongodb = require('./db');
+var Db = require('./db');
 var settings = require('../settings');
+var poolModule = require('generic-pool');
+var pool = poolModule.Pool({
+    name     : 'mongoPool',
+    create   : function(callback) {
+        var mongodb = Db();
+        mongodb.open(function (err, db) {
+            callback(err, db);
+        })
+    },
+    destroy  : function(mongodb) {
+        pool.release(db);
+    },
+    max      : 100,
+    min      : 5,
+    idleTimeoutMillis : 30000,
+    log      : true
+});
+
 var User = function(user){
     this.loginId = user.loginId;
     this.name = user.name;
@@ -18,13 +36,13 @@ var User = function(user){
 module.exports = User;
 
 User.saveOrUpdate = function(isUpdate,user,callback){
-    mongodb.open(function(err,db){
+    pool.acquire(function(err,db){
 
         db.authenticate(settings.user,settings.pwd ,function(){
             //callback(err, db);
             db.collection('users',function(err,collection){
                 if(err){
-                    mongodb.close();
+                    pool.release(db);
                     return callback(err);
                 }
                 if(isUpdate){
@@ -37,7 +55,7 @@ User.saveOrUpdate = function(isUpdate,user,callback){
                         "introduce":user.introduce,
                         "headImg":user.headImg
                     }},function(err){
-                        mongodb.close();
+                        pool.release(db);
                         if(err){
                             return callback(err,null);
                         }
@@ -45,7 +63,7 @@ User.saveOrUpdate = function(isUpdate,user,callback){
                     });
                 } else {
                     collection.insert(user,{safe:true},function(err,user){
-                        mongodb.close();
+                        pool.release(db);
                         if(err){
                             return callback(err);
                         }
@@ -61,11 +79,11 @@ User.saveOrUpdate = function(isUpdate,user,callback){
 };
 
 User.updatePw = function(loginId,pwd,callback){
-    mongodb.open(function(err,db){
+    pool.acquire(function(err,db){
         db.authenticate(settings.user,settings.pwd ,function(){
             db.collection('users',function(err,collection){
                 collection.update({"loginId":loginId},{$set:{"password":pwd}},function(err){
-                    mongodb.close();
+                    pool.release(db);
                     if(err){
                         return callback(err);
                     }
@@ -77,11 +95,11 @@ User.updatePw = function(loginId,pwd,callback){
 };
 
 User.updateHeadImg = function(loginId,headImg,callback){
-    mongodb.open(function(err,db){
+    pool.acquire(function(err,db){
         db.authenticate(settings.user,settings.pwd ,function(){
             db.collection('users',function(err,collection){
                 collection.update({"loginId":loginId},{$set:{"headImg":headImg}},function(err){
-                    mongodb.close();
+                    pool.release(db);
                     if(err){
                         return callback(err);
                     }
@@ -93,18 +111,18 @@ User.updateHeadImg = function(loginId,headImg,callback){
 };
 
 User.get = function(loginId, callback) {
-    mongodb.open(function(err, db) {
+    pool.acquire(function(err, db) {
 
         db.authenticate(settings.user,settings.pwd ,function(){
             db.collection('users', function(err, collection) {
                 if (err) {
-                    mongodb.close();
+                    pool.release(db);
                     return callback(err);
                 }
                 collection.findOne({ loginId: loginId }, function(err, user) {
                     console.log("loginId"+loginId);
                     console.log(user);
-                    mongodb.close();
+                    pool.release(db);
                     if (err) {
                         return callback(err);
                     }

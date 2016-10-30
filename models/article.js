@@ -1,9 +1,25 @@
 /**
  * Created by FiShelly on 2016/10/22.
  */
-var mongodb = require('./db');
+var Db = require('./db');
 var settings = require('../settings');
-
+var poolModule = require('generic-pool');
+var pool = poolModule.Pool({
+    name     : 'mongoPool',
+    create   : function(callback) {
+        var mongodb = Db();
+        mongodb.open(function (err, db) {
+            callback(err, db);
+        })
+    },
+    destroy  : function(mongodb) {
+        mongodb.close();
+    },
+    max      : 100,
+    min      : 5,
+    idleTimeoutMillis : 30000,
+    log      : true
+});
 var Article = function(article){
     this.id = article.id;
     this.title = article.title;
@@ -22,15 +38,15 @@ module.exports = Article;
 
 Article.save = function (article, callback) {
     var saveEntry = new Article(article);
-    mongodb.open(function (err, db) {
-        db.authenticate(settings.user, settings.pwd, function () {
-            db.collection('articles', function (err, collection) {
+    pool.open(function (err, mongodb) {
+        mongodb.authenticate(settings.user, settings.pwd, function () {
+            mongodb.collection('articles', function (err, collection) {
                 if (err) {
-                    mongodb.close();
+                    pool.release(mongodb);
                     return callback(err);
                 }
                 collection.insert(saveEntry, {safe: true}, function (err, article) {
-                    mongodb.close();
+                    pool.release(mongodb);
                     if (err) {
                         return callback(err);
                     }
@@ -38,18 +54,19 @@ Article.save = function (article, callback) {
                 });
             });
         });
+
     });
 };
 
 
 
 Article.update = function (article, callback) {
-    mongodb.open(function (err, db) {
+    pool.open(function (err, mongodb) {
         console.log("update Name mongo");
-        db.authenticate(settings.user, settings.pwd, function () {
-            db.collection('articles', function (err, collection) {
+        mongodb.authenticate(settings.user, settings.pwd, function () {
+            mongodb.collection('articles', function (err, collection) {
                 if (err) {
-                    mongodb.close();
+                    pool.release(mongodb);
                     return callback(err);
                 }
                 collection.update({id: article.id}, {
@@ -65,7 +82,7 @@ Article.update = function (article, callback) {
                         "articleMd" : article.articleMd
                     }
                 }, function (err) {
-                    mongodb.close();
+                    pool.release(mongodb);
                     if (err) {
                         return callback(err, null);
                     }
@@ -77,12 +94,12 @@ Article.update = function (article, callback) {
 };
 
 Article.delete = function (id,status, callback) {
-    mongodb.open(function (err, db) {
+    pool.acquire(function (err, mongodb) {
         console.log("update Name mongo");
-        db.authenticate(settings.user, settings.pwd, function () {
-            db.collection('articles', function (err, collection) {
+        mongodb.authenticate(settings.user, settings.pwd, function () {
+            mongodb.collection('articles', function (err, collection) {
                 if (err) {
-                    mongodb.close();
+                    pool.release(mongodb);
                     return callback(err);
                 }
                 collection.update({id: id}, {
@@ -90,7 +107,7 @@ Article.delete = function (id,status, callback) {
                         "status":status
                     }
                 }, function (err) {
-                    mongodb.close();
+                    pool.release(mongodb);
                     if (err) {
                         return callback(err);
                     }
@@ -102,15 +119,15 @@ Article.delete = function (id,status, callback) {
 };
 
 Article.getArticleById = function (id ,callback) {
-    mongodb.open(function (err, db) {
+    pool.acquire(function (err, db) {
         db.authenticate(settings.user, settings.pwd, function () {
             db.collection('articles', function (err, collection) {
                 if (err) {
-                    mongodb.close();
+                    pool.release(mongodb);
                     return callback(err);
                 }
                 collection.findOne({id:id}, function (err, article) {
-                    mongodb.close();
+                    pool.release(mongodb);
                     if (err) {
                         return callback(err);
                     }
@@ -121,20 +138,24 @@ Article.getArticleById = function (id ,callback) {
     });
 };
 
-Article.getArticleByPage = function (page, ls, callback) {
+Article.getArticleByPage = function (page, ls, callback,status) {
     //�����ݿ�
-    mongodb.open(function (err, db) {
-        db.authenticate(settings.user, settings.pwd, function () {
+    pool.acquire(function (err, mongodb) {
+        mongodb.authenticate(settings.user, settings.pwd, function () {
             if (err) {
                 return callback(err);
             }
             //��ȡ posts ����
-            db.collection('articles', function (err, collection) {
+            mongodb.collection('articles', function (err, collection) {
                 if (err) {
-                    mongodb.close();
+                    pool.release(mongodb);
                     return callback(err);
                 }
                 var query = {};
+                if(status){
+                    query.status = status;
+                }
+
 
                 collection.count(query, function (err, total) {
                     //���� query �����ѯ��������ǰ (page-1)*10 �����������֮��� 10 �����
@@ -144,7 +165,7 @@ Article.getArticleByPage = function (page, ls, callback) {
                     }).sort({
                         date: -1
                     }).toArray(function (err, docs) {
-                        mongodb.close();
+                        pool.release(mongodb);
                         console.log(docs);
                         if (err) {
                             console.log(err);

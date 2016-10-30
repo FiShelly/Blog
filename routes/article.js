@@ -78,8 +78,6 @@ router.post('/delete', function (req, res, next) {
 
 router.post('/page/:page/:size', checkLogin);
 router.post('/page/:page/:size', function (req, res, next) {
-    console.log("enter page type article");
-
     Article.getArticleByPage(req.params.page, req.params.size, function (err, articles) {
         if (err) {
             console.log(err);
@@ -90,6 +88,19 @@ router.post('/page/:page/:size', function (req, res, next) {
         }
 
     });
+});
+
+router.post('/page/index/:page/:size', function (req, res, next) {
+    Article.getArticleByPage(req.params.page, req.params.size, function (err, articles) {
+        if (err) {
+            console.log(err);
+            console.log("the server has error " + req.body.type);
+            res.json({status: '0'});
+        } else {
+            res.json({status: '1', articles: articles});
+        }
+
+    },2);
 });
 
 //router.post('/getArticleById', checkLogin);

@@ -29,6 +29,7 @@
         'HttpService',
         'ModalService',
         function ($rootScope,$scope, $route, $routeParams, $http,$filter,$interval,$location,HttpService,ModalService) {
+            console.log("test article");
             if(!sessionStorage.getItem("user")){
                 $location.path("/login/-1");
             } else {

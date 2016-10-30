@@ -100,6 +100,10 @@ header {
 .about-msg{
     font-size: 0.17rem;
 }
+.about-msg-sm{
+    font-size: 0.13rem;
+    text-align: center;
+}
 .type-detail{
     float: right;
     margin-right: 0.15rem;

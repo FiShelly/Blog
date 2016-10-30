@@ -10,10 +10,10 @@
                 <p class="about-msg ">{{article.abstract}}</p>
             </div>
             <div>
-                <p class="about-msg"><span>→</span><a href="{{article.url}}">阅读全文</a></p>
+                <p class="about-msg"><span>→</span><a href="#/article/{{article.id}}">阅读全文</a></p>
             </div>
             <div class="article-box-type about-msg">
-                <span>分类:</span><a href="{{article.type.url}}">{{article.type.name}}</a><span>←</span>
+                <span>分类:</span><a href="{{article.typeUrl}}">{{article.type}}</a><span>←</span>
             </div>
         </div>
         <div class="article-box-post about-msg">
@@ -29,13 +29,11 @@
             <li ng-repeat='article in articleList'>
                 <span>{{article.date}}</span>
                 <span>&nbsp;&nbsp;→&nbsp;&nbsp;</span>
-                <a href="{{article.url}}">{{article.title}}</a>
+                <a href="#/article/{{article.id}}">{{article.title}}</a>
             </li>
 
         </ul>
-        <div class="type-detail about-msg">
-            <span>→</span><a href="#more">查看更多...</a>
-        </div>
+
     </div>
 
 </article>
@@ -46,19 +44,18 @@
         </div>
         <ul class="ulist">
             <li ng-repeat="type in types">
-                <a href="{{type.url}}">{{type.name}}</a>
+                <a href="#/type/{{type.id}}">{{type.name}}</a>
             </li>
         </ul>
-        <div class="type-detail">
-            <span>→</span><a href="blog/detail/type">详情</a>
-        </div>
     </div>
 
     <div class="left-box col-sm-offset-2 col-sm-5 col-md-offset-0 col-md-12 col-lg-offset-0 col-lg-10 border-shadow">
         <div class="left-box-title">关于.</div>
         <img class="img-head" ng-src="{{myself.headImg}}">
-
-        <p class="about-msg">
+        <p class="about-msg-sm">
+            {{myself.position}}
+        </p>
+        <p class="about-msg-sm">
             {{myself.introduce}}
         </p>
 
