@@ -26,23 +26,25 @@
             $rootScope.isReady = true;
             var i = 0;
             var validateReady = function(){
-                if(i==3){
+                if(i==2){
+                    i=0;
                     $rootScope.isReady = false;
                 } else {
                     i+=1;
+                    console.log(i);
                 }
             };
             var queryAllType = function () {
                 HttpService.ajax('/typetag/page/1/1000000',{type: true},function(data){
+                    validateReady();
                     if(data){
-                        validateReady();
                         $scope.types = data.typetags;
                     }
                 });
                 HttpService.ajax('/article/page/index/1/5',{},function(data) {
-                    if (data) {
-                        validateReady();
-                        $scope.article = data.articles[0];
+                    validateReady();
+                    if (data.articles.length != 0) {
+                        $scope.article = data.articles[0] ;
                         $scope.articleList = data.articles;
                         $scope.article.author = 'Fishelly.';
                         for(var i = 0;i<$scope.types.length;i++){
@@ -54,8 +56,8 @@
                     }
                 });
                 HttpService.ajax('/user/getAuthor',{loginId: 'fishelly'},function(data){
+                    validateReady();
                     if(data){
-                        validateReady();
                         $scope.myself = data.author;
                         $scope.myself.follow = [{name: 'Github', url: 'https://github.com/FiShelly'}];
                         validateReady();
