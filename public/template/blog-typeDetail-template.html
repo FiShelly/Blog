@@ -1,12 +1,12 @@
 <div class="col-md-offset-1 col-sm-12 col-md-6 ease1">
     <div class="new-article-box type-title border-shadow">
-        <p class="about-msg"><span>类别：</span>{{typeDetail.type}}→共有{{typeDetail.count}}篇文章</p>
+        <p class="about-msg"><span>类别：</span>{{firstTypeName}}→共有{{typeDetail.count}}篇文章</p>
     </div>
     <div class="type-article-list border-shadow" ng-repeat="detail in typeDetail.detail">
         <h2>{{detail.year}}</h2>
         <ul class="about-msg ulist">
             <li ng-repeat="article in detail.articleList">
-                <span><a href="{{article.url}}">{{article.title}}</a></span>
+                <span><a href="#/article/{{article.id}}">{{article.title}}</a></span>
                 <span>&nbsp;→&nbsp;</span>
                 <span>{{article.date}}</span>
             </li>
@@ -20,20 +20,22 @@
         </div>
         <ul class="ulist">
             <li ng-repeat="type in types">
-                <a href="{{type.url}}">{{type.name}}</a>
+                <a href="#/type/{{type.id}}">{{type.name}}</a>
             </li>
         </ul>
-        <div class="type-detail">
-            <span>→</span><a  href="blog/detail/type">详情</a>
-        </div>
     </div>
+
 
     <div class="left-box col-sm-offset-2 col-sm-5 col-md-offset-0 col-md-12 col-lg-offset-0 col-lg-10 border-shadow">
         <div class="left-box-title">关于.</div>
         <img class="img-head" ng-src="{{myself.headImg}}">
-        <p class="about-msg">
+        <p class="about-msg-sm">
+            {{myself.position}}
+        </p>
+        <p class="about-msg-sm">
             {{myself.introduce}}
         </p>
+
         <p class="about-msg">follow me:</p>
         <ul class="ulist">
             <li ng-repeat="follow in myself.follow">

@@ -91,7 +91,7 @@ router.post('/uploadHeadImg', function (req, res, next) {
             var dstPath = "";
             if (files.headImg[0].originalFilename) {
                 var fileName = files.headImg[0].originalFilename.split(".")[1];
-                dstPath = 'upload/' + "_" + moment().format("YYYYMMDDHHmmss") + "." + fileName;
+                dstPath = 'upload/' + "headImg_" + moment().format("YYYYMMDDHHmmss") + "." + fileName;
                 //重命名为真实文件名
                 fs.rename(files.headImg[0].path, "../public/" + dstPath, function (err) {
                     if (err) {

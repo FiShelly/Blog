@@ -63,6 +63,19 @@ router.post('/update', function (req, res, next) {
     });
 });
 
+//
+//router.post('/updateNPA', function (req, res, next) {
+//    Article.getArticleByQuery(req.body.obj, function (err) {
+//        if (err) {
+//            console.log("the server has error " + req.body.type);
+//            res.json({status: '0'});
+//        } else {
+//            res.json({status: '1'});
+//        }
+//
+//    });
+//});
+
 //router.post('/updateName', checkLogin);
 router.post('/delete', function (req, res, next) {
     Article.delete(req.body.id,req.body.status, function (err) {
@@ -104,9 +117,10 @@ router.post('/page/index/:page/:size', function (req, res, next) {
 });
 
 //router.post('/getArticleById', checkLogin);
-router.post('/getById/:id', function (req, res, next) {
+router.post('/getById/:id/:status', function (req, res, next) {
     console.log("enter getByName type tag");
-    Article.getArticleById(req.params.id, function (err, article) {
+    Article.getArticleById(req.params.id,parseInt(req.params.status), function (err, article) {
+        console.log(req.params.id + " ==========");
         if (err) {
             console.log(err);
             console.log("the server has error ");
@@ -118,5 +132,20 @@ router.post('/getById/:id', function (req, res, next) {
         }
 
     });
+});
+
+router.post('/page/query', function (req, res, next) {
+    Article.getArticleByQuery(req.body.query, function (err, articles) {
+
+        if (err) {
+            console.log(err);
+            console.log("the server has error " + req.body.type);
+            res.json({status: '0'});
+        } else {
+            res.json({status: '1', articles: articles});
+        }
+
+    });
+
 });
 module.exports = router;

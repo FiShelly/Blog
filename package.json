@@ -20,6 +20,7 @@
     "moment": "2.13.0",
     "ui-select":"0.19.5",
     "generic-pool": "2.4.3",
-    "mongodb": "2.0.42"
+    "mongodb": "2.0.42",
+    "compression":"*"
   }
 }

@@ -8,66 +8,41 @@
             <form class="form-inline" role="form">
                 <div class="form-group col-md-4">
                     <label  for="name">昵称：</label>
-                    <input type="text" class="form-control" id="name" placeholder="输入昵称">
+                    <input type="text" class="form-control" ng-model="search.visitor.name" id="name" placeholder="输入昵称">
                 </div>
-                <div class="form-group col-md-5">
-                    <label  for="title">文章标题：</label>
-                    <input class="form-control" type="text" id="title" placeholder="输入文章标题">
+                <div class="form-group col-md-4">
+                    <label  for="title">标题：</label>
+                    <input class="form-control" type="text" ng-model="search.article.title" id="title" placeholder="输入文章标题">
                 </div>
-                <div class="form-group col-md-3">
-                    <label  for="isReplay">是否回复：</label>
-                    <select id="isReplay" class="form-control">
-                        <option>全部</option>
-                        <option>已回复</option>
-                        <option>未回复</option>
-                    </select>
+                <div class="form-group col-md-4">
+                    <label  for="content">内容：</label>
+                    <input class="form-control" type="text" ng-model="search.content" id="content" placeholder="输入评论内容">
                 </div>
             </form>
         </div>
         <div class="comment-box">
-            <div class="comment">
+            <div class="comment" ng-repeat="comment in comments | filter:search">
                 <h3>
-                    原文：ECMSCript6浅析
-                    <button class="btn btn-danger article-list-btn comment-btn">
+                    原文：<a href="#article/{{comment.article.id}}">{{comment.article.title}}</a>
+                    <button class="btn btn-danger article-list-btn comment-btn" ng-click="delete(comment.id);">
                         <span class="glyphicon  glyphicon-trash "></span>
                     </button>
                 </h3>
-                <p>好好好好好好好好好好好好好好好好好好好好好好好好好好好好好好</p>
-                <div>
-                    <span>来自：</span>
-                    <span>xxx</span>
-                    <span>&nbsp;/&nbsp;</span>
-                    <span>1234567890@qq.com</span>
-                    <span>&nbsp;/&nbsp;</span>
-                    <span>http:xxxx.com</span>
-                    <div class="replay-box">
-                        <span>是否回复：</span>
-                        <span>已回复</span>
-                    </div>
+                <div class="msg-reference" ng-show="comment.quotes" >
+                    <p>引用{{comment.quotes.name}}的留言：</p>
+
+                    <p class="leave-msg-content">
+                        {{comment.quotes.content}}
+                    </p>
                 </div>
-            </div>
-            <div class="comment">
-                <h3>
-                    原文：ECMSCript6浅析
-                    <button class="btn btn-danger article-list-btn comment-btn">
-                        <span class="glyphicon  glyphicon-trash "></span>
-                    </button>
-                </h3>
-                <p>
-                    好好好好好好好好好好好好好好好好好好好好好好好好好好好好好好
-                    好好好好好好好好好好好好好好好好好好好好好好好好好好好好好好
-                </p>
+                <p>{{comment.content}}</p>
                 <div>
                     <span>来自：</span>
-                    <span>xxx</span>
+                    <span>{{comment.visitor.name}}</span>
                     <span>&nbsp;/&nbsp;</span>
-                    <span>1234567890@qq.com</span>
+                    <span>{{comment.visitor.email}}</span>
                     <span>&nbsp;/&nbsp;</span>
-                    <span>http:xxxx.com</span>
-                    <div class="replay-box">
-                        <span>是否回复：</span>
-                        <span>已回复</span>
-                    </div>
+                    <span><a href="{{comment.visitor.index}}">{{comment.visitor.index}}</a></span>
                 </div>
             </div>
         </div>

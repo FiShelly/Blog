@@ -11,7 +11,7 @@
 
     // 配置模块的路由
     module.config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/back/article/edit/:id', {
+        $routeProvider.when('/back/article/edit/:id/:status', {
             templateUrl: 'template/back-articleEdit-template.html',
             controller: 'BackArticleEditController'
         });
@@ -22,14 +22,12 @@
         '$scope',
         '$route',
         '$routeParams',
-        '$http',
         '$filter',
         '$interval',
         '$location',
         'HttpService',
         'ModalService',
-        function ($rootScope,$scope, $route, $routeParams, $http,$filter,$interval,$location,HttpService,ModalService) {
-            console.log("test article");
+        function ($rootScope,$scope, $route, $routeParams,$filter,$interval,$location,HttpService,ModalService) {
             if(!sessionStorage.getItem("user")){
                 $location.path("/login/-1");
             } else {
@@ -65,7 +63,7 @@
                 //dialogMaskBgColor : "#000", // 设置透明遮罩层的背景颜色，全局通用，默认为#fff
                 imageUpload : true,
                 imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-                imageUploadURL : "./php/upload.php",
+                imageUploadURL : "./blog/uploadBlogImg",
                 onload : function() {
                     this.setMarkdown($scope.article.articleMd);
                     var barHeight = document.querySelector('.editormd-toolbar-container').offsetHeight + 1;
@@ -98,7 +96,7 @@
                 queryPage();
             } else {
                 $rootScope.isReady = true;
-                HttpService.ajax('/article/getById/'+$routeParams.id,{},function(data){
+                HttpService.ajax('/article/getById/'+$routeParams.id+'/'+$routeParams.status,{},function(data){
                     if(data){
                         $scope.article = data.article;
                         $rootScope.isReady = false;
@@ -121,11 +119,12 @@
                     $scope.updateStatus(status);
                     return;
                 }
-                $location.path('/back/article/list')
+                $location.path('/back/article/list');
                 $rootScope.isReady = false;
             };
             $scope.publish = function(status){
                 $rootScope.isReady = true;
+                console.log($scope.article.id+"====");
                 if($scope.article.id){
                     $scope.updateStatus(status);
                     return;
@@ -150,10 +149,7 @@
             };
 
             var updateCount = function(name,type){
-                HttpService.ajax('/typetag/updateCount',{  name:name,type:type},function(data){
-                    // alert
-                });
-
+                HttpService.ajax('/typetag/updateCount',{  name:name,type:type},function(data){});
             };
 
             $scope.updateStatus = function(status){

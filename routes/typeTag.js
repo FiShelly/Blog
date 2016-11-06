@@ -4,6 +4,7 @@ var crypto = require('crypto');
 var moment = require("moment");
 var router = express.Router();
 var TypeTag = require('../models/TypeTag.js');
+
 /* GET users listing. */
 
 function checkLogin(req, res, next) {

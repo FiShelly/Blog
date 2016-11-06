@@ -3,7 +3,8 @@
  */
 (function (angular) {
     var module = angular.module('blog.type', [
-        'ngRoute'
+        'ngRoute',
+        'blog.service.http'
     ]);
 
     // 配置模块的路由
@@ -15,59 +16,84 @@
     }]);
     //控制器
     module.controller('BlogTypeController', [
+        '$rootScope',
         '$scope',
         '$route',
         '$routeParams',
-        '$http',
-        function ($scope, $route, $routeParams, $http) {
-            console.log("enter BlogTypeController ~");
-            $scope.typeDetail = {
-                name:'type1',
-                count:66,
-                detail:[
-                    {
-                        year:2016,
-                        articleList:[
-                            {date:'2016-09-20',title:'article1',url:'#article1'},
-                            {date:'2016-09-19',title:'article2',url:'#article2'},
-                            {date:'2016-09-18',title:'article3',url:'#article3'},
-                            {date:'2016-09-17',title:'article4',url:'#article4'},
-                            {date:'2016-09-16',title:'article5',url:'#article5'},
-                            {date:'2016-09-15',title:'article6',url:'#article6'},
-                            {date:'2016-09-14',title:'article7',url:'#article7'}
-                        ]
-                    },
-                    {
-                        year:2015,
-                        articleList:[
-                            {date:'2015-09-20',title:'article1',url:'#article1'},
-                            {date:'2015-09-19',title:'article2',url:'#article2'},
-                            {date:'2015-09-18',title:'article3',url:'#article3'},
-                            {date:'2015-09-17',title:'article4',url:'#article4'},
-                            {date:'2015-09-16',title:'article5',url:'#article5'},
-                            {date:'2015-09-15',title:'article6',url:'#article6'},
-                            {date:'2015-09-14',title:'article7',url:'#article7'}
-                        ]
+        'HttpService',
+        function ($rootScope,$scope, $route, $routeParams, HttpService) {
+            $rootScope.isReady = true;
+            var queryType = function(){
+                HttpService.ajax('/typetag/page/1/1000000',{type: true},function(data){
+                    if(data){
+                        $rootScope.types = data.typetags;
                     }
-                ]
+                    if(data && $scope.types[0].name){
+                        $scope.firstTypeName = $rootScope.types[0].name;
+                        queryTypePage();
+                    }
+                });
             };
-
-            $scope.types = [
-                {name:'type1',url:'#/type1'},
-                {name:'type2',url:'#/type2'},
-                {name:'type3',url:'#/type3'},
-                {name:'type4',url:'#/type4'},
-                {name:'type5',url:'#/type5'},
-                {name:'type6',url:'#/type6'},
-                {name:'type7',url:'#/type7'},
-                {name:'type8',url:'#/type8'}
-
-            ];
-            $scope.myself = {
-                headImg:'/images/fish1.jpg',
-                introduce:'some of my message, introduce me.',
-                follow:[{name:'Github',url:'https://github.com/FiShelly'}]
+            var queryTypePage = function(){
+                HttpService.ajax('/article/page/query',{query:{type:$scope.firstTypeName,status:2}},function(data) {
+                    if (data.articles.length != 0) {
+                        $scope.articleList = data.articles;
+                        $scope.typeDetail = {
+                            name:$scope.firstTypeName,
+                            count:data.articles.length,
+                            detail:[]
+                        };
+                        filterArticle();
+                        $rootScope.isReady = false;
+                    }
+                });
             };
+            var queryTypeName = function(id){
+                if($rootScope.types){
+                    for(var i = 0;i<$rootScope.types.length;i++){
+                        if($rootScope.types[i].id == id){
+                            $rootScope.firstTypeName = $rootScope.types[i].name;
+                            queryTypePage();
+                        }
+                    }
+                } else {
+                    queryType();
+                }
+            };
+            var queryAuthor = function(){
+                HttpService.ajax('/user/getAuthor',{loginId: 'fishelly'},function(data){
+                    if(data){
+                        $rootScope.myself = data.author;
+                        $rootScope.myself.follow = [{name: 'Github', url: 'https://github.com/FiShelly'}];
+                    }
+                });
+            };
+            var filterArticle = function(){
+                var temp = {year:"",articleList:[]};
+                for(var i = 0;i<$scope.articleList.length-1;i++){
+                    var str = $scope.articleList[i].date.substring(0,4);
+                    var end = $scope.articleList[i+1].date.substring(0,4);
+                    if( str == end){
+                        temp.year = str;
+                        temp.articleList.push($scope.articleList[i]);
+                    } else {
+                        $scope.typeDetail.detail.push(temp);
+                        temp = {year:"",articleList:[]};
+                    }
+                }
+                temp.articleList.push($scope.articleList[i]);
+                $scope.typeDetail.detail.push(temp);
+
+            };
+            var id = $routeParams.id;
+            if(id != 0){
+                queryTypeName(id);
+            } else {
+                queryType();
+            }
+            if(!$rootScope.myself){
+                queryAuthor();
+            }
         }
     ]);
 })(angular);

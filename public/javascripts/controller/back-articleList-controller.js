@@ -21,16 +21,14 @@
         '$scope',
         '$route',
         '$routeParams',
-        '$http',
         '$location',
-        '$rootScope',
         'HttpService',
         'ModalService',
-        function ($rootScope,$scope, $route, $routeParams, $http,$location,$rootScope,HttpService,ModalService) {
+        function ($rootScope,$scope, $route, $routeParams,$location,HttpService,ModalService) {
             if(!sessionStorage.getItem("user")){
                 $location.path("/login/-1");
             } else {
-                $scope.isLogin = true;
+                $rootScope.isLogin = true;
                 $rootScope.isReady = false;
             }
             $scope.curPage = 1;
@@ -45,15 +43,18 @@
                         break;
                     }
                 }
-                $location.path('/back/article/edit/'+id);
+                console.log($rootScope.article);
+                $location.path('/back/article/edit/'+id+'/'+$rootScope.article.status);
             };
 
             $scope.delete = function (id) {
                 $rootScope.isReady = true;
-                HttpService.ajax('/article/delete',{id: id,status:status},function(data){
+                HttpService.ajax('/article/delete',{id: id,status:0},function(data){
                     if(data){
                         for(var i = 0;i<$scope.articles.length;i++){
+                            console.log(id);
                             if($scope.articles[i].id == id){
+                                console.log("12312312312");
                                 $scope.articles[i].status = 0;
                                 break;
                             }

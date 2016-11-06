@@ -5,40 +5,42 @@ var Db = require('./db');
 var settings = require('../settings');
 var poolModule = require('generic-pool');
 var pool = poolModule.Pool({
-    name     : 'mongoPool',
-    create   : function(callback) {
+    name: 'mongoPool',
+    create: function (callback) {
         var mongodb = Db();
         mongodb.open(function (err, db) {
             callback(err, db);
         })
     },
-    destroy  : function(mongodb) {
+    destroy: function (mongodb) {
         mongodb.close();
     },
-    max      : 100,
-    min      : 5,
-    idleTimeoutMillis : 30000,
-    log      : true
+    max: 100,
+    min: 5,
+    idleTimeoutMillis: 30000,
+    log: true
 });
-var Article = function(article){
+var Article = function (article) {
     this.id = article.id;
     this.title = article.title;
     this.type = article.type;
     this.tag = article.tag;
     this.abstract = article.abstract;
-    this.date =  article.date;
+    this.date = article.date;
     this.articleHtml = article.articleHtml;
     this.articleMd = article.articleMd;
     this.readCount = article.readCount;
     this.commentCount = article.commentCount;
     this.status = article.status;
+    //this.nextArticle = article.nextArticle;
+    //this.preArticle = article.preArticle;
 };
 
 module.exports = Article;
 
 Article.save = function (article, callback) {
     var saveEntry = new Article(article);
-    pool.open(function (err, mongodb) {
+    pool.acquire(function (err, mongodb) {
         mongodb.authenticate(settings.user, settings.pwd, function () {
             mongodb.collection('articles', function (err, collection) {
                 if (err) {
@@ -59,10 +61,8 @@ Article.save = function (article, callback) {
 };
 
 
-
 Article.update = function (article, callback) {
-    pool.open(function (err, mongodb) {
-        console.log("update Name mongo");
+    pool.acquire(function (err, mongodb) {
         mongodb.authenticate(settings.user, settings.pwd, function () {
             mongodb.collection('articles', function (err, collection) {
                 if (err) {
@@ -72,14 +72,14 @@ Article.update = function (article, callback) {
                 collection.update({id: article.id}, {
                     $set: {
                         "name": article.name,
-                        "title" : article.title,
-                        "type" : article.type,
-                        "tag" : article.tag,
-                        "abstract" : article.abstract,
-                        "date" :  article.date,
-                        "articleHtml" : article.articleHtml,
-                        "status":article.status,
-                        "articleMd" : article.articleMd
+                        "title": article.title,
+                        "type": article.type,
+                        "tag": article.tag,
+                        "abstract": article.abstract,
+                        "date": article.date,
+                        "articleHtml": article.articleHtml,
+                        "status": article.status,
+                        "articleMd": article.articleMd
                     }
                 }, function (err) {
                     pool.release(mongodb);
@@ -93,7 +93,7 @@ Article.update = function (article, callback) {
     });
 };
 
-Article.delete = function (id,status, callback) {
+Article.delete = function (id, status, callback) {
     pool.acquire(function (err, mongodb) {
         console.log("update Name mongo");
         mongodb.authenticate(settings.user, settings.pwd, function () {
@@ -104,7 +104,7 @@ Article.delete = function (id,status, callback) {
                 }
                 collection.update({id: id}, {
                     $set: {
-                        "status":status
+                        "status": status
                     }
                 }, function (err) {
                     pool.release(mongodb);
@@ -118,16 +118,16 @@ Article.delete = function (id,status, callback) {
     });
 };
 
-Article.getArticleById = function (id ,callback) {
+Article.getArticleById = function (id,status, callback) {
     pool.acquire(function (err, db) {
         db.authenticate(settings.user, settings.pwd, function () {
             db.collection('articles', function (err, collection) {
                 if (err) {
-                    pool.release(mongodb);
+                    pool.release(db);
                     return callback(err);
                 }
-                collection.findOne({id:id}, function (err, article) {
-                    pool.release(mongodb);
+                collection.findOne({id: id,status:status}, function (err, article) {
+                    pool.release(db);
                     if (err) {
                         return callback(err);
                     }
@@ -138,27 +138,24 @@ Article.getArticleById = function (id ,callback) {
     });
 };
 
-Article.getArticleByPage = function (page, ls, callback,status) {
-    //�����ݿ�
+Article.getArticleByPage = function (page, ls, callback, status) {
     pool.acquire(function (err, mongodb) {
         mongodb.authenticate(settings.user, settings.pwd, function () {
             if (err) {
                 return callback(err);
             }
-            //��ȡ posts ����
             mongodb.collection('articles', function (err, collection) {
                 if (err) {
                     pool.release(mongodb);
                     return callback(err);
                 }
                 var query = {};
-                if(status){
+                if (status) {
                     query.status = status;
                 }
 
 
                 collection.count(query, function (err, total) {
-                    //���� query �����ѯ��������ǰ (page-1)*10 �����������֮��� 10 �����
                     collection.find(query, {
                         skip: (page - 1) * ls,
                         limit: ls
@@ -179,6 +176,35 @@ Article.getArticleByPage = function (page, ls, callback,status) {
                         //}
                         callback(null, docs);
                     });
+                });
+            });
+        });
+    });
+};
+
+Article.getArticleByQuery = function (query, callback) {
+    console.log(query);
+    pool.acquire(function (err, mongodb) {
+        mongodb.authenticate(settings.user, settings.pwd, function () {
+            if (err) {
+                return callback(err);
+            }
+            mongodb.collection('articles', function (err, collection) {
+                if (err) {
+                    pool.release(mongodb);
+                    return callback(err);
+                }
+                collection.find(query,{
+                    "id":1,
+                    "title":1,
+                    "date":1,
+                    "type":1
+                }).sort({date:-1}).toArray(function(err,docs){
+                    pool.release(mongodb);
+                    if (err) {
+                        return callback(err);
+                    }
+                    callback(null, docs);
                 });
             });
         });

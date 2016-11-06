@@ -3,7 +3,9 @@
  */
 (function (angular) {
     var module = angular.module('blog.back.comment', [
-        'ngRoute'
+        'ngRoute',
+        'blog.service.http',
+        'blog.service.modal'
     ]);
 
     // 配置模块的路由
@@ -19,13 +21,38 @@
         '$scope',
         '$route',
         '$routeParams',
-        '$http',
-        function ($rootScope,$scope, $route, $routeParams, $http) {
+        'HttpService',
+        'ModalService',
+        function ($rootScope, $scope, $route, $routeParams, HttpService, ModalService) {
             if(!sessionStorage.getItem("user")){
                 $location.path("/login/-1");
             } else {
-                $scope.isLogin = true;
+                $rootScope.isLogin = true;
             }
+            var queryComment = function () {
+                HttpService.ajax('/comment/page/query', {},function (data) {
+                        if (data) {
+                            $scope.comments = data.comments;
+                            $rootScope.isReady = false;
+                        }
+                    });
+            };
+            $scope.delete = function (id) {
+                HttpService.ajax('/comment/delete/'+id,{},function(data){
+                    var obj = function () {
+                        return data;
+                    };
+                    ModalService.open('/template/modal-tip-msg.html', 'ModalInstanceCtrl', 'md', obj);
+                    for(var i = 0;i<$scope.comments.length;i++){
+                        if($scope.comments[i].id == id){
+                            $scope.comments.splice(i,1);
+                            break;
+                        }
+                    }
+                });
+            };
+
+            queryComment();
         }
     ]);
 })(angular);

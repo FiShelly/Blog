@@ -3,19 +3,27 @@
         <h2 class="personal-box-title">
             <span class="glyphicon glyphicon-bookmark"></span>
             <span class="title-text">分类管理</span>
-            <div class="article-btn-group">
-                <div class="btn-group">
-                    <a ng-click="open('md',true,false)"  class="btn btn-success">
-                        <span class="glyphicon glyphicon-plus"></span>
-                    </a>
-                    <a href="#/back/tag" class="btn btn-info">
-                        <span class="glyphicon glyphicon-arrow-right"></span>
-                        <span class="hidden-xs">前往标签管理</span>
-                    </a>
-                </div>
-            </div>
         </h2>
 
+        <div class="personal-box-title">
+            <form class="form-inline" role="form">
+                <div class="form-group col-md-5">
+                    <label for="tag_name">分类名称：</label>
+                    <input class="form-control" type="text" ng-model="search.name" id="tag_name" placeholder="输入分类名称">
+                </div>
+                <div class="article-btn-group">
+                    <div class="btn-group">
+                        <a ng-click="open('md',true,false)" class="btn btn-success">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </a>
+                        <a href="#/back/tag" class="btn btn-info">
+                            <span class="glyphicon glyphicon-arrow-right"></span>
+                            <span class="hidden-xs">前往标签管理</span>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
         <div class="col-xs-12 table-responsive">
             <table class="table table-striped table-style">
                 <thead>
@@ -28,13 +36,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="type in typetags">
+                <tr ng-repeat="type in typetags | filter:search">
                     <td>{{$index+1}}</td>
                     <td>{{type.name}}</td>
                     <td>{{type.count}}</td>
                     <td>{{type.date}}</td>
                     <td>
-                        <button class="btn btn-info article-list-btn" ng-click="open('md',true,true,type.name,type.id);">
+                        <button class="btn btn-info article-list-btn"
+                                ng-click="open('md',true,true,type.name,type.id);">
                             <span class="glyphicon glyphicon-pencil "></span>
                         </button>
                         <button class="btn btn-danger article-list-btn" ng-click="delete(type.id);">
@@ -43,21 +52,6 @@
                     </td>
                 </tr>
                 </tbody>
-                <tfoot>
-                <tr>
-                    <td colspan="8">
-                        <nav>
-                            <ul class="pagination">
-                                <li ng-class="{true:'disabled'}[1==curPage]"><a href="" ng-click="go(curPage-1);">&laquo;</a></li>
-                                <li ng-repeat="link in page" ng-class="{true:'active'}[link==curPage]">
-                                    <a href="" ng-click="go(link);">{{link}}</a>
-                                </li>
-                                <li ng-class="{true:'disabled'}[page.length==curPage]"><a href="" ng-click="go(curPage+1);" >&raquo;</a></li>
-                            </ul>
-                        </nav>
-                    </td>
-                </tr>
-                </tfoot>
             </table>
         </div>
     </div>

@@ -143,6 +143,26 @@ TypeTag.getTypeTagByName = function (name, type, callback) {
     });
 };
 
+TypeTag.getTypeTagById = function (id, type, callback) {
+    pool.acquire(function (err, db) {
+        db.authenticate(settings.user, settings.pwd, function () {
+            db.collection('typetag', function (err, collection) {
+                if (err) {
+                    pool.release(db);
+                    return callback(err);
+                }
+                collection.findOne({id: id, type: type}, function (err, typeTag) {
+                    pool.release(db);
+                    if (err) {
+                        return callback(err);
+                    }
+                    callback(null, typeTag);
+                });
+            });
+        });
+    });
+};
+
 TypeTag.getTypeTagByPage = function (type, page, ls, callback) {
     //打开数据库
     pool.acquire(function (err, db) {

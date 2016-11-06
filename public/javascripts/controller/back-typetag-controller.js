@@ -25,12 +25,11 @@
         '$scope',
         '$route',
         '$routeParams',
-        '$http',
         '$location',
         '$modal',
         'HttpService',
         'ModalService',
-        function ( $rootScope,$scope, $route, $routeParams, $http, $location, $modal, HttpService, ModalService) {
+        function ( $rootScope,$scope, $route, $routeParams, $location, $modal, HttpService, ModalService) {
             if(!sessionStorage.getItem("user")){
                 $location.path("/login/-1");
             } else {
@@ -80,8 +79,6 @@
                 });
             };
 
-            $scope.curPage = 1;
-            $scope.lineSize = 5;
             $scope.page = [];
 
             if ($location.url().indexOf('tag') != -1) {
@@ -97,20 +94,17 @@
             };
             var queryPage = function () {
                 $rootScope.isReady = true;
-                HttpService.ajax('/typetag/page/' + $scope.curPage + "/" + $scope.lineSize, {type: $scope.obj.type}, function (data) {
+                HttpService.ajax('/typetag/page/1/100000', {type: $scope.obj.type}, function (data) {
                     $scope.typetags = data.typetags;
-                    for (var i = 1; i <= data.size; i++) {
-                        $scope.page.push(i);
-                    }
                     $rootScope.isReady = false;
                 });
             };
-            $scope.go = function (page) {
-                if (page >= 1 && page <= $scope.page.length) {
-                    $scope.curPage = page;
-                    queryPage();
-                }
-            };
+            //$scope.go = function (page) {
+            //    if (page >= 1 && page <= $scope.page.length) {
+            //        $scope.curPage = page;
+            //        queryPage();
+            //    }
+            //};
             queryPage();
         }
     ]);

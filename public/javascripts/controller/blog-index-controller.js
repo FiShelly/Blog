@@ -20,9 +20,8 @@
         '$scope',
         '$route',
         '$routeParams',
-        '$http',
         'HttpService',
-        function ($rootScope,$scope, $route, $routeParams, $http,HttpService) {
+        function ($rootScope,$scope, $route, $routeParams,HttpService) {
             $rootScope.isReady = true;
             var i = 0;
             var validateReady = function(){
@@ -31,40 +30,53 @@
                     $rootScope.isReady = false;
                 } else {
                     i+=1;
-                    console.log(i);
                 }
             };
             var queryAllType = function () {
                 HttpService.ajax('/typetag/page/1/1000000',{type: true},function(data){
                     validateReady();
                     if(data){
-                        $scope.types = data.typetags;
-                    }
-                });
-                HttpService.ajax('/article/page/index/1/5',{},function(data) {
-                    validateReady();
-                    if (data.articles.length != 0) {
-                        $scope.article = data.articles[0] ;
-                        $scope.articleList = data.articles;
-                        $scope.article.author = 'Fishelly.';
-                        for(var i = 0;i<$scope.types.length;i++){
-                            if($scope.types[i].name == $scope.article.type){
-                                $scope.article.typeUrl = "#/type/"+$scope.types[i].id;
-                            }
-                        }
-
+                        $rootScope.types = data.typetags;
                     }
                 });
                 HttpService.ajax('/user/getAuthor',{loginId: 'fishelly'},function(data){
                     validateReady();
                     if(data){
-                        $scope.myself = data.author;
-                        $scope.myself.follow = [{name: 'Github', url: 'https://github.com/FiShelly'}];
+                        $rootScope.myself = data.author;
+                        $rootScope.myself.follow = [{name: 'Github', url: 'https://github.com/FiShelly'}];
+                        validateReady();
+                    }
+                });
+                queryArticle();
+            };
+            var queryArticle = function(flag){
+                HttpService.ajax('/article/page/index/1/5',{},function(data) {
+
+                    if (data.articles.length != 0) {
+                        $scope.article = data.articles[0] ;
+                        $scope.articleList = data.articles;
+                        $scope.article.author = 'Fishelly.';
+                        $rootScope.articleId = data.articles[0].id;
+                        for(var i = 0;i<$scope.types.length;i++){
+                            console.log($scope.article.type);
+                            if($scope.types[i].name == $scope.article.type){
+                                $scope.article.typeUrl = "#/type/"+$scope.types[i].id;
+                            }
+                        }
+                    }
+                    if(flag){
+                        $rootScope.isReady = false;
+                    } else {
                         validateReady();
                     }
                 });
             };
-            queryAllType();
+            if(!$rootScope.myself){
+                queryAllType();
+            } else {
+                queryArticle(true);
+            }
+
         }
     ]);
 })(angular);

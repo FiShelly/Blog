@@ -1,4 +1,11 @@
+var compression = require('compression');
 var express = require('express');
+
+var app = express();
+
+//open gzip
+app.use(compression());
+
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -10,12 +17,14 @@ var blog = require('./routes/blog');
 var users = require('./routes/users');
 var typetag = require('./routes/typeTag');
 var article = require('./routes/article');
+var comment = require('./routes/comment');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var settings = require('./settings');
 var util = require('util');
 
-var app = express();
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.engine(".html", ejs.renderFile);
@@ -41,6 +50,7 @@ app.use('/blog', blog);
 app.use('/user',users);
 app.use('/typetag',typetag);
 app.use('/article',article);
+app.use('/comment',comment);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

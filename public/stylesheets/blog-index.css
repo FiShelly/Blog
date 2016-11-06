@@ -34,6 +34,20 @@ header {
     margin-top: 0.13rem;
     float: right;
 }
+.search-input{
+    float:  left;
+
+
+    border-radius: 4px 0 0 4px;
+
+}
+.search-input:focus{
+
+}
+.search-btn{
+    border-left: 0;
+    border-radius: 0 4px 4px 0;
+}
 
 .left-box {
     padding: 0 0.1rem 0.1rem 0.1rem;
@@ -184,10 +198,15 @@ h2,h4{
     overflow: hidden;
 }
 .comment{
-
+    border-bottom: 1px solid #B6B6B6;
+    padding-bottom: 0.1rem;
 }
 .comment>textarea{
     height: 1rem;
+}
+.comment-btn{
+    float: right;
+    margin-right: 0.5rem;
 }
 .left-function{
     background-color: #FFF;
@@ -458,7 +477,7 @@ th, td {
 }
 
 .article-btn-add {
-    margin-left: 0.15rem;
+    margin-right: 0.15rem;
     float: right;
 }
 

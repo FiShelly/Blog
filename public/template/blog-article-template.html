@@ -1,13 +1,14 @@
-<article class="col-md-offset-1 col-md-10  ">
+<article class="col-md-offset-2 col-md-8  ">
     <div class="new-article-box type-title border-shadow about-msg article-type-header">
         <div class="last-article hidden-xs">
             <span>上一篇</span>
-            <a href="#">文章上</a>
+            <a href="#/article/{{article.pre.id}}" ng-show="article.pre.title">{{article.pre.title||"没有了"}}</a>
         </div>
-        <p class="article-type "><span>类别：</span>{{typeDetail.type}}</p>
+        <p class="article-type "><span>类别：</span>{{article.type}}</p>
+
         <div class="next-article hidden-xs">
-            <span>上一篇</span>
-            <a href="#">文章下111111111</a>
+            <span>下一篇</span>
+            <a href="#/article/{{article.next.id}}" ng-show="article.next.title">{{article.next.title||"没有了"}}</a>
         </div>
     </div>
     <section>
@@ -15,31 +16,34 @@
             <h2 class="article-box-title">
                 {{article.title}}
             </h2>
+            <h4> 摘要：{{article.abstract}}</h4><br>
+
             <div class=" about-msg">
-                发表于：<span>fishelly.</span>&nbsp;&nbsp;→&nbsp;&nbsp;<span>2016-09-20</span>
+                发表于：<span>fishelly.</span>&nbsp;&nbsp;→&nbsp;&nbsp;<span>{{article.date}}</span>
             </div>
-            <div class="about-msg article-detail">
-                11111111111
+            <div class="about-msg article-detail" data-ng-bind-html="article.articleHtml">
             </div>
         </div>
         <div class="new-article-box border-shadow">
             <h4>文章信息</h4>
+
             <div class="article-msg-box">
                 <ul class="ulist">
-                    <li><span>版权声明：</span><span>自由转载-非商用-非衍生-保持署名（创意共享3.0许可证）</span></li>
-                    <li><span>发表日期：</span><span>2016-09-21</span></li>
-                    <li><span>更多内容：</span><span><a href="#">首页</a>→<a href="#">类别</a></span></li>
-                    <li><span>关注：</span><span><a href="#">Github</a></span></li>
+                    <!--<li><span>版权声明：</span><span>自由转载-非商用-非衍生-保持署名（创意共享3.0许可证）</span></li>-->
+                    <li><span>发表日期：</span><span>{{article.date}}</span></li>
+                    <li><span>更多内容：</span><span><a href="#/index">首页</a>→<a href="#/type/0">查看所有类别</a></span></li>
+                    <li><span>关注：</span><span><a href="https://github.com/FiShelly">Github</a></span></li>
                 </ul>
             </div>
         </div>
         <div class="new-article-box border-shadow">
             <h4>相关文章</h4>
             <ul class="about-msg ulist">
-                <li ng-repeat="article in detail.articleList" class="relative-article">
-                    <span><a href="{{article.url}}">{{article.title}}</a></span>
+                <li ng-repeat="article in aboutArticle" class="relative-article">
+                    <span><a href="#/article/{{article.id}}">{{article.title}}</a></span>
                     <span>&nbsp;→&nbsp;</span>
                     <span>{{article.date}}</span>
+
                     <p class="about-msg ">
                         xxxxxasdasdasdas
                     </p>
@@ -47,77 +51,57 @@
             </ul>
         </div>
         <div class="type-article-list border-shadow">
-            <h2>留言（78条）</h2>
-            <div class="about-msg leave-msg-item">
-                <p><span>fishelly</span>说：</p>
-                <p class="leave-msg-content">惺惺惜惺惺想嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻惺惺惜惺惺想嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻</p>
-                <p class="leave-msg-other">
-                    <span>2016-09-21</span>
-                    <span>&nbsp;|&nbsp;</span>
-                    <span>#</span>
-                    <span>&nbsp;|&nbsp;</span>
-                    <span>引用</span>
-                </p>
-            </div>
-            <div class="about-msg leave-msg-item">
-                <p><span>fishelly</span>说：</p>
-                <p class="leave-msg-content">惺惺惜惺惺想嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻惺惺惜惺惺想嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻</p>
-                <p class="leave-msg-other">
-                    <span>2016-09-21</span>
-                    <span>&nbsp;|&nbsp;</span>
-                    <span>#</span>
-                    <span>&nbsp;|&nbsp;</span>
-                    <span>引用</span>
-                </p>
-            </div>
-            <div class="about-msg leave-msg-item">
-                <p><span>fishelly</span>说：</p>
-                <p class="leave-msg-content">惺惺惜惺惺想嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻惺惺惜惺惺想嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻</p>
-                <p class="leave-msg-other">
-                    <span>2016-09-21</span>
-                    <span>&nbsp;|&nbsp;</span>
-                    <span>#</span>
-                    <span>&nbsp;|&nbsp;</span>
-                    <span>引用</span>
-                </p>
-            </div>
-            <div class="about-msg leave-msg-item">
-                <p><span>fishelly</span>说：</p>
-                <div class="msg-reference">
-                    <p>引用xxx的留言：</p>
-                    <p class="leave-msg-content">惺惺惜惺惺想嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻惺惺惜惺惺想嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻</p>
+            <h2>留言（{{comments.length}}条）</h2>
+
+            <div class="about-msg leave-msg-item" ng-repeat="comment in comments">
+                <p><a href="{{comment.visitor.index}}"><span>{{comment.visitor.name}}</span>说：</a></p>
+                <div class="msg-reference" ng-show="comment.quotes" >
+                    <p>引用{{comment.quotes.name}}的留言：</p>
+
+                    <p class="leave-msg-content">
+                        {{comment.quotes.content}}
+                    </p>
                 </div>
-                <p class="leave-msg-content">惺惺惜惺惺想嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻惺惺惜惺惺想嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻嘻</p>
+                <p class="leave-msg-content">
+                    {{comment.content}}
+                </p>
+
                 <p class="leave-msg-other">
-                    <span>2016-09-21</span>
+                    <span>{{comment.date}}</span>
                     <span>&nbsp;|&nbsp;</span>
-                    <span>#</span>
+                    <span>{{$index+1}}</span>
                     <span>&nbsp;|&nbsp;</span>
-                    <span>引用</span>
+                    <span><a href="" ng-click="quote(comment);">引用</a></span>
                 </p>
             </div>
+
             <div class="public-msg">
                 <h2>发表留言</h2>
-                <form role="form">
+
+                <form role="form" ng-submit="submitComment();">
                     <div class="form-group comment">
                         <label for="comment">留言内容:</label>
-                        <textarea class="form-control " id="comment" placeholder="请输入留言"></textarea>
+                        <textarea class="form-control" ng-model="commentContent" id="comment"
+                                  placeholder="请输入留言"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="nickname">昵称:</label>
-                        <input type="text" class="form-control " id="nickname" placeholder="请输入留言昵称"></textarea>
+                        <input type="text" required class="form-control " ng-model="comment.visitor.name" id="nickname"
+                               placeholder="请输入留言昵称"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="email">邮箱:</label>
-                        <input type="text" class="form-control " id="email" placeholder="请输入留言邮箱">
+                        <input type="email" class="form-control " ng-model="comment.visitor.email" id="email"
+                               placeholder="请输入留言邮箱">
                     </div>
                     <div class="form-group">
                         <label for="userIdx">你的主页:</label>
-                        <input type="url" class="form-control " id="userIdx" placeholder="请输入你的个人主页">
+                        <input type="url" class="form-control " ng-model="comment.visitor.index" id="userIdx"
+                               placeholder="请输入你的个人主页">
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox"> 记住个人信息
+                            <input type="checkbox" ng-model="remember" name="remember"> 记住个人信息
                         </label>
                     </div>
                     <button type="submit" class="btn btn-default">提交留言</button>

@@ -21,9 +21,9 @@
         '$scope',
         '$route',
         '$routeParams',
-        '$http',
-        'HttpService','ModalService',
-        function ($rootScope,$scope, $route, $routeParams, $http,HttpService,ModalService) {
+        'HttpService',
+        'ModalService',
+        function ($rootScope,$scope, $route, $routeParams,HttpService,ModalService) {
             if(!sessionStorage.getItem("user")){
                 $location.path("/login/-1");
             } else {
