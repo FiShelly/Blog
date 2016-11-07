@@ -24,7 +24,7 @@
             <div class="comment" ng-repeat="comment in comments | filter:search">
                 <h3>
                     原文：<a href="#article/{{comment.article.id}}">{{comment.article.title}}</a>
-                    <button class="btn btn-danger article-list-btn comment-btn" ng-click="delete(comment.id);">
+                    <button class="btn btn-danger article-list-btn comment-btn" ng-click="delete(comment.id,comment.article.id);">
                         <span class="glyphicon  glyphicon-trash "></span>
                     </button>
                 </h3>
@@ -43,6 +43,8 @@
                     <span>{{comment.visitor.email}}</span>
                     <span>&nbsp;/&nbsp;</span>
                     <span><a href="{{comment.visitor.index}}">{{comment.visitor.index}}</a></span>
+                    <span>&nbsp;/&nbsp;</span>
+                    <span>{{comment.date}}</span>
                 </div>
             </div>
         </div>

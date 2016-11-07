@@ -28,6 +28,7 @@ header {
 .blog-head-title {
     float: left;
     margin-top: 0.1rem;
+    background-color: #FFF;
 }
 
 .search-box {
@@ -82,7 +83,7 @@ header {
     overflow: hidden;
     margin-bottom: 0.25rem;
     background-color: #FFF;
-    border-radius: 0.2rem;
+    /*border-radius: 0.2rem;*/
 }
 .article-box-sample{
     overflow: hidden;
@@ -117,6 +118,9 @@ header {
 .about-msg-sm{
     font-size: 0.13rem;
     text-align: center;
+}
+.about-msg-xl{
+    font-size: 0.2rem;
 }
 .type-detail{
     float: right;
@@ -161,7 +165,9 @@ h2,h4{
     padding: 0.1rem 0.3rem 0 0.3rem;
     display: flex;
 }
-
+.blog-nav {
+    background-color: #FFF;
+}
 .article-detail {
     margin-top: 0.1rem;
 }

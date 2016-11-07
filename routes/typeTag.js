@@ -15,7 +15,7 @@ function checkLogin(req, res, next) {
     }
     next();
 }
-//router.post('/save', checkLogin);
+router.post('/save', checkLogin);
 router.post('/save', function (req, res, next) {
     var typetagTmp = req.body.typetag;
     var md5 = crypto.createHash('md5');
@@ -34,7 +34,7 @@ router.post('/save', function (req, res, next) {
     });
 });
 
-//router.post('/updateName', checkLogin);
+router.post('/updateName', checkLogin);
 router.post('/updateName', function (req, res, next) {
     console.log("update Name");
     TypeTag.updateName(req.body.typetag, function (err) {
@@ -48,7 +48,7 @@ router.post('/updateName', function (req, res, next) {
     });
 });
 
-//router.post('/updateCounut', checkLogin);
+router.post('/updateCounut', checkLogin);
 router.post('/updateCount', function (req, res, next) {
     TypeTag.updateCount(req.body.name,req.body.type,function (err) {
         if (err) {
@@ -62,7 +62,7 @@ router.post('/updateCount', function (req, res, next) {
     });
 });
 
-//router.post('/delete', checkLogin);
+router.post('/delete', checkLogin);
 router.post('/delete', function (req, res, next) {
     console.log("delete entry");
     TypeTag.delete(req.body.id, function (err) {
@@ -75,7 +75,7 @@ router.post('/delete', function (req, res, next) {
         }
     });
 });
-//router.post('/page/:page/:size', checkLogin);
+router.post('/page/:page/:size', checkLogin);
 router.post('/page/:page/:size', function (req, res, next) {
     console.log("enter page type tag");
     TypeTag.getTypeTagByPage(req.body.type, req.params.page, req.params.size, function (err, typetags, total, size) {
@@ -90,7 +90,7 @@ router.post('/page/:page/:size', function (req, res, next) {
     });
 });
 
-//router.post('/getByName', checkLogin);
+router.post('/getByName', checkLogin);
 router.post('/getByName', function (req, res, next) {
     console.log("enter getByName type tag");
     TypeTag.getTypeTagByName(req.body.name, req.body.type, function (err, typetag) {

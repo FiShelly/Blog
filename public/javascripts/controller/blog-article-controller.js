@@ -27,7 +27,7 @@
         '$filter',
         function ($rootScope,$scope, $route, $routeParams, HttpService,$sce,ModalService,$filter) {
             $rootScope.isReady = true;
-
+            console.log("blog-article");
             var getCurArticle = function(){
                 HttpService.ajax('/article/getById/'+$routeParams.id+'/2',{},function(data){
                     if(data){
@@ -36,6 +36,7 @@
                         $scope.article.articleHtml = $sce.trustAsHtml($scope.article.articleHtml);
                         changeNPA();
                         queryComment();
+                        updateCount(false);
                     }
                 });
             };
@@ -81,6 +82,20 @@
                         }
                 });
             };
+            var queryArticle = function(){
+                HttpService.ajax('/article/page/index/1/1',{},function(data) {
+                    if (data.articles) {
+                        $scope.article = data.articles[0];
+                        $scope.article.author = 'Fishelly.';
+                        $rootScope.isReady = false;
+                        $scope.article.articleHtml = $sce.trustAsHtml($scope.article.articleHtml);
+                        changeNPA();
+                        queryComment();
+                        $rootScope.articleId = data.articles[0].id;
+                        updateCount(false);
+                    }
+                });
+            };
             $scope.submitComment = function(){
                 if($scope.remember){
                     localStorage.setItem("visitor",JSON.stringify($scope.comment.visitor));
@@ -101,13 +116,24 @@
                         return data;
                     };
                     ModalService.open('/template/modal-tip-msg.html', 'ModalInstanceCtrl', 'md', obj);
+                    updateCount(true);
                 });
             };
+
+            var updateCount = function(flag){
+                var obj =  {"readCount": 1};
+                if(flag){
+                    obj = {"commentCount": 1};
+                }
+                HttpService.ajax('/article/updateCount/'+$routeParams.id,{query:obj},function(data){});
+            };
+
             $scope.quote = function(comment){
                 $scope.commentContent = '<quote-name>'+comment.visitor.name+'</quote-name>\n'+
                                 '<quote-content>'+comment.content+'</quote-content>'+"\n";
                 document.getElementById('comment').focus();
             };
+
             $scope.aboutArticle = [];
             $scope.comments = [];
             $scope.comment ={};
@@ -116,8 +142,11 @@
                 $scope.comment.visitor = JSON.parse(localStorage.getItem("visitor"));
                 $scope.remember = true;
             }
-            getCurArticle();
-
+            if($routeParams.id==0){
+                queryArticle();
+            } else {
+                getCurArticle();
+            }
         }
     ]);
 })(angular,document);

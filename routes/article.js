@@ -17,7 +17,7 @@ function checkLogin(req, res, next) {
     }
     next();
 }
-//router.post('/save', checkLogin);
+router.post('/save', checkLogin);
 router.post('/save', function (req, res, next) {
     var articleTmp = req.body.article;
     var md5 = crypto.createHash('md5');
@@ -42,7 +42,7 @@ router.post('/save', function (req, res, next) {
     });
 });
 
-//router.post('/updateName', checkLogin);
+router.post('/updateName', checkLogin);
 router.post('/update', function (req, res, next) {
     var msg = '';
     if(req.body.article.status == 2){
@@ -76,7 +76,7 @@ router.post('/update', function (req, res, next) {
 //    });
 //});
 
-//router.post('/updateName', checkLogin);
+router.post('/updateName', checkLogin);
 router.post('/delete', function (req, res, next) {
     Article.delete(req.body.id,req.body.status, function (err) {
         if (err) {
@@ -116,11 +116,8 @@ router.post('/page/index/:page/:size', function (req, res, next) {
     },2);
 });
 
-//router.post('/getArticleById', checkLogin);
 router.post('/getById/:id/:status', function (req, res, next) {
-    console.log("enter getByName type tag");
     Article.getArticleById(req.params.id,parseInt(req.params.status), function (err, article) {
-        console.log(req.params.id + " ==========");
         if (err) {
             console.log(err);
             console.log("the server has error ");
@@ -130,7 +127,6 @@ router.post('/getById/:id/:status', function (req, res, next) {
         } else {
             res.json({status: '1', article: article});
         }
-
     });
 });
 
@@ -145,6 +141,19 @@ router.post('/page/query', function (req, res, next) {
             res.json({status: '1', articles: articles});
         }
 
+    });
+
+});
+
+router.post('/updateCount/:id', function (req, res, next) {
+    Article.updateReadAndCommentCount(req.params.id,req.body.query, function (err) {
+        console.log(req.body.query);
+        if (err) {
+            console.log("the server has error " + req.body.type);
+            res.json({status: '0'});
+        } else {
+            res.json({status: '1'});
+        }
     });
 
 });

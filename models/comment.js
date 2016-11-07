@@ -74,7 +74,7 @@ Comment.delete = function (id, callback) {
     });
 };
 
-Comment.getCommentByQuery = function (query, callback) {
+Comment.getCommentByQuery = function (query, callback,flag) {
     pool.acquire(function (err, mongodb) {
         mongodb.authenticate(settings.user, settings.pwd, function () {
             if (err) {
@@ -85,7 +85,11 @@ Comment.getCommentByQuery = function (query, callback) {
                     pool.release(mongodb);
                     return callback(err);
                 }
-                collection.find(query).sort({date:1}).toArray(function(err,docs){
+                var obj = {date:1};
+                if(flag){
+                    obj = {date:-1}
+                }
+                collection.find(query).sort(obj).toArray(function(err,docs){
                     pool.release(mongodb);
                     if (err) {
                         return callback(err);

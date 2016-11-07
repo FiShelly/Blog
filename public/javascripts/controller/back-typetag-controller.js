@@ -99,24 +99,9 @@
                     $rootScope.isReady = false;
                 });
             };
-            //$scope.go = function (page) {
-            //    if (page >= 1 && page <= $scope.page.length) {
-            //        $scope.curPage = page;
-            //        queryPage();
-            //    }
-            //};
+
             queryPage();
         }
     ]);
 
-    //module.controller('ModalInstanceCtrl', function ($scope, $modalInstance, obj) { //依赖于modalInstance
-    //    $scope.obj = obj;
-    //
-    //    $scope.ok = function () {
-    //        $modalInstance.close($scope.obj); //关闭并返回当前选项
-    //    };
-    //    $scope.cancel = function () {
-    //        $modalInstance.dismiss('cancel'); // 退出
-    //    }
-    //});
 })(angular);

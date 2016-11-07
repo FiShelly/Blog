@@ -22,6 +22,7 @@
         '$routeParams',
         'HttpService',
         function ($rootScope,$scope, $route, $routeParams, HttpService) {
+            console.log("blog-type");
             $rootScope.isReady = true;
             var queryType = function(){
                 HttpService.ajax('/typetag/page/1/1000000',{type: true},function(data){

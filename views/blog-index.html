@@ -32,9 +32,10 @@
 
                 <form class="form-inline search-box hidden-xs " ng-submit="open('md')">
                     <div class="btn-group search-group">
-                        <input type="text" class="form-control search-input" ng-model="keyword" id="search" placeholder="搜索">
-                        <label for="search" ></label>
-                        <button type="button" ng-click="open('md');" class="btn btn-default search-btn" >
+                        <input type="text" class="form-control search-input" ng-model="keyword" id="search"
+                               placeholder="搜索">
+                        <label for="search"></label>
+                        <button type="button" ng-click="open('md');" class="btn btn-default search-btn">
                             <span class="glyphicon glyphicon-search "></span>
                         </button>
                     </div>
@@ -44,20 +45,25 @@
         <div class="nav-box">
             <nav class="left-function col-sm-12 left-function-position ease1">
                 <div class="normal-nav">
-                    <a auto-focus="" href="/"><span class="glyphicon glyphicon-home fc-item fc-item-index ease1"></span></a>
-                    <a auto-focus="" href="#/index"><span class="glyphicon glyphicon-thumbs-up fc-item fc-item-blog ease1"></span></a>
-                    <a auto-focus="" href="#/article/{{articleId||0}}"><span class="glyphicon glyphicon-file fc-item fc-item-article ease1"></span></a>
-                    <a auto-focus="" href="#/type/{{types[0].id||0}}"><span
+                    <a  href="/"><span class="glyphicon glyphicon-home fc-item fc-item-index ease1"></span></a>
+                    <a  href="#/index"><span
+                            class="glyphicon glyphicon-thumbs-up fc-item fc-item-blog ease1"></span></a>
+                    <a  href="#/article/{{articleId||0}}"><span
+                            class="glyphicon glyphicon-file fc-item fc-item-article ease1"></span></a>
+                    <a  href="#/type/{{types[0].id||0}}"><span
                             class="glyphicon glyphicon-list-alt fc-item fc-item-type ease1"></span></a>
                 </div>
             </nav>
             <nav class="left-function bootom-function col-sm-12 left-function-position ease1" ng-show="isLogin">
                 <div class="login-nav">
-                    <a auto-focus="" href="#/back/personal"><span class="glyphicon glyphicon-user fc-item fc-item-user ease1"></span></a>
-                    <a auto-focus="" href="#/back/article/list"><span
+                    <a  href="#/back/personal"><span
+                            class="glyphicon glyphicon-user fc-item fc-item-user ease1"></span></a>
+                    <a  href="#/back/article/list"><span
                             class="glyphicon glyphicon-th fc-item fc-item-articleMan ease1"></span></a>
-                    <a auto-focus="" href="#/back/type"><span class="glyphicon glyphicon-tags fc-item fc-item-typeMan ease1"></span></a>
-                    <a auto-focus="" href="#/back/comment"><span class="glyphicon glyphicon-comment fc-item fc-item-comment ease1"></span></a>
+                    <a  href="#/back/type"><span
+                            class="glyphicon glyphicon-tags fc-item fc-item-typeMan ease1"></span></a>
+                    <a  href="#/back/comment"><span
+                            class="glyphicon glyphicon-comment fc-item fc-item-comment ease1"></span></a>
                 </div>
             </nav>
         </div>
@@ -119,35 +125,36 @@
             'ModalService',
             '$location',
             'HttpService',
-            function ($rootScope,$scope, ModalService, $location,HttpService) {
+            function ($rootScope, $scope, ModalService, $location, HttpService) {
                 $rootScope.isReady = true;
-                if(sessionStorage.getItem("user")){
+                if (sessionStorage.getItem("user")) {
                     $rootScope.isLogin = true;
                 }
 
                 $scope.open = function (size) {  //打开模态
-                    console.log($scope.keyword);
-                    var patternObj = {$regex: $scope.keyword, $options:'i'};
-                    HttpService.ajax('/article/page/query', {query:{"title":patternObj,"status":2}}, function (data) {
-                        if (data.articles.length != 0) {
+                    var patternObj = {$regex: $scope.keyword, $options: 'i'};
+                    HttpService.ajax('/article/page/query', {
+                        query: {
+                            "title": patternObj,
+                            "status": 2
+                        }
+                    }, function (data) {
+                        if (data.articles) {
                             $scope.articleList = data.articles;
                             console.log($scope.articleList);
                             var obj = function () {
                                 return {
-                                    keyword:$scope.keyword,
-                                    count:$scope.articleList.length,
-                                    articleList:$scope.articleList
+                                    keyword: $scope.keyword,
+                                    count: $scope.articleList.length,
+                                    articleList: $scope.articleList
                                 };
                             };
                         }
                         var modalInstance = ModalService.open('/template/modal-article-list.html', 'ModalInstanceCtrl', size, obj);
-                        modalInstance.result.then(function (selectedItem) {
-//                        $rootScope.isReady = true;
-
-                        });
+                        modalInstance.result.then(function (selectedItem) {});
                     });
-
                 };
+
             }
         ]);
     })(angular);

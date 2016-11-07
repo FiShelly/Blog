@@ -1,6 +1,12 @@
 <div class="col-md-offset-1 col-sm-12 col-md-6 ease1">
+    <ol class="breadcrumb blog-nav border-shadow about-msg">
+        <li><a href="/">首页</a></li>
+        <li><a href="#/index">博客主页</a></li>
+        <li><a href="#/article/0">文章</a></li>
+        <li><a href="#/type/0">分类</a></li>
+    </ol>
     <div class="new-article-box type-title border-shadow">
-        <p class="about-msg"><span>类别：</span>{{firstTypeName}}→共有{{typeDetail.count}}篇文章</p>
+        <p class="about-msg-xl"><span>类别：{{firstTypeName}}</span>&nbsp;→&nbsp;<span>共有&nbsp;{{typeDetail.count}}&nbsp;篇文章</span></p>
     </div>
     <div class="type-article-list border-shadow" ng-repeat="detail in typeDetail.detail">
         <h2>{{detail.year}}</h2>

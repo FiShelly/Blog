@@ -23,25 +23,27 @@
         '$routeParams',
         'HttpService',
         'ModalService',
-        function ($rootScope, $scope, $route, $routeParams, HttpService, ModalService) {
+        '$location',
+        function ($rootScope, $scope, $route, $routeParams, HttpService, ModalService,$location) {
             if(!sessionStorage.getItem("user")){
-                $location.path("/login/-1");
+                //$location.path("/login/-1");
             } else {
                 $rootScope.isLogin = true;
             }
             var queryComment = function () {
-                HttpService.ajax('/comment/page/query', {},function (data) {
+                HttpService.ajax('/comment/page/query', {flag:true},function (data) {
                         if (data) {
                             $scope.comments = data.comments;
                             $rootScope.isReady = false;
                         }
                     });
             };
-            $scope.delete = function (id) {
+            $scope.delete = function (id,aid) {
                 HttpService.ajax('/comment/delete/'+id,{},function(data){
                     var obj = function () {
                         return data;
                     };
+                    updateCount(aid);
                     ModalService.open('/template/modal-tip-msg.html', 'ModalInstanceCtrl', 'md', obj);
                     for(var i = 0;i<$scope.comments.length;i++){
                         if($scope.comments[i].id == id){
@@ -51,7 +53,10 @@
                     }
                 });
             };
-
+            var updateCount = function(id){
+                var obj =  {"commentCount": -1};
+                HttpService.ajax('/article/updateCount/'+id,{query:obj},function(data){});
+            };
             queryComment();
         }
     ]);

@@ -29,8 +29,8 @@ var Article = function (article) {
     this.date = article.date;
     this.articleHtml = article.articleHtml;
     this.articleMd = article.articleMd;
-    this.readCount = article.readCount;
-    this.commentCount = article.commentCount;
+    this.readCount = 0;
+    this.commentCount = 0;
     this.status = article.status;
     //this.nextArticle = article.nextArticle;
     //this.preArticle = article.preArticle;
@@ -168,12 +168,6 @@ Article.getArticleByPage = function (page, ls, callback, status) {
                             console.log(err);
                             return callback(err);
                         }
-                        //var size = total % ls;
-                        //if (size == 0) {
-                        //    size = total / ls;
-                        //} else {
-                        //    size = parseInt(total / ls) + 1;
-                        //}
                         callback(null, docs);
                     });
                 });
@@ -210,3 +204,33 @@ Article.getArticleByQuery = function (query, callback) {
         });
     });
 };
+
+
+Article.updateReadAndCommentCount = function (id,query, callback) {
+    console.log(query);
+    pool.acquire(function (err, mongodb) {
+        mongodb.authenticate(settings.user, settings.pwd, function () {
+            if (err) {
+                return callback(err);
+            }
+            mongodb.collection('articles', function (err, collection) {
+                if (err) {
+                    pool.release(mongodb);
+                    return callback(err);
+                }
+
+                collection.update({
+                    "id": id
+                }, {
+                    $inc: query
+                }, function (err) {
+                    mongodb.close();
+                    if (err) {
+                        return callback(err);
+                    }
+                });
+            });
+        });
+    });
+};
+

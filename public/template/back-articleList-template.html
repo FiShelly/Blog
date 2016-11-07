@@ -11,12 +11,12 @@
                     <input class="form-control" type="text" ng-model="search.title" id="content" placeholder="输入文章标题">
                 </div>
                 <div class="btn-group article-btn-add">
-                    <a href="#/back/article/edit/0" class="btn btn-success ">
+                    <a href="#/back/article/edit/0/2" class="btn btn-success ">
                         <span class="glyphicon glyphicon-plus"></span>
                     </a>
-                    <button ng-click="filterArticle(0);" class="btn btn-danger  "><span>已删除</span></button>
-                    <button ng-click="filterArticle(1);" class="btn btn-info "><span>草稿</span></button>
                     <button ng-click="filterArticle(2);" class="btn btn-success "><span>已发布</span></button>
+                    <button ng-click="filterArticle(1);" class="btn btn-info "><span>草稿</span></button>
+                    <button ng-click="filterArticle(0);" class="btn btn-danger  "><span>已删除</span></button>
                 </div>
             </form>
         </div>
@@ -48,12 +48,14 @@
                         <span ng-show="article.status == 0">已删除</span>
                     </td>
                     <td>
-                        <button ng-hide="article.status==0" ng-click="goEdit(article.id);"  class="btn btn-info article-list-btn">
-                            <span class="glyphicon glyphicon-pencil "></span>
-                        </button>
-                        <button ng-hide="article.status==0" class="btn btn-danger article-list-btn" ng-click="delete(article.id);">
-                            <span class="glyphicon glyphicon glyphicon-trash "></span>
-                        </button>
+                        <div class="btn-group">
+                            <button ng-hide="article.status==0" ng-click="goEdit(article.id);"  class="btn btn-info article-list-btn">
+                                <span class="glyphicon glyphicon-pencil "></span>
+                            </button>
+                            <button ng-hide="article.status==0" class="btn btn-danger article-list-btn" ng-click="delete(article.id);">
+                                <span class="glyphicon glyphicon glyphicon-trash "></span>
+                            </button>
+                        </div>
                     </td>
                 </tr>
                 </tbody>

@@ -42,13 +42,15 @@
                     <td>{{type.count}}</td>
                     <td>{{type.date}}</td>
                     <td>
-                        <button class="btn btn-info article-list-btn"
-                                ng-click="open('md',true,true,type.name,type.id);">
-                            <span class="glyphicon glyphicon-pencil "></span>
-                        </button>
-                        <button class="btn btn-danger article-list-btn" ng-click="delete(type.id);">
-                            <span class="glyphicon glyphicon glyphicon-trash "></span>
-                        </button>
+                        <div class="btn-group">
+                            <button class="btn btn-info article-list-btn"
+                                    ng-click="open('md',true,true,type.name,type.id);">
+                                <span class="glyphicon glyphicon-pencil "></span>
+                            </button>
+                            <button class="btn btn-danger article-list-btn" ng-click="delete(type.id);">
+                                <span class="glyphicon glyphicon glyphicon-trash "></span>
+                            </button>
+                        </div>
                     </td>
                 </tr>
                 </tbody>

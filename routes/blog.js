@@ -8,7 +8,16 @@ var moment = require("moment");
 router.get('/', function (req, res, next) {
     res.render('blog-index', {user: req.session.user});
 });
+function checkLogin(req, res, next) {
+    console.log("enter validate login");
+    if (!req.session.user) {
+        res.json({status: '-2',msg:"你还未登录，请登录后再进行操作。"});
+        return;
+    }
+    next();
+}
 
+router.post('/uploadBlogImg', checkLogin);
 router.post('/uploadBlogImg', function (req, res, next) {
     var form = new multiparty.Form({uploadDir: '../public/images/blog/'});
     form.parse(req, function (err, fields, files) {

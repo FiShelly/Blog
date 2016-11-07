@@ -1,13 +1,19 @@
 <article class="col-md-offset-2 col-md-8  ">
-    <div class="new-article-box type-title border-shadow about-msg article-type-header">
+    <ol class="breadcrumb blog-nav border-shadow about-msg">
+        <li><a href="/">首页</a></li>
+        <li><a href="#/index">博客主页</a></li>
+        <li><a href="#/article/0">文章</a></li>
+        <li><a href="#/type/0">分类</a></li>
+    </ol>
+    <div class="new-article-box  border-shadow about-msg article-type-header">
         <div class="last-article hidden-xs">
-            <span>上一篇</span>
+            <span>上一篇：</span>
             <a href="#/article/{{article.pre.id}}" ng-show="article.pre.title">{{article.pre.title||"没有了"}}</a>
         </div>
-        <p class="article-type "><span>类别：</span>{{article.type}}</p>
+        <p class="article-type "><span>类别：{{article.type}}</span></p>
 
         <div class="next-article hidden-xs">
-            <span>下一篇</span>
+            <span>下一篇：</span>
             <a href="#/article/{{article.next.id}}" ng-show="article.next.title">{{article.next.title||"没有了"}}</a>
         </div>
     </div>
@@ -31,7 +37,7 @@
                 <ul class="ulist">
                     <!--<li><span>版权声明：</span><span>自由转载-非商用-非衍生-保持署名（创意共享3.0许可证）</span></li>-->
                     <li><span>发表日期：</span><span>{{article.date}}</span></li>
-                    <li><span>更多内容：</span><span><a href="#/index">首页</a>→<a href="#/type/0">查看所有类别</a></span></li>
+                    <li><span>更多内容：</span><span><a href="#/index">首页</a>&nbsp;→&nbsp;<a href="#/type/0">查看所有类别</a></span></li>
                     <li><span>关注：</span><span><a href="https://github.com/FiShelly">Github</a></span></li>
                 </ul>
             </div>

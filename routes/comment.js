@@ -7,7 +7,15 @@ var crypto = require('crypto');
 var router = express.Router();
 var Comment = require('../models/comment.js');
 
-//router.post('/save', checkLogin);
+function checkLogin(req, res, next) {
+    console.log(req.session.user);
+    if (!req.session.user) {
+        res.json({status: '-2',msg:"你还未登录，请登录后再进行操作。"});
+        return;
+    }
+    next();
+}
+
 router.post('/save', function (req, res, next) {
     var commentTmp = req.body.comment;
     var md5 = crypto.createHash('md5');
@@ -24,7 +32,7 @@ router.post('/save', function (req, res, next) {
     });
 });
 
-
+router.post('/delete/:id', checkLogin);
 router.post('/delete/:id', function (req, res, next) {
     Comment.delete(req.params.id, function (err) {
         if (err) {
@@ -36,7 +44,6 @@ router.post('/delete/:id', function (req, res, next) {
 });
 
 router.post('/page/query', function (req, res, next) {
-    console.log(req.body.query);
     Comment.getCommentByQuery(req.body.query, function (err, comments) {
         if (err) {
             console.log(err);
@@ -46,7 +53,7 @@ router.post('/page/query', function (req, res, next) {
             res.json({status: '1', comments: comments});
         }
 
-    });
+    },req.body.flag);
 
 });
 

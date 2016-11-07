@@ -2,7 +2,7 @@
 
     <div class="new-article-box border-shadow ">
         <h2 class="article-box-title">
-            {{article.title}}
+            <a href="#/article/{{article.id}}">{{article.title}}</a>
         </h2>
 
         <div class="article-box-sample">
@@ -10,10 +10,10 @@
                 <p class="about-msg ">{{article.abstract}}</p>
             </div>
             <div>
-                <p class="about-msg"><span>→</span><a href="#/article/{{article.id}}">阅读全文</a></p>
+                <p class="about-msg"><span>→&nbsp;</span><a href="#/article/{{article.id}}">阅读全文</a></p>
             </div>
             <div class="article-box-type about-msg">
-                <span>分类:</span><a href="{{article.typeUrl}}">{{article.type}}</a><span>←</span>
+                <span>分类:</span><a href="{{article.typeUrl}}">{{article.type}}</a><span>&nbsp;←</span>
             </div>
         </div>
         <div class="article-box-post about-msg">
