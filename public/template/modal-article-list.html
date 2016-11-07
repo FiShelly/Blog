@@ -1,0 +1,15 @@
+<div class="type-article-list">
+    <h2 class="about-msg"><span>关键字：</span>{{obj.keyword}}→共有{{obj.count}}篇文章</h2>
+    <div class="type-article-list">
+        <ul class="about-msg ulist">
+            <li ng-repeat="article in obj.articleList">
+                <span><a href="#/article/{{article.id}}">{{article.title}}</a></span>
+                <span>&nbsp;→&nbsp;</span>
+                <span>{{article.date}}</span>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-danger" ng-click="cancel()">退出</button>
+</div>
