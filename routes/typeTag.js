@@ -75,7 +75,7 @@ router.post('/delete', function (req, res, next) {
         }
     });
 });
-router.post('/page/:page/:size', checkLogin);
+
 router.post('/page/:page/:size', function (req, res, next) {
     console.log("enter page type tag");
     TypeTag.getTypeTagByPage(req.body.type, req.params.page, req.params.size, function (err, typetags, total, size) {
