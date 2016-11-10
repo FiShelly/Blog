@@ -1,27 +1,27 @@
-<article class="col-sm-12 col-md-7 col-md-offset-1  article-box ease1">
-
-    <div class="new-article-box border-shadow ">
-        <h2 class="article-box-title">
-            <a href="#/article/{{article.id}}">{{article.title}}</a>
-        </h2>
-
+<article class="col-sm-12 col-md-offset-1 col-md-6 col-lg-7 col-lg-offset-1  article-box ease1">
+    <div class="new-article-box  ">
+        <div class="article-box-title">
+            <a class=" about-msg-xll" href="#/article/{{article.id}}">{{article.title}}1</a><br>
+            <span class="about-msg-md">{{article.date}}2016-10-10</span>
+        </div>
+        <img ng-src="article.img"  class="article-font-img"/>
         <div class="article-box-sample">
             <div>
-                <p class="about-msg ">{{article.abstract}}</p>
-            </div>
-            <div>
-                <p class="about-msg"><span>→&nbsp;</span><a href="#/article/{{article.id}}">阅读全文</a></p>
-            </div>
-            <div class="article-box-type about-msg">
-                <span>分类:</span><a href="{{article.typeUrl}}">{{article.type}}</a><span>&nbsp;←</span>
+                <p class="about-msg ">{{article.abstract}}1111</p>
             </div>
         </div>
         <div class="article-box-post about-msg">
-            发表于：<span>{{article.author}}</span>&nbsp;<span>{{article.date}}</span>
+            <div class="article-read-more">
+                <p class="about-msg"><a class="btn btn-info btn-read-more" href="#/article/{{article.id}}">阅读全文</a></p>
+            </div>
+            <div class="article-bottom-box">
+                <div> <i class="glyphicon glyphicon-comment"></i>&nbsp;<span>111</span></div>
+                <div> <i class="glyphicon glyphicon-eye-open"></i>&nbsp;<span>111</span></div>
+            </div>
         </div>
     </div>
 
-    <div class="new-article-box border-shadow">
+    <div class="new-article-box ">
         <h2 class="article-box-title">
             近期文章.
         </h2>
@@ -37,8 +37,8 @@
     </div>
 
 </article>
-<nav class="col-sm-12  col-md-3   left-bar ">
-    <div class="left-box  col-sm-5 col-md-offset-1 col-md-11   col-lg-10 border-shadow">
+<nav class="col-sm-12 col-md-4  col-lg-3   left-bar ">
+    <div class="left-box  col-sm-5 col-md-offset-1 col-md-11   col-lg-10 ">
         <div class="left-box-title ">
             <span>分类.</span>
         </div>
@@ -49,17 +49,19 @@
         </ul>
     </div>
 
-    <div class="left-box col-sm-offset-2 col-sm-5 col-md-offset-1 col-md-11  col-lg-10 border-shadow">
+    <div class="left-box col-sm-offset-2 col-sm-5 col-md-offset-1 col-md-11  col-lg-10 ">
         <div class="left-box-title">关于.</div>
         <img class="img-head" ng-src="{{myself.headImg}}">
-        <p class="about-msg-sm">
-            {{myself.position}}
-        </p>
-        <p class="about-msg-sm">
-            {{myself.introduce}}
-        </p>
+        <div class="msg-box">
+            <p class="about-msg-sm">
+                {{myself.position}}Java开发工程师 & Web前端工程师
+            </p>
+            <p class="about-msg-ss">
+                {{myself.introduce}}耐得住寂寞，经得起诱惑，受得起挫折。
+            </p>
+        </div>
 
-        <p class="about-msg">follow me:</p>
+        <h4 class="about-msg-xl">follow me:</h4>
         <ul class="ulist">
             <li ng-repeat="follow in myself.follow">
                 <a href="{{follow.url}}" target="_blank">{{follow.name}}</a>

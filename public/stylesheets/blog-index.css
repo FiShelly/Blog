@@ -53,7 +53,8 @@ header {
 .left-box {
     padding: 0 0.1rem 0.1rem 0.1rem;
     margin-bottom: 0.25rem;
-    border-radius: 0.2rem;
+    border-radius: 0.05rem;
+    border: 1px solid #d8d8d8;
     background-color: #FFF;
 }
 
@@ -79,48 +80,85 @@ header {
 }
 
 .new-article-box {
-    padding: 0.1rem 0.1rem 0.3rem 0.1rem;
     overflow: hidden;
     margin-bottom: 0.25rem;
     background-color: #FFF;
-    /*border-radius: 0.2rem;*/
+    border-radius: 0.05rem;
+    border: 1px solid #d8d8d8;
 }
 .article-box-sample{
+    padding: 0.1rem ;
     overflow: hidden;
     border-bottom: 1px #e1e1e1 solid;
-    padding-bottom: 0.1rem;
 }
 .article-box-title{
-    padding-bottom: 0.1rem;
+    padding: 0.1rem ;
     border-bottom: 1px #e1e1e1 solid;
 }
 .article-box-type{
     float: right;
 }
 .article-box-post{
-    padding-top: 0.1rem;
+    padding: 0.1rem ;
     float: left;
     width: 100%;
 }
+.btn-read-more{
+    border-radius: 0;
+    padding: 0.03rem 0.12rem;
+}
+.article-read-more{
+    float: left;
+}
+.article-bottom-box{
+    margin-top: 0.03rem;
+    float: right;
+    line-height: 0.17rem;
+}
+.article-bottom-box>div{
+    color: #616161;
+    float: left;
+    margin-left: 0.15rem;
+}
+.article-bottom-box>div>span{
+
+}
+
 .img-head {
     border: 1px solid #d6b2e1;
-    position: relative;
-    left: 50%;
-    margin: 0.1rem 0 0.05rem -0.35rem;
+    margin: 0.2rem ;
     border-radius: 0.7rem;
     width: 0.7rem;
     height: 0.7rem;
     background-color: pink;
+    float: left;
+}
+.article-font-img{
+    width: 100%;
+    height: 1.5rem;
+    background-color: #00aaff;
+}
+.msg-box{
+    padding: 0.25rem 0.1rem;
 }
 .about-msg{
     font-size: 0.17rem;
 }
+.about-msg-md{
+    font-size: 0.15rem;
+}
 .about-msg-sm{
-    font-size: 0.13rem;
+    font-size: 0.1rem;
     text-align: center;
+}
+.about-msg-ss{
+    font-size: 0.08rem;
 }
 .about-msg-xl{
     font-size: 0.2rem;
+}
+.about-msg-xll{
+    font-size: 0.25rem;
 }
 .type-detail{
     float: right;
@@ -409,14 +447,14 @@ h2,h4{
     -webkit-transition: All 1s ease;
     -moz-transition: All 1s ease;
     -o-transition: All 1s ease;
-    -ms-transition: All 1s ease;
+    /*-ms-transition: All 1s ease;*/
     transition: All 1s ease;
 }
 .ease2{
     -webkit-transition: All 2s ease;
     -moz-transition: All 2s ease;
     -o-transition: All 2s ease;
-    -ms-transition: All 2s ease;
+    /*-ms-transition: All 2s ease;*/
     transition: All 2s ease;
 }
 
@@ -616,8 +654,8 @@ th, td {
 .ball-triangle-path > div:nth-child(1) {
     -webkit-animation-name: ball-triangle-path-1;
     animation-name: ball-triangle-path-1;
-    -webkit-animation-delay: 0;
-    animation-delay: 0;
+    /*-webkit-animation-delay: 0;*/
+    /*animation-delay: 0;*/
     -webkit-animation-duration: 2s;
     animation-duration: 2s;
     -webkit-animation-timing-function: ease-in-out;
@@ -629,8 +667,8 @@ th, td {
 .ball-triangle-path > div:nth-child(2) {
     -webkit-animation-name: ball-triangle-path-2;
     animation-name: ball-triangle-path-2;
-    -webkit-animation-delay: 0;
-    animation-delay: 0;
+    /*-webkit-animation-delay: 0;*/
+    /*animation-delay: 0;*/
     -webkit-animation-duration: 2s;
     animation-duration: 2s;
     -webkit-animation-timing-function: ease-in-out;
@@ -642,8 +680,8 @@ th, td {
 .ball-triangle-path > div:nth-child(3) {
     -webkit-animation-name: ball-triangle-path-3;
     animation-name: ball-triangle-path-3;
-    -webkit-animation-delay: 0;
-    animation-delay: 0;
+    /*-webkit-animation-delay: 0;*/
+    /*animation-delay: 0;*/
     -webkit-animation-duration: 2s;
     animation-duration: 2s;
     -webkit-animation-timing-function: ease-in-out;
