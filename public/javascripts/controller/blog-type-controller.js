@@ -24,17 +24,34 @@
         function ($rootScope,$scope, $route, $routeParams, HttpService) {
             console.log("blog-type");
             $rootScope.isReady = true;
-            var queryType = function(){
-                HttpService.ajax('/typetag/page/1/1000000',{type: true},function(data){
-                    if(data){
+            var queryType = function(flag){
+                HttpService.ajax('/typetag/page/1/1000000',{type: flag},function(data){
+                    if(data && flag){
                         $rootScope.types = data.typetags;
+                    } else if(data && !flag){
+                        $rootScope.tags = data.typetags;
                     }
-                    if(data && $scope.types[0].name){
+                    if(data && $scope.types[0].name && flag){
                         $scope.firstTypeName = $rootScope.types[0].name;
                         queryTypePage();
                     }
                 });
             };
+
+            $scope.displayTagArticle = function(tag){
+                console.log(tag);
+                HttpService.ajax('/article/page/query',{query:{"tag.name":tag.name}},function(data) {
+                        $scope.articleList = data.articles;
+                        $scope.typeDetail = {
+                            name:$scope.firstTypeName,
+                            count:data.articles.length,
+                            detail:[]
+                        };
+                        filterArticle();
+                        $rootScope.isReady = false;
+                });
+            };
+
             var queryTypePage = function(){
                 HttpService.ajax('/article/page/query',{query:{type:$scope.firstTypeName,status:2}},function(data) {
                     if (data.articles.length != 0) {
@@ -58,7 +75,9 @@
                         }
                     }
                 } else {
-                    queryType();
+                    queryType(true);
+                    queryType(false);
+
                 }
             };
             var queryAuthor = function(){
@@ -90,7 +109,8 @@
             if(id != 0){
                 queryTypeName(id);
             } else {
-                queryType();
+                queryType(true);
+                queryType(false);
             }
             if(!$rootScope.myself){
                 queryAuthor();

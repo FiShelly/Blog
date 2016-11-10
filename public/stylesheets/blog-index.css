@@ -111,7 +111,7 @@ header {
     float: left;
 }
 .article-bottom-box{
-    margin-top: 0.03rem;
+    margin-top: 0.06rem;
     float: right;
     line-height: 0.17rem;
 }
@@ -165,9 +165,7 @@ header {
     margin-right: 0.15rem;
 }
 .border-shadow{
-    -webkit-box-shadow: 0 0 0.1rem #4e4e4e;
-    -moz-box-shadow: 0 0 0.1rem #4e4e4e;
-    box-shadow: 0 0 0.1rem #4e4e4e;
+    border: 1px solid #d8d8d8;
 }
 
 .type-title{
@@ -259,12 +257,19 @@ h2,h4{
     height: 0.3rem;
     z-index: 35;
 }
-
+.tag-list{
+    padding: 0.1rem;
+}
+.tag{
+    padding: 0.025rem 0.05rem;
+    border-radius: 0.08rem;
+    margin: 0.05rem;
+}
 @media (min-width:992px) {
     .left-function-position{
         width:0.4rem;
         height: 100%;
-        padding: 1rem 0.1rem 0 0.1rem;
+        padding: 1rem 0 0 0;
 
     }
     .bootom-function{
@@ -276,7 +281,8 @@ h2,h4{
     }
 
     .left-function>div>a{
-        display: inline-block;
+        text-align: center;
+        display: block;
         line-height: 0.4rem;
         width: 0.4rem;
         height: 0.4rem;
@@ -286,7 +292,8 @@ h2,h4{
         position: absolute;
         bottom: 0.3rem;
     }
-    .fc-item-index:hover:after{
+    .fc-item-index:hover:after,.fc-item-blog:hover:after,.fc-item-type:hover:after,
+    .fc-item-user:hover:after,.fc-item-articleMan:hover:after,.fc-item-typeMan:hover:after,.fc-item-comment:hover:after{
         content: "主页";
         display: inline-block;
         width: 0.4rem;
@@ -303,108 +310,21 @@ h2,h4{
     }
     .fc-item-blog:hover:after{
         content: "博客";
-        display: inline-block;
-        width: 0.4rem;
-        height: 0.2rem;
-        background-color: #bfbfbf;
-        position: absolute;
-        float: right;
-        margin-left: 0.15rem;
-        line-height: 0.15rem;
-        font-size: 0.12rem;
-        border-radius: 0.05rem;
-        text-align: center;
-        font-weight: bold;
     }
     .fc-item-type:hover:after{
         content: "分类";
-        display: inline-block;
-        width: 0.4rem;
-        height: 0.2rem;
-        background-color: #bfbfbf;
-        position: absolute;
-        float: right;
-        margin-left: 0.15rem;
-        line-height: 0.15rem;
-        font-size: 0.12rem;
-        border-radius: 0.05rem;
-        text-align: center;
-        font-weight: bold;
-    }
-    .fc-item-article:hover:after{
-        content: "文章";
-        display: inline-block;
-        width: 0.4rem;
-        height: 0.2rem;
-        background-color: #bfbfbf;
-        position: absolute;
-        float: right;
-        margin-left: 0.15rem;
-        line-height: 0.15rem;
-        font-size: 0.12rem;
-        border-radius: 0.05rem;
-        text-align: center;
-        font-weight: bold;
     }
     .fc-item-user:hover:after{
         content: "个人资料";
-        display: inline-block;
-        width: 0.6rem;
-        height: 0.2rem;
-        background-color: #bfbfbf;
-        position: absolute;
-        float: right;
-        margin-left: 0.15rem;
-        line-height: 0.15rem;
-        font-size: 0.12rem;
-        border-radius: 0.05rem;
-        text-align: center;
-        font-weight: bold;
     }
     .fc-item-articleMan:hover:after{
         content: "文章管理";
-        display: inline-block;
-        width: 0.6rem;
-        height: 0.2rem;
-        background-color: #bfbfbf;
-        position: absolute;
-        float: right;
-        margin-left: 0.15rem;
-        line-height: 0.15rem;
-        font-size: 0.12rem;
-        border-radius: 0.05rem;
-        text-align: center;
-        font-weight: bold;
     }
     .fc-item-typeMan:hover:after{
         content: "分类管理";
-        display: inline-block;
-        width: 0.6rem;
-        height: 0.2rem;
-        background-color: #bfbfbf;
-        position: absolute;
-        float: right;
-        margin-left: 0.15rem;
-        line-height: 0.15rem;
-        font-size: 0.12rem;
-        border-radius: 0.05rem;
-        text-align: center;
-        font-weight: bold;
     }
     .fc-item-comment:hover:after{
         content: "评论管理";
-        display: inline-block;
-        width: 0.6rem;
-        height: 0.2rem;
-        background-color: #bfbfbf;
-        position: absolute;
-        float: right;
-        margin-left: 0.15rem;
-        line-height: 0.15rem;
-        font-size: 0.12rem;
-        border-radius: 0.05rem;
-        text-align: center;
-        font-weight: bold;
     }
 }
 @media (max-width:991px){
