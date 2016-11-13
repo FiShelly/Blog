@@ -12,7 +12,7 @@
 
 ;(function(factory) {
     "use strict";
-    
+
 	// CommonJS/Node.js
 	if (typeof require === "function" && typeof exports === "object" && typeof module === "object")
     { 
@@ -34,7 +34,7 @@
         window.editormd = factory();
 	}
     
-}(function() {    
+}(function() {
 
     /* Require.js assignment replace */
     

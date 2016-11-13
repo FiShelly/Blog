@@ -54,6 +54,7 @@
 
                     if (data.articles.length != 0) {
                         $scope.article = data.articles[0] ;
+                        console.log($scope.article);
                         $scope.articleList = data.articles;
                         $scope.article.author = 'Fishelly.';
                         $rootScope.articleId = data.articles[0].id;

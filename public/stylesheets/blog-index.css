@@ -46,6 +46,7 @@ header {
 
 }
 .search-btn{
+    padding: 6.2px 12px;
     border-left: 0;
     border-radius: 0 4px 4px 0;
 }
@@ -135,7 +136,7 @@ header {
 }
 .article-font-img{
     width: 100%;
-    height: 1.5rem;
+    height: 1.8rem;
     background-color: #00aaff;
 }
 .msg-box{
@@ -149,10 +150,9 @@ header {
 }
 .about-msg-sm{
     font-size: 0.1rem;
-    text-align: center;
 }
 .about-msg-ss{
-    font-size: 0.08rem;
+    font-size: 0.13rem;
 }
 .about-msg-xl{
     font-size: 0.2rem;
@@ -179,7 +179,7 @@ h2,h4{
 
 .type-article-list{
     background-color: #FFF;
-    margin-top: 0.3rem;
+    margin: 0.3rem 0;
     padding-left: 0.3rem;
 }
 
@@ -277,6 +277,8 @@ h2,h4{
         bottom: 0;
     }
     .content-box{
+        width:100%;
+        position: absolute;
         margin-top: 0.85rem;
     }
 
@@ -296,7 +298,7 @@ h2,h4{
     .fc-item-user:hover:after,.fc-item-articleMan:hover:after,.fc-item-typeMan:hover:after,.fc-item-comment:hover:after{
         content: "主页";
         display: inline-block;
-        width: 0.4rem;
+        width: 0.55rem;
         height: 0.2rem;
         background-color: #bfbfbf;
         position: absolute;

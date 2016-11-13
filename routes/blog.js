@@ -11,7 +11,7 @@ router.get('/', function (req, res, next) {
 function checkLogin(req, res, next) {
     console.log("enter validate login");
     if (!req.session.user) {
-        res.json({status: '-2',msg:"Äã»¹Î´µÇÂ¼£¬ÇëµÇÂ¼ºóÔÙ½øĞĞ²Ù×÷¡£"});
+        res.json({status: '-2',msg:"ä½ è¿˜æœªç™»å½•ï¼Œè¯·ç™»å½•åå†è¿›è¡Œæ“ä½œã€‚"});
         return;
     }
     next();
@@ -31,13 +31,13 @@ router.post('/uploadBlogImg', function (req, res, next) {
             if (files.data[0].originalFilename) {
                 var fileName = files.data[0].originalFilename.split(".")[1];
                 dstPath = 'images/blog/' + "blog_" + moment().format("YYYYMMDDHHmmss") + "." + fileName;
-                //ÖØÃüÃûÎªÕæÊµÎÄ¼şÃû
+                //é‡å‘½åä¸ºçœŸå®æ–‡ä»¶å
                 fs.rename(files.data[0].path, "../public/" + dstPath, function (err) {
                     if (err) {
                         console.log('rename error: ' + err);
                     } else {
                         console.log('rename ok');
-                        res.json({success: 1,message:"ÉÏ´«³É¹¦",url:dstPath});
+                        res.json({success: 1,message:"ä¸Šä¼ æˆåŠŸ",url:dstPath});
                     }
                 });
             }

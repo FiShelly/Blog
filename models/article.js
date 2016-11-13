@@ -31,6 +31,7 @@ var Article = function (article) {
     this.articleMd = article.articleMd;
     this.readCount = 0;
     this.commentCount = 0;
+    this.coverImg = article.coverImg;
     this.status = article.status;
     //this.nextArticle = article.nextArticle;
     //this.preArticle = article.preArticle;
@@ -79,6 +80,7 @@ Article.update = function (article, callback) {
                         "date": article.date,
                         "articleHtml": article.articleHtml,
                         "status": article.status,
+                        "coverImg":article.coverImg,
                         "articleMd": article.articleMd
                     }
                 }, function (err) {

@@ -19,7 +19,15 @@
     <script src="/javascripts/angular.js"></script>
     <script src="/javascripts/angular-route.js"></script>
     <script src="/javascripts/select.min.js"></script>
-
+    <script src="/javascripts/angular-animate.js"></script>
+    <style type="text/css">
+        /*显示操作*/
+        .content-box.ng-enter{opacity:0;}
+        .content-box.ng-enter.ng-enter-active{opacity:1;}
+        /*隐藏操作*/
+        .content-box.ng-leave{opacity:1;}
+        .content-box.ng-leave.ng-leave-active{opacity:0;}
+    </style>
 </head>
 <body>
 <div class="container-fluid " ng-controller="AppController">
@@ -65,14 +73,14 @@
                 </div>
             </nav>
         </div>
-        <div class="loader" ng-show="isReady">
-            <div class="loader-inner ball-triangle-path">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-        </div>
-        <div class="content-box " ng-view>
+        <!--<div class="loader" ng-show="isReady">-->
+            <!--<div class="loader-inner ball-triangle-path">-->
+                <!--<div></div>-->
+                <!--<div></div>-->
+                <!--<div></div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="content-box ease1" ng-view>
 
         </div>
 

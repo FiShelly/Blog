@@ -5,7 +5,7 @@
                 <a class=" about-msg-xll" href="#/article/{{article.id}}">{{article.title}}</a><br>
                 <span class="about-msg-md">{{article.date}}</span>
             </div>
-            <img ng-src="article.img"  class="article-font-img"/>
+            <img ng-src="{{article.coverImg}}"  class="article-font-img"/>
             <div class="article-box-sample">
                 <div>
                     <p class="about-msg ">{{article.abstract}}</p>
@@ -55,7 +55,7 @@
         <div class="left-box-title">关于.</div>
         <img class="img-head" ng-src="{{myself.headImg}}">
         <div class="msg-box">
-            <p class="about-msg-sm">
+            <p class="about-msg-md">
                 {{myself.position}}
             </p>
             <p class="about-msg-ss">

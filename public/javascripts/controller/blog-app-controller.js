@@ -4,6 +4,7 @@
 (function (angular) {
     var app = angular.module('BlogIndexApp', [
         'ngRoute',
+        'ngAnimate',
         'blog.index',
         'blog.type',
         'blog.article',

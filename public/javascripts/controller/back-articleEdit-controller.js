@@ -153,6 +153,7 @@
             };
 
             $scope.updateStatus = function(status){
+                console.log($scope.article);
                 $scope.article.status = status;
                 $scope.article.articleHtml = testEditor.getHTML();
                 $scope.article.articleMd = testEditor.getMarkdown();
@@ -163,6 +164,25 @@
                     $rootScope.isReady = false;
                 });
 
+            };
+
+            $scope.uploadCoverImg = function(){
+                var formData = new FormData(document.getElementById('coverimg_form'));
+                formData.append( "CustomField", "This is some extra data" );
+                HttpService.ajaxObj({
+                    method:'POST',
+                    url: './blog/uploadBlogImg',
+                    data: formData,
+                    transformRequest: angular.identity,
+                    headers: {
+                        "Content-Type": function () {
+                            return undefined;
+                        }
+                    }
+                },function(data){
+                    $scope.article.coverImg = data.url;
+                    console.log($scope.article);
+                });
             };
         }
     ]);

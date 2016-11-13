@@ -8,12 +8,11 @@
             </a>
         </h2>
 
-        <form class="col-xs-12">
             <div class="form-group col-md-12">
                 <label for="title">文字标题/title</label>
                 <input autofocus type="text" class="form-control" id="title" ng-model="article.title" placeholder="文字标题/title">
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label for="type">分类/type</label>
                     <select class="form-control" id="type" ng-model="article.type" >
@@ -24,7 +23,18 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-6">
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="coverimage">封面图片/cover image</label>
+                        <form enctype="multipart/form-data" id="coverimg_form">
+                            <input type="file" class="form-control" id="coverimage" name="data" accept="image/*" onchange="angular.element(this).scope().uploadCoverImg()">
+                        </form>
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
                 <div class="form-group">
                     <label for="publicTime">发布时间/public time</label>
 
@@ -52,12 +62,16 @@
 
                 </div>
             </div>
+
+
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="abstract">摘要/abstract</label>
                     <textarea rows="4" class="form-control" id="abstract" ng-model="article.abstract" placeholder="摘要/abstract"></textarea>
                 </div>
             </div>
+
+
             <div class="article-btn-group">
                 <div class="btn-group">
                     <button type="button" class="btn btn-success" ng-click="publish(2);">
@@ -81,6 +95,5 @@
                     <textarea style="display: none" ></textarea>
                 </div>
             </div>
-        </form>
     </div>
 </div>
