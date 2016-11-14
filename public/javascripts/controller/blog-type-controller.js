@@ -22,7 +22,6 @@
         '$routeParams',
         'HttpService',
         function ($rootScope,$scope, $route, $routeParams, HttpService) {
-            console.log("blog-type");
             $rootScope.isReady = true;
             var queryType = function(flag){
                 HttpService.ajax('/typetag/page/1/1000000',{type: flag},function(data){
@@ -39,12 +38,13 @@
             };
 
             $scope.displayTagArticle = function(tag){
-                console.log(tag);
+                $scope.firstTypeName = tag.name;
                 HttpService.ajax('/article/page/query',{query:{"tag.name":tag.name}},function(data) {
                         $scope.articleList = data.articles;
                         $scope.typeDetail = {
                             name:$scope.firstTypeName,
                             count:data.articles.length,
+                            flag:false,
                             detail:[]
                         };
                         filterArticle();
@@ -59,6 +59,7 @@
                         $scope.typeDetail = {
                             name:$scope.firstTypeName,
                             count:data.articles.length,
+                            flag:true,
                             detail:[]
                         };
                         filterArticle();
@@ -76,9 +77,8 @@
                     }
                 } else {
                     queryType(true);
-                    queryType(false);
-
                 }
+                queryType(false);
             };
             var queryAuthor = function(){
                 HttpService.ajax('/user/getAuthor',{loginId: 'fishelly'},function(data){
@@ -90,7 +90,8 @@
             };
             var filterArticle = function(){
                 var temp = {year:"",articleList:[]};
-                for(var i = 0;i<$scope.articleList.length-1;i++){
+                var alLength = $scope.articleList.length;
+                for(var i = 0;i<alLength-1;i++){
                     var str = $scope.articleList[i].date.substring(0,4);
                     var end = $scope.articleList[i+1].date.substring(0,4);
                     if( str == end){
@@ -100,6 +101,9 @@
                         $scope.typeDetail.detail.push(temp);
                         temp = {year:"",articleList:[]};
                     }
+                }
+                if(alLength != 0){
+                    temp.year = $scope.articleList[i].date.substring(0,4);
                 }
                 temp.articleList.push($scope.articleList[i]);
                 $scope.typeDetail.detail.push(temp);

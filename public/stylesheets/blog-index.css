@@ -12,7 +12,6 @@ html {
 
 body {
     background: #ebebeb;
-    /*height: 100%;*/
     padding-bottom: 0.25rem;
 }
 
@@ -37,10 +36,7 @@ header {
 }
 .search-input{
     float:  left;
-
-
     border-radius: 4px 0 0 4px;
-
 }
 .search-input:focus{
 
@@ -126,7 +122,6 @@ header {
 }
 
 .img-head {
-    border: 1px solid #d6b2e1;
     margin: 0.2rem ;
     border-radius: 0.7rem;
     width: 0.7rem;
@@ -314,7 +309,7 @@ h2,h4{
         content: "博客";
     }
     .fc-item-type:hover:after{
-        content: "分类";
+        content: "分类标签";
     }
     .fc-item-user:hover:after{
         content: "个人资料";
@@ -340,30 +335,46 @@ h2,h4{
     .content-box{
         margin-top: 1.45rem;
     }
-    .left-function>div>a{
+    .normal-nav , .login-nav{
+        font-size: 0;
+        height: 0.35rem;
+        background-color: #fff;
+    }
+    .normal-nav>a,.login-nav>a{
         display: inline-block;
         line-height: 0.3rem;
-        width: 24%;
+        width: 32.8%;
         height: 0.3rem;
         text-align: center;
     }
+    .normal-nav>a:nth-child(2),.login-nav>a:nth-child(3){
+        border-right: 1px solid #e1e1e1;
+        border-left: 1px solid #e1e1e1;
+
+    }
+    .login-nav{
+        border-top: 1px solid #e1e1e1;
+        background-color: #fff;
+    }
+    .login-nav>a:nth-child(2){
+        border-left: 1px #e1e1e1 solid;
+    }
+    .login-nav>a{
+        width: 24.3%;
+    }
     .bootom-function{
-        margin-top: 0.89rem;
+        margin-top: 0.94rem;
     }
 }
 
-
-
-
 .fc-item{
+    margin-top: 0.07rem;
     display: inline-block;
     font-size: 0.2rem;
     width: 0.2rem;
     height: 0.2rem;
 
 }
-
-
 
 .ease1{
     -webkit-transition: All 1s ease;

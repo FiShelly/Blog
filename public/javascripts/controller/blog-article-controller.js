@@ -49,10 +49,10 @@
                         for (var i = 0; i < data.articles.length; i++) {
                             if (data.articles[i].id == $scope.article.id && flaga) {
                                 if (i - 1 >= 0) {
-                                    $scope.article.pre = data.articles[i - 1];
+                                    $scope.article.next = data.articles[i - 1];
                                 }
                                 if (i + 1 <= data.articles.length) {
-                                    $scope.article.next = data.articles[i + 1]
+                                    $scope.article.pre = data.articles[i + 1]
                                 }
                                 flaga = false;
                                 if(!flagb){
