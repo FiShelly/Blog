@@ -22,7 +22,6 @@ router.post('/getAuthor', function (req, res, next) {
 router.post('/login', function (req, res, next) {
 
     User.get(req.body.loginId, function (err, user) {
-        console.log(user);
         var md5 = crypto.createHash('md5'),
             password = md5.update(req.body.password).digest('hex');
         if (user && password == user.password) {
@@ -51,7 +50,6 @@ router.post('/saveOrUpdateUser', function (req, res, next) {
         if (!user) {
             res.json({status: '0'});
         } else {
-            console.log("save success");
             res.json({status: '1', user: user,msg:'修改个人信息成功'});
         }
     });
@@ -59,17 +57,13 @@ router.post('/saveOrUpdateUser', function (req, res, next) {
 router.post('/updatePwd', checkLogin);
 router.post('/updatePwd', function (req, res, next) {
     var password = crypto.createHash('md5').update(req.body.password).digest('hex');
-    console.log(password);
     var oldPw = crypto.createHash('md5').update(req.body.oldPwd).digest('hex');
-    console.log(oldPw);
 
     if (oldPw == req.session.user.password) {
         User.updatePw(req.body.loginId, password, function (err, user) {
             if (err) {
-                console.log("updatePwd failed");
                 res.json({status: '0'});
             } else {
-                console.log("updatePwd success");
                 res.json({status: '1',msg:'修改密码成功'});
             }
         });
@@ -82,12 +76,9 @@ router.post('/uploadHeadImg', checkLogin);
 router.post('/uploadHeadImg', function (req, res, next) {
     var form = new multiparty.Form({uploadDir: '../public/upload/'});
     form.parse(req, function (err, fields, files) {
-        console.log(files);
-        console.log(fields);
         if (err) {
             console.log('parse error: ' + err);
         } else {
-            console.log('parse right: ' + err);
             var dstPath = "";
             if (files.headImg[0].originalFilename) {
                 var fileName = files.headImg[0].originalFilename.split(".")[1];
@@ -97,13 +88,10 @@ router.post('/uploadHeadImg', function (req, res, next) {
                     if (err) {
                         console.log('rename error: ' + err);
                     } else {
-                        console.log('rename ok');
                         User.updateHeadImg(fields.loginId[0], dstPath, function (err) {
                             if (err) {
-                                console.log("uplopad faild failed");
                                 res.json({status: '0'});
                             } else {
-                                console.log("save success");
                                 res.json({status: '1', headImg: dstPath,msg:'修改头像成功'});
                             }
                         });

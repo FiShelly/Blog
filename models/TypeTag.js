@@ -7,7 +7,6 @@ var poolModule = require('generic-pool');
 var pool = poolModule.Pool({
     name: 'mongoPool',
     create: function (callback) {
-        console.log(callback);
         var mongodb = Db();
         mongodb.open(function (err, db) {
             callback(err, db);
@@ -33,7 +32,6 @@ module.exports = TypeTag;
 
 TypeTag.save = function (typeTag, callback) {
     var saveEntry = new TypeTag(typeTag);
-    console.log(saveEntry);
     pool.acquire(function (err, db) {
         db.authenticate(settings.user, settings.pwd, function () {
             db.collection('typetag', function (err, collection) {
@@ -55,7 +53,6 @@ TypeTag.save = function (typeTag, callback) {
 
 TypeTag.updateName = function (typeTag, callback) {
     pool.acquire(function (err, db) {
-        console.log("update Name mongo");
         db.authenticate(settings.user, settings.pwd, function () {
             db.collection('typetag', function (err, collection) {
                 if (err) {
@@ -86,7 +83,6 @@ TypeTag.updateCount = function (name, type, callback) {
                     pool.release(db);
                     return callback(err);
                 }
-                console.log(name + " ==== " + type);
                 collection.update({name: name, type: type}, {
                     $inc: {
                         "count": 1
@@ -166,8 +162,6 @@ TypeTag.getTypeTagById = function (id, type, callback) {
 TypeTag.getTypeTagByPage = function (type, page, ls, callback) {
     //打开数据库
     pool.acquire(function (err, db) {
-        console.log(db);
-        console.log("=============");
         db.authenticate(settings.user, settings.pwd, function () {
             if (err) {
                 return callback(err);
@@ -193,7 +187,6 @@ TypeTag.getTypeTagByPage = function (type, page, ls, callback) {
                     }).toArray(function (err, docs) {
                         pool.release(db);
                         if (err) {
-                            console.log(err);
                             return callback(err);
                         }
                         var size = total % ls;

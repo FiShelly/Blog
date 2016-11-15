@@ -16,6 +16,16 @@
             <span>下一篇：</span>
             <a href="#/article/{{article.next.id}}" ng-show="article.next.title">{{article.next.title||"没有了"}}</a>
         </div>
+        <div class="visible-xs">
+            <div class="last-article">
+                <span>上一篇：</span>
+                <a href="#/article/{{article.pre.id}}" ng-show="article.pre.title">{{article.pre.title||"没有了"}}</a>
+            </div>
+            <div class="last-article">
+                <span>下一篇：</span>
+                <a href="#/article/{{article.next.id}}" ng-show="article.next.title">{{article.next.title||"没有了"}}</a>
+            </div>
+        </div>
     </div>
     <section>
         <div class="new-article-box border-shadow">
@@ -50,9 +60,9 @@
                     <span>&nbsp;→&nbsp;</span>
                     <span>{{article.date}}</span>
 
-                    <p class="about-msg ">
-                        xxxxxasdasdasdas
-                    </p>
+                    <!--<p class="about-msg ">-->
+                        <!--xxxxxasdasdasdas-->
+                    <!--</p>-->
                 </li>
             </ul>
         </div>

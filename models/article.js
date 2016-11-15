@@ -97,7 +97,6 @@ Article.update = function (article, callback) {
 
 Article.delete = function (id, status, callback) {
     pool.acquire(function (err, mongodb) {
-        console.log("update Name mongo");
         mongodb.authenticate(settings.user, settings.pwd, function () {
             mongodb.collection('articles', function (err, collection) {
                 if (err) {
@@ -165,9 +164,7 @@ Article.getArticleByPage = function (page, ls, callback, status) {
                         date: -1
                     }).toArray(function (err, docs) {
                         pool.release(mongodb);
-                        console.log(docs);
                         if (err) {
-                            console.log(err);
                             return callback(err);
                         }
                         callback(null, docs);
@@ -179,7 +176,6 @@ Article.getArticleByPage = function (page, ls, callback, status) {
 };
 
 Article.getArticleByQuery = function (query, callback) {
-    console.log(query);
     pool.acquire(function (err, mongodb) {
         mongodb.authenticate(settings.user, settings.pwd, function () {
             if (err) {
@@ -209,7 +205,6 @@ Article.getArticleByQuery = function (query, callback) {
 
 
 Article.updateReadAndCommentCount = function (id,query, callback) {
-    console.log(query);
     pool.acquire(function (err, mongodb) {
         mongodb.authenticate(settings.user, settings.pwd, function () {
             if (err) {

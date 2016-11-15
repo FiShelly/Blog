@@ -46,7 +46,6 @@ User.saveOrUpdate = function(isUpdate,user,callback){
                     return callback(err);
                 }
                 if(isUpdate){
-                    console.log(user);
                     collection.update({loginId:user.loginId},{$set:{
                         "name":user.name,
                         "position":user.position,
@@ -120,8 +119,6 @@ User.get = function(loginId, callback) {
                     return callback(err);
                 }
                 collection.findOne({ loginId: loginId }, function(err, user) {
-                    console.log("loginId"+loginId);
-                    console.log(user);
                     pool.release(db);
                     if (err) {
                         return callback(err);

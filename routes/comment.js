@@ -8,7 +8,6 @@ var router = express.Router();
 var Comment = require('../models/comment.js');
 
 function checkLogin(req, res, next) {
-    console.log(req.session.user);
     if (!req.session.user) {
         res.json({status: '-2',msg:"你还未登录，请登录后再进行操作。"});
         return;
@@ -23,10 +22,8 @@ router.post('/save', function (req, res, next) {
     commentTmp.id = id;
     Comment.save(commentTmp, function (err, comment) {
         if (!comment) {
-            console.log("save failed");
             res.json({status: '0',msg:"留言发表失败"});
         } else {
-            console.log("save success");
             res.json({status: '1', comment: comment,msg:"留言发表成功"});
         }
     });
@@ -46,8 +43,6 @@ router.post('/delete/:id', function (req, res, next) {
 router.post('/page/query', function (req, res, next) {
     Comment.getCommentByQuery(req.body.query, function (err, comments) {
         if (err) {
-            console.log(err);
-            console.log("the server has error " + req.body.type);
             res.json({status: '0'});
         } else {
             res.json({status: '1', comments: comments});

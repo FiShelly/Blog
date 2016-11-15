@@ -10,7 +10,6 @@ var Article = require('../models/article.js');
 /* GET users listing. */
 
 function checkLogin(req, res, next) {
-    console.log("enter validate login");
     if (!req.session.user) {
         res.json({status: '-2',msg:"你还未登录，请登录后再进行操作。"});
         return;
@@ -33,10 +32,8 @@ router.post('/save', function (req, res, next) {
     }
     Article.save(articleTmp, function (err, article) {
         if (!article) {
-            console.log("save failed");
             res.json({status: '0'});
         } else {
-            console.log("save success");
             res.json({status: '1', article: article,msg:msg});
         }
     });
@@ -54,10 +51,8 @@ router.post('/update', function (req, res, next) {
     }
     Article.update(req.body.article, function (err) {
         if (err) {
-            console.log("update failed");
             res.json({status: '0'});
         } else {
-            console.log("update success");
             res.json({status: '1',msg:msg,article:req.body.article});
         }
     });
@@ -67,7 +62,6 @@ router.post('/update', function (req, res, next) {
 //router.post('/updateNPA', function (req, res, next) {
 //    Article.getArticleByQuery(req.body.obj, function (err) {
 //        if (err) {
-//            console.log("the server has error " + req.body.type);
 //            res.json({status: '0'});
 //        } else {
 //            res.json({status: '1'});
@@ -80,10 +74,8 @@ router.post('/updateName', checkLogin);
 router.post('/delete', function (req, res, next) {
     Article.delete(req.body.id,req.body.status, function (err) {
         if (err) {
-            console.log("delete failed");
             res.json({status: '0'});
         } else {
-            console.log("delete success");
             res.json({status: '1',msg:'删除成功'});
         }
     });
@@ -93,8 +85,6 @@ router.post('/page/:page/:size', checkLogin);
 router.post('/page/:page/:size', function (req, res, next) {
     Article.getArticleByPage(req.params.page, req.params.size, function (err, articles) {
         if (err) {
-            console.log(err);
-            console.log("the server has error " + req.body.type);
             res.json({status: '0'});
         } else {
             res.json({status: '1', articles: articles});
@@ -106,8 +96,6 @@ router.post('/page/:page/:size', function (req, res, next) {
 router.post('/page/index/:page/:size', function (req, res, next) {
     Article.getArticleByPage(req.params.page, req.params.size, function (err, articles) {
         if (err) {
-            console.log(err);
-            console.log("the server has error " + req.body.type);
             res.json({status: '0'});
         } else {
             res.json({status: '1', articles: articles});
@@ -119,8 +107,6 @@ router.post('/page/index/:page/:size', function (req, res, next) {
 router.post('/getById/:id/:status', function (req, res, next) {
     Article.getArticleById(req.params.id,parseInt(req.params.status), function (err, article) {
         if (err) {
-            console.log(err);
-            console.log("the server has error ");
             res.json({status: '0'});
         } else if (article == null) {
             res.json({status: '2'});
@@ -134,8 +120,6 @@ router.post('/page/query', function (req, res, next) {
     Article.getArticleByQuery(req.body.query, function (err, articles) {
 
         if (err) {
-            console.log(err);
-            console.log("the server has error " + req.body.type);
             res.json({status: '0'});
         } else {
             res.json({status: '1', articles: articles});
@@ -147,9 +131,7 @@ router.post('/page/query', function (req, res, next) {
 
 router.post('/updateCount/:id', function (req, res, next) {
     Article.updateReadAndCommentCount(req.params.id,req.body.query, function (err) {
-        console.log(req.body.query);
         if (err) {
-            console.log("the server has error " + req.body.type);
             res.json({status: '0'});
         } else {
             res.json({status: '1'});
