@@ -22,7 +22,7 @@
         '$routeParams',
         'HttpService',
         function ($rootScope,$scope, $route, $routeParams, HttpService) {
-            $rootScope.isReady = true;
+            
             var queryType = function(flag){
                 HttpService.ajax('/typetag/page/1/1000000',{type: flag},function(data){
                     if(data && flag){
@@ -48,7 +48,7 @@
                             detail:[]
                         };
                         filterArticle();
-                        $rootScope.isReady = false;
+                        
                 });
             };
 
@@ -63,7 +63,7 @@
                             detail:[]
                         };
                         filterArticle();
-                        $rootScope.isReady = false;
+                        
                     }
                 });
             };

@@ -34,7 +34,7 @@
                 $location.path("/login/-1");
             } else {
                 $rootScope.isLogin = true;
-                $rootScope.isReady = false;
+                
             }
             $scope.obj = {name: "", id: "", type: true, isUpdate: false};
 
@@ -43,7 +43,7 @@
                     return data;
                 };
                 ModalService.open('/template/modal-tip-msg.html', 'ModalInstanceCtrl', size, obj);
-                $rootScope.isReady = false;
+                
             };
 
             $scope.open = function (size, flag, isUpdate, name, id) {  //打开模态
@@ -58,7 +58,14 @@
                 };
                 var modalInstance = ModalService.open('/template/modal-type-tag.html', 'ModalInstanceCtrl', size, obj);
                 modalInstance.result.then(function (selectedItem) {
-                    $rootScope.isReady = true;
+                    
+
+                    if(selectedItem.name==""){
+                        var data = {msg:'分类名称或标签名称不能为空。'};
+                        $scope.tip(data, 'md');
+                        return;
+                    }
+
                     var url = '/typetag/save';
                     if (selectedItem.isUpdate) {
                         url = '/typetag/updateName'
@@ -86,17 +93,17 @@
             }
 
             $scope.delete = function (id) {
-                $rootScope.isReady = true;
+                
                 HttpService.ajax('/typetag/delete', {id: id}, function (data) {
                     $route.reload();
                     $scope.tip(data, 'md');
                 });
             };
             var queryPage = function () {
-                $rootScope.isReady = true;
+                
                 HttpService.ajax('/typetag/page/1/100000', {type: $scope.obj.type}, function (data) {
                     $scope.typetags = data.typetags;
-                    $rootScope.isReady = false;
+                    
                 });
             };
 

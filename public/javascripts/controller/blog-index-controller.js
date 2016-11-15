@@ -22,12 +22,12 @@
         '$routeParams',
         'HttpService',
         function ($rootScope,$scope, $route, $routeParams,HttpService) {
-            $rootScope.isReady = true;
+            
             var i = 0;
             var validateReady = function(){
                 if(i==2){
                     i=0;
-                    $rootScope.isReady = false;
+                    
                 } else {
                     i+=1;
                 }
@@ -66,7 +66,7 @@
                         }
                     }
                     if(flag){
-                        $rootScope.isReady = false;
+                        
                     } else {
                         validateReady();
                     }

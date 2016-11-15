@@ -192,7 +192,7 @@ header {
 
 h2, h4 {
     border-bottom: 1px solid #d1d1d1;
-    padding: 0.1rem 0;
+    padding: 0.1rem ;
 }
 
 .type-article-list {
@@ -216,8 +216,7 @@ h2, h4 {
 }
 
 .article-type-header {
-    padding: 0.1rem 0.3rem 0 0.3rem;
-    display: flex;
+    padding: 0.1rem  0;
 }
 
 .blog-nav {

@@ -34,7 +34,6 @@
                 HttpService.ajax('/comment/page/query', {flag:true},function (data) {
                         if (data) {
                             $scope.comments = data.comments;
-                            $rootScope.isReady = false;
                         }
                     });
             };

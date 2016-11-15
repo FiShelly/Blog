@@ -92,14 +92,11 @@
                 ModalService.open('/template/modal-tip-msg.html', 'ModalInstanceCtrl', size, obj);
             };
             if($scope.article || $routeParams.id == 0){
-                $rootScope.isReady = false;
                 queryPage();
             } else {
-                $rootScope.isReady = true;
                 HttpService.ajax('/article/getById/'+$routeParams.id+'/'+$routeParams.status,{},function(data){
                     if(data){
                         $scope.article = data.article;
-                        $rootScope.isReady = false;
                         queryPage();
                     }
 
@@ -114,16 +111,15 @@
             },60000);
 
             $scope.delete = function(status){
-                $rootScope.isReady = true;
                 if($scope.article.id){
                     $scope.updateStatus(status);
                     return;
                 }
                 $location.path('/back/article/list');
-                $rootScope.isReady = false;
+                
             };
             $scope.publish = function(status){
-                $rootScope.isReady = true;
+                
                 console.log($scope.article.id+"====");
                 if($scope.article.id){
                     $scope.updateStatus(status);
@@ -144,7 +140,6 @@
                         $scope.tip(data, 'md');
                         testEditor.previewing();
                     }
-                    $rootScope.isReady = false;
                 });
             };
 
@@ -161,7 +156,6 @@
                     $scope.article = data.article;
                     $scope.tip(data, 'md');
                     testEditor.previewing();
-                    $rootScope.isReady = false;
                 });
 
             };

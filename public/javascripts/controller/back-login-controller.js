@@ -28,12 +28,17 @@
         function ($rootScope,$scope, $route, $routeParams,$location,HttpService) {
             //$scope.loginId = "";
             //$scope.loginId = "";
-            $rootScope.isReady = false;
+            $scope.remember = false;
+            var loginMsg = JSON.parse(localStorage.getItem("user"));
+            if(loginMsg){
+                $scope.loginId = loginMsg.loginId;
+                $scope.password = loginMsg.password;
+            }
             if($routeParams.ec == -1){
                 $scope.msg = "未登录或登录超时，请重新登录";
             }
+
             $scope.loginValidate = function(){
-                $rootScope.isReady = "true";
                 HttpService.ajax('/user/login', {loginId:$scope.loginId,password:$scope.password},function (data) {
                     if(data.status == '0'){
                         //$rootScope.user = {
@@ -68,6 +73,9 @@
                     } else{
                         $rootScope.isLogin = true;
                         $rootScope.user = data.user;
+                    }
+                    if($scope.remember){
+                        localStorage.setItem("loginMsg",JSON.stringify( {loginId:$scope.loginId,password:$scope.password}));
                     }
                     localStorage.setItem("user",JSON.stringify($rootScope.user));
                     sessionStorage.setItem("user",JSON.stringify($rootScope.user));

@@ -28,7 +28,7 @@
                 $location.path("/login/-1");
             } else {
                 $rootScope.isLogin = true;
-                $rootScope.isReady = false;
+                
             }
             $scope.oldPw = "";
             $scope.newPw = "";
@@ -41,10 +41,8 @@
                     return data;
                 };
                 ModalService.open('/template/modal-tip-msg.html', 'ModalInstanceCtrl', size, obj);
-                $rootScope.isReady = false;
             };
             $scope.saveOrUpdate = function(){
-                $rootScope.isReady = true;
                 HttpService.ajax('/user/saveOrUpdateUser',{ isUpdate:true, user:$rootScope.user},function(data){
                     if(data){
                         localStorage.setItem("user",JSON.stringify($rootScope.user));
@@ -55,7 +53,6 @@
             };
 
             $scope.updatePwd = function(){
-                $rootScope.isReady = true;
                 if($scope.newPw != $scope.rNewPw){
                     $scope.tip({msg:"两次密码输入不一致，请重新输入。"});
                     return;
@@ -69,7 +66,7 @@
             };
 
             $scope.uploadHeadImg = function(){
-                $rootScope.isReady = true;
+                
                 var formData = new FormData(document.getElementById('personal_form'));
                 formData.append('loginId',$scope.user.loginId);
                 formData.append( "CustomField", "This is some extra data" );

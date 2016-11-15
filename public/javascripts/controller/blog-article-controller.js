@@ -26,13 +26,13 @@
         'ModalService',
         '$filter',
         function ($rootScope,$scope, $route, $routeParams, HttpService,$sce,ModalService,$filter) {
-            $rootScope.isReady = true;
+            
             console.log("blog-article");
             var getCurArticle = function(){
                 HttpService.ajax('/article/getById/'+$routeParams.id+'/2',{},function(data){
                     if(data){
                         $scope.article = data.article;
-                        $rootScope.isReady = false;
+                        
                         $scope.article.articleHtml = $sce.trustAsHtml($scope.article.articleHtml);
                         changeNPA();
                         queryComment();
@@ -87,7 +87,7 @@
                     if (data.articles) {
                         $scope.article = data.articles[0];
                         $scope.article.author = 'Fishelly.';
-                        $rootScope.isReady = false;
+                        
                         $scope.article.articleHtml = $sce.trustAsHtml($scope.article.articleHtml);
                         changeNPA();
                         queryComment();

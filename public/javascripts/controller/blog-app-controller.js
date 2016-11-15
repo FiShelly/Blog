@@ -29,7 +29,7 @@
         'ModalService',
         'HttpService',
         function ($rootScope, $scope, ModalService, HttpService) {
-            $rootScope.isReady = true;
+            
 
             $scope.open = function (size) {  //打开模态
                 var patternObj = {$regex: $scope.keyword, $options: 'i'};

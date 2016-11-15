@@ -6,25 +6,14 @@
         <li><a href="#/type/0">分类</a></li>
     </ol>
     <div class="new-article-box  border-shadow about-msg article-type-header">
-        <div class="last-article hidden-xs">
+        <div class="col-sm-12 col-md-4">
             <span>上一篇：</span>
             <a href="#/article/{{article.pre.id}}" ng-show="article.pre.title">{{article.pre.title||"没有了"}}</a>
         </div>
-        <p class="article-type "><span>类别：{{article.type}}</span></p>
-
-        <div class="next-article hidden-xs">
+        <div class="col-sm-12 col-md-4"><span>类别：{{article.type}}</span></div>
+        <div class="col-sm-12 col-md-4">
             <span>下一篇：</span>
             <a href="#/article/{{article.next.id}}" ng-show="article.next.title">{{article.next.title||"没有了"}}</a>
-        </div>
-        <div class="visible-xs">
-            <div class="last-article">
-                <span>上一篇：</span>
-                <a href="#/article/{{article.pre.id}}" ng-show="article.pre.title">{{article.pre.title||"没有了"}}</a>
-            </div>
-            <div class="last-article">
-                <span>下一篇：</span>
-                <a href="#/article/{{article.next.id}}" ng-show="article.next.title">{{article.next.title||"没有了"}}</a>
-            </div>
         </div>
     </div>
     <section>
@@ -32,11 +21,11 @@
             <h2 class="article-box-title">
                 {{article.title}}
             </h2>
-            <h4> 摘要：{{article.abstract}}</h4><br>
+            <h4> 摘要：{{article.abstract}}</h4>
 
-            <div class="about-msg">
+            <h4 class="about-msg">
                 发表于：<span>fishelly.</span>&nbsp;&nbsp;→&nbsp;&nbsp;<span>{{article.date}}</span>
-            </div>
+            </h4>
             <div class="about-msg article-detail" data-ng-bind-html="article.articleHtml">
             </div>
         </div>
@@ -97,12 +86,12 @@
                 <form role="form" ng-submit="submitComment();">
                     <div class="form-group comment">
                         <label for="comment">留言内容:</label>
-                        <textarea class="form-control" ng-model="commentContent" id="comment"
+                        <textarea required class="form-control" ng-model="commentContent" id="comment"
                                   placeholder="请输入留言"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="nickname">昵称:</label>
-                        <input type="text" required class="form-control " ng-model="comment.visitor.name" id="nickname"
+                        <input   type="text" required class="form-control " ng-model="comment.visitor.name" id="nickname"
                                placeholder="请输入留言昵称"></textarea>
                     </div>
                     <div class="form-group">

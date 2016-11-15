@@ -29,14 +29,13 @@
                 $location.path("/login/-1");
             } else {
                 $rootScope.isLogin = true;
-                $rootScope.isReady = false;
+                
             }
             $scope.curPage = 1;
             $scope.lineSize = 500000;
             $scope.page = [];
 
             $scope.goEdit = function(id){
-                $rootScope.isReady = true;
                 for(var i = 0;i<$scope.articles.length;i++){
                     if($scope.articles[i].id == id){
                         $rootScope.article = $scope.articles[i];
@@ -48,7 +47,6 @@
             };
 
             $scope.delete = function (id) {
-                $rootScope.isReady = true;
                 HttpService.ajax('/article/delete',{id: id,status:0},function(data){
                     if(data){
                         for(var i = 0;i<$scope.articles.length;i++){
@@ -63,14 +61,13 @@
                             return data;
                         };
                         ModalService.open('/template/modal-tip-msg.html','ModalInstanceCtrl','md',obj);
-                        $rootScope.isReady = false;
+                        
                     }
                 });
 
             };
 
             var queryPage = function (status) {
-                $rootScope.isReady = true;
                 HttpService.ajax('/article/page/'+ $scope.curPage + "/" + $scope.lineSize,{status: status},function(data){
                     if(data){
                         $scope.articles = data.articles;
@@ -78,7 +75,7 @@
                         for (var i = 1; i <= data.size; i++) {
                             $scope.page.push(i);
                         }
-                        $rootScope.isReady = false;
+                        
                     }
                 });
             };

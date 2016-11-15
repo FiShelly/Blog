@@ -13,15 +13,15 @@
         '$scope',
         '$modalInstance',
         'obj',
-        function ($scope, $modalInstance, obj) { //ÒÀÀµÓÚmodalInstance
+        function ($scope, $modalInstance, obj) { //ä¾èµ–äºmodalInstance
             $scope.obj = obj;
             console.log(obj);
             $scope.ok = function () {
-                $modalInstance.close($scope.obj); //¹Ø±Õ²¢·µ»Øµ±Ç°Ñ¡Ïî
+                $modalInstance.close($scope.obj); //å…³é—­å¹¶è¿”å›å½“å‰é€‰é¡¹
             };
             $scope.cancel = function () {
                 console.log($scope.obj);
-                $modalInstance.dismiss('cancel'); // ÍË³ö
+                $modalInstance.dismiss('cancel'); // é€€å‡º
             }
         }]);
 })(angular);
