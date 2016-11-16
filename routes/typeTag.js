@@ -4,11 +4,10 @@ var crypto = require('crypto');
 var moment = require("moment");
 var router = express.Router();
 var TypeTag = require('../models/TypeTag.js');
-
+var Article = require('../models/article.js');
 /* GET users listing. */
 
 function checkLogin(req, res, next) {
-    console.log("enter validate login");
     if (!req.session.user) {
         res.json({status: '-2'});
         return;
@@ -43,8 +42,33 @@ router.post('/updateName', function (req, res, next) {
     });
 });
 
-router.post('/updateCounut', checkLogin);
+router.post('/updateCount', checkLogin);
 router.post('/updateCount', function (req, res, next) {
+    var articleList = null;
+    TypeTag.resetCount(function(err){
+        Article.getArticleByPage(1,100000,function(err,articles){
+            if(!err){
+                articleList = articles;
+                for(var i = 0;i<articleList.length;i++){
+                    var article = articleList[i];
+                    updateCount(article.type,true);
+                    for(var j = 0;j<article.tag.length;j++){
+                        updateCount(article.tag[j].name,false);
+                    }
+                }
+            } else {
+                console.log(err);
+            }
+        });
+    });
+});
+
+var updateCount = function(name,type){
+    TypeTag.updateCount(name,type,function (err) {
+    });
+};
+
+router.post('/countArticle', function (req, res, next) {
     TypeTag.updateCount(req.body.name,req.body.type,function (err) {
         if (err) {
             res.json({status: '0'});
@@ -53,6 +77,7 @@ router.post('/updateCount', function (req, res, next) {
         }
     });
 });
+
 
 router.post('/delete', checkLogin);
 router.post('/delete', function (req, res, next) {

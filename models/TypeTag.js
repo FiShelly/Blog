@@ -13,7 +13,7 @@ var pool = poolModule.Pool({
         })
     },
     destroy: function (mongodb) {
-        pool.release(db);
+        mongodb.close();
     },
     max: 100,
     min: 5,
@@ -73,6 +73,30 @@ TypeTag.updateName = function (typeTag, callback) {
             });
         });
     });
+};
+
+TypeTag.resetCount = function(callback){
+  pool.acquire(function(err,db){
+      db.authenticate(settings.user, settings.pwd, function () {
+          db.collection('typetag', function (err, collection) {
+              if (err) {
+                  pool.release(db);
+                  return callback(err);
+              }
+              collection.update({}, {
+                  $set: {
+                      "count": 0
+                  }
+              },{multi:true}, function (err) {
+                  pool.release(db);
+                  if (err) {
+                      return callback(err);
+                  }
+                  callback(null);
+              });
+          });
+      });
+  });
 };
 
 TypeTag.updateCount = function (name, type, callback) {

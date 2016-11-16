@@ -143,10 +143,12 @@ Article.getArticleByPage = function (page, ls, callback, status) {
     pool.acquire(function (err, mongodb) {
         mongodb.authenticate(settings.user, settings.pwd, function () {
             if (err) {
+                console.log(err);
                 return callback(err);
             }
             mongodb.collection('articles', function (err, collection) {
                 if (err) {
+                    console.log(err);
                     pool.release(mongodb);
                     return callback(err);
                 }
@@ -165,6 +167,7 @@ Article.getArticleByPage = function (page, ls, callback, status) {
                     }).toArray(function (err, docs) {
                         pool.release(mongodb);
                         if (err) {
+                            console.log(err);
                             return callback(err);
                         }
                         callback(null, docs);

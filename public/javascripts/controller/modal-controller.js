@@ -15,12 +15,10 @@
         'obj',
         function ($scope, $modalInstance, obj) { //依赖于modalInstance
             $scope.obj = obj;
-            console.log(obj);
             $scope.ok = function () {
                 $modalInstance.close($scope.obj); //关闭并返回当前选项
             };
             $scope.cancel = function () {
-                console.log($scope.obj);
                 $modalInstance.dismiss('cancel'); // 退出
             }
         }]);

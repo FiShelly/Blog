@@ -14,7 +14,7 @@ var pool = poolModule.Pool({
         })
     },
     destroy  : function(mongodb) {
-        pool.release(db);
+        mongodb.close();
     },
     max      : 100,
     min      : 5,

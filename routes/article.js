@@ -20,7 +20,7 @@ router.post('/save', checkLogin);
 router.post('/save', function (req, res, next) {
     var articleTmp = req.body.article;
     var md5 = crypto.createHash('md5');
-    var id = md5.update(articleTmp.title).digest('hex');
+    var id = md5.update(articleTmp.title+new Date()).digest('hex');
     articleTmp.id = id;
     var msg = '';
     if(req.body.article.status == 2){

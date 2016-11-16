@@ -41,7 +41,6 @@
                 }, function (data) {
                     if (data.articles) {
                         $scope.articleList = data.articles;
-                        console.log($scope.articleList);
                         var obj = function () {
                             return {
                                 keyword: $scope.keyword,

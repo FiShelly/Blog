@@ -31,7 +31,7 @@
             if(!sessionStorage.getItem("user")){
                 $location.path("/login/-1");
             } else {
-                $scope.isLogin = true;
+                $rootScope.isLogin = true;
             }
             var testEditor = editormd("test-editormd", {
                 width: "100%",
@@ -116,11 +116,9 @@
                     return;
                 }
                 $location.path('/back/article/list');
-                
+
             };
             $scope.publish = function(status){
-                
-                console.log($scope.article.id+"====");
                 if($scope.article.id){
                     $scope.updateStatus(status);
                     return;
@@ -133,22 +131,18 @@
                 HttpService.ajax('/article/save',{ article:$scope.article},function(data){
                     if(data){
                         $scope.article = data.article;
-                        updateCount(data.article.type,true);
-                        for(var i = 0;i<$scope.article.tag.length;i++){
-                            updateCount($scope.article.tag[i].name,false);
-                        }
+                        updateCount();
                         $scope.tip(data, 'md');
                         testEditor.previewing();
                     }
                 });
             };
 
-            var updateCount = function(name,type){
-                HttpService.ajax('/typetag/updateCount',{  name:name,type:type},function(data){});
+            var updateCount = function(){
+                HttpService.ajax('/typetag/updateCount',{},function(data){});
             };
 
             $scope.updateStatus = function(status){
-                console.log($scope.article);
                 $scope.article.status = status;
                 $scope.article.articleHtml = testEditor.getHTML();
                 $scope.article.articleMd = testEditor.getMarkdown();
@@ -156,6 +150,7 @@
                     $scope.article = data.article;
                     $scope.tip(data, 'md');
                     testEditor.previewing();
+                    updateCount();
                 });
 
             };
@@ -175,7 +170,6 @@
                     }
                 },function(data){
                     $scope.article.coverImg = data.url;
-                    console.log($scope.article);
                 });
             };
         }

@@ -67,7 +67,6 @@
                         //    console.log("fail");
                         //});
                     } else if(data.status == '-1') {
-                        console.log("login faild");
                         $scope.msg = data.msg;
                         return;
                     } else{

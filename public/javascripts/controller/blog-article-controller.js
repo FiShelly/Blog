@@ -27,7 +27,6 @@
         '$filter',
         function ($rootScope,$scope, $route, $routeParams, HttpService,$sce,ModalService,$filter) {
             
-            console.log("blog-article");
             var getCurArticle = function(){
                 HttpService.ajax('/article/getById/'+$routeParams.id+'/2',{},function(data){
                     if(data){
