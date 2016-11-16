@@ -1,8 +1,12 @@
 /**
  * Created by FiShelly on 2016/10/5.
  */
-(function (angular,editormd) {
-    var module = angular.module('blog.back.articleEdit', [
+require('../angular.min');
+require('../angular-route.min');
+require('../service/http');
+require('../service/modal');
+require('../select.min');
+    var moduleBackArticleEdit = angular.module('blog.back.articleEdit', [
         'ngRoute',
         'ui.select',
         'blog.service.http',
@@ -10,14 +14,14 @@
     ]);
 
     // 配置模块的路由
-    module.config(['$routeProvider', function ($routeProvider) {
+    moduleBackArticleEdit.config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/back/article/edit/:id/:status', {
             templateUrl: 'template/back-articleEdit-template.html',
             controller: 'BackArticleEditController'
         });
     }]);
     //控制器
-    module.controller('BackArticleEditController', [
+    moduleBackArticleEdit.controller('BackArticleEditController', [
         '$rootScope',
         '$scope',
         '$route',
@@ -174,5 +178,4 @@
             };
         }
     ]);
-
-})(angular,editormd);
+    module.exports = moduleBackArticleEdit;

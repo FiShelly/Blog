@@ -1,14 +1,16 @@
 /**
  * Created by FiShelly on 2016/10/5.
  */
-(function (angular) {
-    var module = angular.module('blog.back.login', [
+require('../angular.min');
+require('../angular-route.min');
+require('../service/http');
+    var moduleLogin = angular.module('blog.back.login', [
         'ngRoute',
         'blog.service.http'
     ]);
 
     // 配置模块的路由
-    module.config(['$routeProvider', function ($routeProvider) {
+    moduleLogin.config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/login', {
             templateUrl: 'template/back-login-template.html',
             controller: 'BackLoginController'
@@ -18,7 +20,7 @@
         });
     }]);
     //控制器
-    module.controller('BackLoginController', [
+    moduleLogin.controller('BackLoginController', [
         '$rootScope',
         '$scope',
         '$route',
@@ -125,4 +127,4 @@
             }
         }
     ]);
-})(angular,localStorage);
+    module.exports = moduleLogin;

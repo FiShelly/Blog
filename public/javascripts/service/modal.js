@@ -1,9 +1,7 @@
 /**
  * Created by FiShelly on 2016/10/29.
  */
-'use strict';
-
-(function(angular) {
+    require('../angular.min');
     var modal = angular.module('blog.service.modal', []);
     modal.service('ModalService', ['$modal', function($modal) {
         this.open = function(url,controller,size,init){
@@ -18,4 +16,5 @@
         };
 
     }]);
-})(angular);
+
+    module.exports = modal;

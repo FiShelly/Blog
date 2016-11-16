@@ -1,7 +1,23 @@
 /**
  * Created by FiShelly on 2016/11/7.
  */
-(function (angular) {
+    require('../angular.min');
+    require('../angular-route.min');
+    require('../angular-animate.min');
+    require('../service/http');
+    require('../service/modal');
+    require('./modal-controller');
+    require('./blog-type-controller');
+    require('./blog-index-controller');
+    require('./blog-article-controller');
+    require('./back-typetag-controller');
+    require('./back-personal-controller');
+    require('./back-login-controller');
+    require('./back-comment-controller');
+    require('./back-articleList-controller');
+    require('./back-articleEdit-controller');
+
+
     var app = angular.module('BlogIndexApp', [
         'ngRoute',
         'ngAnimate',
@@ -56,4 +72,4 @@
 
         }
     ]);
-})(angular);
+    module.exports = app;

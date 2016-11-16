@@ -1,16 +1,19 @@
 /**
  * Created by FiShelly on 2016/10/5.
  */
-(function (angular) {
-    var module = angular.module('blog.back.typetag', [
+require('../angular.min');
+require('../angular-route.min');
+require('../service/http');
+require('../service/modal');
+require('../ui-bootstrap-tpls');
+var moduleBackTypeTag = angular.module('blog.back.typetag', [
         'ngRoute',
         'ui.bootstrap',
-        'blog.back.modal',
         'blog.service.http',
         'blog.service.modal'
     ]);
     // 配置模块的路由
-    module.config(['$routeProvider', function ($routeProvider) {
+moduleBackTypeTag.config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/back/type', {
             templateUrl: 'template/back-type-template.html',
             controller: 'BackTypetagController'
@@ -20,7 +23,7 @@
         });
     }]);
     //控制器
-    module.controller('BackTypetagController', [
+moduleBackTypeTag.controller('BackTypetagController', [
         '$rootScope',
         '$scope',
         '$route',
@@ -110,5 +113,4 @@
             queryPage();
         }
     ]);
-
-})(angular);
+    module.exports = moduleBackTypeTag;

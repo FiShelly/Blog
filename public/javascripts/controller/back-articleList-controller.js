@@ -1,22 +1,25 @@
 /**
  * Created by FiShelly on 2016/10/5.
  */
-(function (angular) {
-    var module = angular.module('blog.back.articleList', [
+require('../angular.min');
+require('../angular-route.min');
+require('../service/http');
+require('../service/modal');
+    var moduleBackArticleList = angular.module('blog.back.articleList', [
         'ngRoute',
         'blog.service.http',
         'blog.service.modal'
     ]);
 
     // 配置模块的路由
-    module.config(['$routeProvider', function ($routeProvider) {
+    moduleBackArticleList.config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/back/article/list', {
             templateUrl: 'template/back-articleList-template.html',
             controller: 'BackArticleListController'
         });
     }]);
     //控制器
-    module.controller('BackArticleListController', [
+    moduleBackArticleList.controller('BackArticleListController', [
         '$rootScope',
         '$scope',
         '$route',
@@ -89,4 +92,5 @@
             };
         }
     ]);
-})(angular);
+
+    module.exports = moduleBackArticleList;

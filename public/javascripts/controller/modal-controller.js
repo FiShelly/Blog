@@ -4,12 +4,13 @@
 /**
  * Created by FiShelly on 2016/10/5.
  */
-(function (angular) {
-    var module = angular.module('blog.back.modal', [
+    require('../angular.min');
+    require('../ui-bootstrap-tpls');
+    var moduleModal = angular.module('blog.back.modal', [
         'ui.bootstrap',
     ]);
 
-    module.controller('ModalInstanceCtrl',[
+    moduleModal.controller('ModalInstanceCtrl',[
         '$scope',
         '$modalInstance',
         'obj',
@@ -22,4 +23,5 @@
                 $modalInstance.dismiss('cancel'); // 退出
             }
         }]);
-})(angular);
+
+    module.exports = moduleModal;

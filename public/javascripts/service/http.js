@@ -1,14 +1,11 @@
 /**
  * Created by FiShelly on 2016/10/29.
  */
-'use strict';
-
-(function(angular) {
+     require('../angular.min');
     var http = angular.module('blog.service.http', []);
     http.service('HttpService', ['$http','$location', function($http,$location) {
         this.ajax = function(url, data,callback) {
             $http.post(url, data).success(function (data, status, headers, config) {
-                console.log(data);
                 if (data.status == '0') {
                     callback(null);
                 } else if (data.status == '-2'){
@@ -29,4 +26,5 @@
             });
         }
     }]);
-})(angular);
+
+    module.exports = http;
