@@ -1,7 +1,7 @@
 /**
  * Created by ddxfc on 2016/11/16.
  */
-var webpack = require('webpack')
+var webpack = require('webpack');
 
 module.exports = {
     entry: './public/javascripts/controller/blog-app-controller.js',
@@ -13,12 +13,12 @@ module.exports = {
         loaders: [
             {test: /\.css$/, loader: 'style!css'}
         ]
-    },
-    plugins:[
-        new webpack.ProvidePlugin({
-            $:"jquery",
-            jQuery:"jquery",
-            "window.jQuery":"jquery"
-        })
-    ]
+    }
+    // plugins:[
+    //     new webpack.ProvidePlugin({
+    //         $:"jquery",
+            // jQuery:"jquery",
+            // "window.jQuery":"jquery"
+        // })
+    // ]
 };

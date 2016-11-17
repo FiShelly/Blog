@@ -694,3 +694,9 @@ th, td {
     top: 50px;
     left: 50px;
 }
+/*显示操作*/
+.content-box.ng-enter{opacity:0;}
+.content-box.ng-enter.ng-enter-active{opacity:1;}
+/*隐藏操作*/
+.content-box.ng-leave{opacity:1;}
+.content-box.ng-leave.ng-leave-active{opacity:0;}

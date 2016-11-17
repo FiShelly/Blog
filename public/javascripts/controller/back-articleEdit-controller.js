@@ -7,7 +7,7 @@ require('../service/http');
 require('../service/modal');
 require('../select.min');
 //require('../../markdown/examples/js/jquery.min.js');
-require('../../markdown/editormd');
+// var editormd = require('../../markdown/editormd.amd.min');
     var moduleBackArticleEdit = angular.module('blog.back.articleEdit', [
         'ngRoute',
         'ui.select',

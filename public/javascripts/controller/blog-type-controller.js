@@ -1,10 +1,6 @@
 /**
  * Created by FiShelly on 2016/10/5.
  */
-    require('../angular.min');
-    require('../angular-route.min');
-    require('../service/http');
-
     var moduleBlogType = angular.module('blog.type', [
         'ngRoute',
         'blog.service.http'
@@ -33,9 +29,19 @@
                     } else if(data && !flag){
                         $rootScope.tags = data.typetags;
                     }
-                    if(data && $scope.types[0].name && flag){
-                        $scope.firstTypeName = $rootScope.types[0].name;
-                        queryTypePage();
+                    if(data){
+                        for(var i = 0;i<data.typetags.length;i++){
+                            if(data.typetags[i].id == id){
+                                $scope.firstTypeName = data.typetags[i].name;
+                                if(flag){
+                                    queryTypePage();
+                                } else {
+                                    $scope.displayTagArticle({name:$scope.firstTypeName});
+                                }
+                                break;
+                            }
+                        }
+
                     }
                 });
             };

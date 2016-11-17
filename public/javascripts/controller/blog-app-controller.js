@@ -16,7 +16,6 @@
     require('./back-comment-controller');
     require('./back-articleList-controller');
     require('./back-articleEdit-controller');
-
     require('../../stylesheets/blog-index.css');
     require('../../stylesheets/login.css');
     require('../../stylesheets/select.min.css');

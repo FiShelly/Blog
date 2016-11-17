@@ -10,7 +10,7 @@
             <span>上一篇：</span>
             <a href="#/article/{{article.pre.id}}" ng-show="article.pre.title">{{article.pre.title||"没有了"}}</a>
         </div>
-        <div class="col-sm-12 col-md-4"><span>类别：{{article.type}}</span></div>
+        <div class="col-sm-12 col-md-4"><span>类别：<a href="#">{{article.type}}</a></span></div>
         <div class="col-sm-12 col-md-4">
             <span>下一篇：</span>
             <a href="#/article/{{article.next.id}}" ng-show="article.next.title">{{article.next.title||"没有了"}}</a>
@@ -22,7 +22,10 @@
                 {{article.title}}
             </h2>
             <h4> 摘要：{{article.abstract}}</h4>
-
+            <h4>
+                <span>标签：</span>
+                <a class="btn btn-info tag" ng-repeat="tag in article.tag" ng-href="#/type/{{tag.id}}">{{tag.name}}</a>
+            </h4>
             <h4 class="about-msg">
                 发表于：<span>fishelly.</span>&nbsp;&nbsp;→&nbsp;&nbsp;<span>{{article.date}}</span>
             </h4>
