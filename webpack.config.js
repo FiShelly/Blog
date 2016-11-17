@@ -10,5 +10,15 @@ module.exports = {
         filename: 'main.js'
     },
     module: {
-    }
+        loaders: [
+            {test: /\.css$/, loader: 'style!css'}
+        ]
+    },
+    plugins:[
+        new webpack.ProvidePlugin({
+            $:"jquery",
+            jQuery:"jquery",
+            "window.jQuery":"jquery"
+        })
+    ]
 };

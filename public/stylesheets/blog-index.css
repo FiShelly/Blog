@@ -504,8 +504,7 @@ h2, h4 {
 
 th, td {
     text-align: center !important;
-    background-color: #FFF;
-!important;
+    background-color: #FFF !important;
 }
 
 .article-btn-add {

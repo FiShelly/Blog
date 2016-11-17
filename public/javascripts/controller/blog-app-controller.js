@@ -17,6 +17,11 @@
     require('./back-articleList-controller');
     require('./back-articleEdit-controller');
 
+    require('../../stylesheets/blog-index.css');
+    require('../../stylesheets/login.css');
+    require('../../stylesheets/select.min.css');
+
+
 
     var app = angular.module('BlogIndexApp', [
         'ngRoute',
