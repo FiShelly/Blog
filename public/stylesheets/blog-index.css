@@ -513,6 +513,7 @@ th, td {
 }
 
 .loader {
+    opacity: 0.75;
     background-color: #FFF;
     box-sizing: border-box;
     display: flex;

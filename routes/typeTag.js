@@ -101,7 +101,7 @@ router.post('/page/:page/:size', function (req, res, next) {
     });
 });
 
-router.post('/getByName', checkLogin);
+// router.post('/getByName', checkLogin);
 router.post('/getByName', function (req, res, next) {
     TypeTag.getTypeTagByName(req.body.name, req.body.type, function (err, typetag) {
         if (err) {

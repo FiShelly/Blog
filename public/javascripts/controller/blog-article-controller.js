@@ -30,13 +30,17 @@ var moduleBlogArticle = angular.module('blog.article', [
         'ModalService',
         '$filter',
         function ($rootScope,$scope, $route, $routeParams, HttpService,$sce,ModalService,$filter) {
-            
+            $rootScope.isReady = false;
             var getCurArticle = function(){
                 HttpService.ajax('/article/getById/'+$routeParams.id+'/2',{},function(data){
                     if(data){
+                        $rootScope.isReady = true;
                         $scope.article = data.article;
-                        
+                        $scope.article.type ={name:data.article.type};
                         $scope.article.articleHtml = $sce.trustAsHtml($scope.article.articleHtml);
+                        HttpService.ajax('/typetag/getByName',{name:data.article.type.name,type:true},function (type) {
+                           $scope.article.type = type.typetag;
+                        });
                         changeNPA();
                         queryComment();
                         updateCount(false);

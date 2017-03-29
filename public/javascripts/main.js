@@ -95,8 +95,7 @@
 	        'ModalService',
 	        'HttpService',
 	        function ($rootScope, $scope, ModalService, HttpService) {
-	            
-
+	            $rootScope.isReady = true;
 	            $scope.open = function (size) {  //打开模态
 	                var patternObj = {$regex: $scope.keyword, $options: 'i'};
 	                HttpService.ajax('/article/page/query', {
@@ -4825,7 +4824,17 @@
 	        '$routeParams',
 	        'HttpService',
 	        function ($rootScope,$scope, $route, $routeParams, HttpService) {
-	            
+	            $rootScope.isReady = false;
+	            var myself = localStorage.getItem('myself');
+	            if(myself){
+	                $rootScope.myself = JSON.parse(myself);
+	            }
+	            var typetags = sessionStorage.getItem('types');
+	            if(typetags){
+	                $rootScope.types = JSON.parse(typetags);
+	            }
+
+
 	            var queryType = function(flag){
 	                HttpService.ajax('/typetag/page/1/1000000',{type: flag},function(data){
 	                    if(data && flag){
@@ -4837,8 +4846,8 @@
 	                        for(var i = 0;i<data.typetags.length;i++){
 	                            if(data.typetags[i].id == id){
 	                                $scope.firstTypeName = data.typetags[i].name;
-	                                if(flag){
-	                                    queryTypePage();
+	                                if(data.typetags[i].type){
+	                                    queryTypePage(true);
 	                                } else {
 	                                    $scope.displayTagArticle({name:$scope.firstTypeName});
 	                                }
@@ -4852,21 +4861,15 @@
 
 	            $scope.displayTagArticle = function(tag){
 	                $scope.firstTypeName = tag.name;
-	                HttpService.ajax('/article/page/query',{query:{"tag.name":tag.name}},function(data) {
-	                        $scope.articleList = data.articles;
-	                        $scope.typeDetail = {
-	                            name:$scope.firstTypeName,
-	                            count:data.articles.length,
-	                            flag:false,
-	                            detail:[]
-	                        };
-	                        filterArticle();
-	                        
-	                });
+	               queryTypePage();
 	            };
 
-	            var queryTypePage = function(){
-	                HttpService.ajax('/article/page/query',{query:{type:$scope.firstTypeName,status:2}},function(data) {
+	            var queryTypePage = function(type){
+	                var query = {type:$scope.firstTypeName,status:2};
+	                if(!type){
+	                    query = {'tag.name':$scope.firstTypeName,status:2};
+	                }
+	                HttpService.ajax('/article/page/query',{query:query},function(data) {
 	                    if (data.articles.length != 0) {
 	                        $scope.articleList = data.articles;
 	                        $scope.typeDetail = {
@@ -4876,21 +4879,27 @@
 	                            detail:[]
 	                        };
 	                        filterArticle();
-	                        
+	                    } else {
+	                        $rootScope.isReady = true;
+	                        $scope.typeDetail = {
+	                            name: $scope.firstTypeName,
+	                            detail:[],
+	                            count:0
+	                        }
 	                    }
 	                });
 	            };
 	            var queryTypeName = function(id){
-	                if($rootScope.types){
-	                    for(var i = 0;i<$rootScope.types.length;i++){
-	                        if($rootScope.types[i].id == id){
-	                            $rootScope.firstTypeName = $rootScope.types[i].name;
-	                            queryTypePage();
-	                        }
-	                    }
-	                } else {
+	                // if($rootScope.types){
+	                //     for(var i = 0;i<$rootScope.types.length;i++){
+	                //         if($rootScope.types[i].id == id){
+	                //             $rootScope.firstTypeName = $rootScope.types[i].name;
+	                //             queryTypePage();
+	                //         }
+	                //     }
+	                // } else {
 	                    queryType(true);
-	                }
+	                // }
 	                queryType(false);
 	            };
 	            var queryAuthor = function(){
@@ -4920,7 +4929,7 @@
 	                }
 	                temp.articleList.push($scope.articleList[i]);
 	                $scope.typeDetail.detail.push(temp);
-
+	                $rootScope.isReady = true;
 	            };
 	            var id = $routeParams.id;
 	            if(id != 0){
@@ -4967,7 +4976,23 @@
 	        '$routeParams',
 	        'HttpService',
 	        function ($rootScope,$scope, $route, $routeParams,HttpService) {
-	            
+	            $rootScope.isReady = false;
+
+	            var myself = localStorage.getItem('myself');
+	            if(myself){
+	                $rootScope.myself = JSON.parse(myself);
+	            }
+	            var typetags = sessionStorage.getItem('types');
+	            if(typetags){
+	                $rootScope.types = JSON.parse(typetags);
+	            }
+	            var sessionArticle = sessionStorage.getItem('article');
+	            if(sessionArticle){
+	                $scope.article = JSON.parse(sessionArticle);
+	                $scope.articleList = JSON.parse(sessionStorage.getItem('articleList'));
+	                $rootScope.isReady = true;
+	            }
+
 	            var i = 0;
 	            var validateReady = function(){
 	                if(i==2){
@@ -4982,6 +5007,7 @@
 	                    validateReady();
 	                    if(data){
 	                        $rootScope.types = data.typetags;
+	                        sessionStorage.setItem('types',JSON.stringify(data.typetags));
 	                    }
 	                });
 	                HttpService.ajax('/user/getAuthor',{loginId: 'fishelly'},function(data){
@@ -4989,6 +5015,7 @@
 	                    if(data){
 	                        $rootScope.myself = data.author;
 	                        $rootScope.myself.follow = [{name: 'Github', url: 'https://github.com/FiShelly'}];
+	                        localStorage.setItem('myself',JSON.stringify($rootScope.myself));
 	                        validateReady();
 	                    }
 	                });
@@ -5007,6 +5034,9 @@
 	                                $scope.article.typeUrl = "#/type/"+$scope.types[i].id;
 	                            }
 	                        }
+	                        sessionStorage.setItem('article',JSON.stringify($scope.article));
+	                        sessionStorage.setItem('articleList',JSON.stringify(data.articles));
+	                        $rootScope.isReady = true;
 	                    }
 	                    if(flag){
 	                        
@@ -5015,11 +5045,11 @@
 	                    }
 	                });
 	            };
-	            if(!$rootScope.myself){
+	            // if(!$rootScope.myself){
 	                queryAllType();
-	            } else {
-	                queryArticle(true);
-	            }
+	            // } else {
+	            //     queryArticle(true);
+	            // }
 
 	        }
 	    ]);
@@ -5062,13 +5092,17 @@
 	        'ModalService',
 	        '$filter',
 	        function ($rootScope,$scope, $route, $routeParams, HttpService,$sce,ModalService,$filter) {
-	            
+	            $rootScope.isReady = false;
 	            var getCurArticle = function(){
 	                HttpService.ajax('/article/getById/'+$routeParams.id+'/2',{},function(data){
 	                    if(data){
+	                        $rootScope.isReady = true;
 	                        $scope.article = data.article;
-	                        
+	                        $scope.article.type ={name:data.article.type};
 	                        $scope.article.articleHtml = $sce.trustAsHtml($scope.article.articleHtml);
+	                        HttpService.ajax('/typetag/getByName',{name:data.article.type.name,type:true},function (type) {
+	                           $scope.article.type = type.typetag;
+	                        });
 	                        changeNPA();
 	                        queryComment();
 	                        updateCount(false);
@@ -5456,7 +5490,7 @@
 	            $scope.loginValidate = function(){
 	                HttpService.ajax('/user/login', {loginId:$scope.loginId,password:$scope.password},function (data) {
 	                    if(data.status == '0'){
-	                        //$rootScope.user = {
+	                        // $rootScope.user = {
 	                        //    loginId:"fishelly",
 	                        //    name : "fishelly.",
 	                        //    position : "Java开发工程师 & Web前端工程师",
@@ -5465,7 +5499,7 @@
 	                        //    introduce : "~~~耐得住寂寞，经得起诱惑，受得起挫折.",
 	                        //
 	                        //    headImg : "images/fish1.jpg"
-	                        //};
+	                        // };
 	                        //$http.post('/user/saveOrUpdateUser',{
 	                        //    isUpdate:false,
 	                        //    user:$rootScope.user,
@@ -5953,7 +5987,7 @@
 
 
 	// module
-	exports.push([module.id, "* {\r\n    margin: 0;\r\n    padding: 0;\r\n    font-family: Tahoma, Helvetica, Arial, \"\\5B8B\\4F53\", sans-serif;\r\n}\r\n\r\nhtml {\r\n    width: 100%;\r\n    height: 100%;\r\n    font-size: 100px;\r\n}\r\n\r\nbody {\r\n    background: #ebebeb;\r\n    padding-bottom: 0.25rem;\r\n}\r\n\r\nheader {\r\n    position: fixed;\r\n    width: 100%;\r\n    background: #FFF;\r\n    height: 0.6rem;\r\n    border-bottom: 1px solid #e1e1e1;\r\n    z-index: 36;\r\n}\r\n\r\n.blog-head-title {\r\n    float: left;\r\n    margin-top: 0.1rem;\r\n    background-color: #FFF;\r\n}\r\n\r\n.search-box {\r\n    margin-top: 0.13rem;\r\n    float: right;\r\n}\r\n\r\n.search-input {\r\n    float: left;\r\n    border-radius: 4px 0 0 4px;\r\n}\r\n\r\n.search-input:focus {\r\n\r\n}\r\n\r\n.search-btn {\r\n    padding: 6.2px 12px;\r\n    border-left: 0;\r\n    border-radius: 0 4px 4px 0;\r\n}\r\n\r\n.left-box {\r\n    padding: 0 0.1rem 0.1rem 0.1rem;\r\n    margin-bottom: 0.25rem;\r\n    border-radius: 0.05rem;\r\n    border: 1px solid #d8d8d8;\r\n    background-color: #FFF;\r\n}\r\n\r\n.left-box-title {\r\n    padding: 0.15rem 0 0.1rem 0;\r\n    font-size: 0.2rem;\r\n    font-weight: bold;\r\n    border-bottom: 1px #e1e1e1 solid;\r\n}\r\n\r\n.ulist {\r\n    margin-left: 0.15rem;\r\n    list-style-position: inside;\r\n}\r\n\r\n.ulist li {\r\n    height: 0.35rem;\r\n    line-height: 0.35rem;\r\n    width: 100%;\r\n    overflow: hidden;\r\n    text-overflow: ellipsis;\r\n    white-space: nowrap;\r\n}\r\n\r\n.new-article-box {\r\n    overflow: hidden;\r\n    margin-bottom: 0.25rem;\r\n    background-color: #FFF;\r\n    border-radius: 0.05rem;\r\n    border: 1px solid #d8d8d8;\r\n}\r\n\r\n.article-box-sample {\r\n    padding: 0.1rem;\r\n    overflow: hidden;\r\n    border-bottom: 1px #e1e1e1 solid;\r\n}\r\n\r\n.article-box-title {\r\n    padding: 0.1rem;\r\n    border-bottom: 1px #e1e1e1 solid;\r\n}\r\n\r\n.article-box-type {\r\n    float: right;\r\n}\r\n\r\n.article-box-post {\r\n    padding: 0.1rem;\r\n    float: left;\r\n    width: 100%;\r\n}\r\n\r\n.btn-read-more {\r\n    border-radius: 0;\r\n    padding: 0.03rem 0.12rem;\r\n}\r\n\r\n.article-read-more {\r\n    float: left;\r\n}\r\n\r\n.article-bottom-box {\r\n    margin-top: 0.06rem;\r\n    float: right;\r\n    line-height: 0.17rem;\r\n}\r\n\r\n.article-bottom-box > div {\r\n    color: #616161;\r\n    float: left;\r\n    margin-left: 0.15rem;\r\n}\r\n\r\n.article-bottom-box > div > span {\r\n\r\n}\r\n\r\n.img-head {\r\n    margin: 0.2rem;\r\n    border-radius: 0.7rem;\r\n    width: 0.7rem;\r\n    height: 0.7rem;\r\n    background-color: pink;\r\n    float: left;\r\n}\r\n\r\n.article-font-img {\r\n    width: 100%;\r\n    height: 1.8rem;\r\n    background-color: #00aaff;\r\n}\r\n\r\n.msg-box {\r\n    padding: 0.25rem 0.1rem;\r\n}\r\n\r\n.about-msg {\r\n    font-size: 0.17rem;\r\n}\r\n\r\n.about-msg-md {\r\n    font-size: 0.15rem;\r\n}\r\n\r\n.about-msg-sm {\r\n    font-size: 0.1rem;\r\n}\r\n\r\n.about-msg-ss {\r\n    font-size: 0.13rem;\r\n}\r\n\r\n.about-msg-xl {\r\n    font-size: 0.2rem;\r\n}\r\n\r\n.about-msg-xll {\r\n    font-size: 0.25rem;\r\n}\r\n\r\n.type-detail {\r\n    float: right;\r\n    margin-right: 0.15rem;\r\n}\r\n\r\n.border-shadow {\r\n    border: 1px solid #d8d8d8;\r\n}\r\n\r\n.type-title {\r\n    box-sizing: border-box;\r\n    padding: 0.1rem 0.1rem 0 0.3rem;\r\n}\r\n\r\nh2, h4 {\r\n    border-bottom: 1px solid #d1d1d1;\r\n    padding: 0.1rem ;\r\n}\r\n\r\n.type-article-list {\r\n    background-color: #FFF;\r\n    margin: 0.3rem 0;\r\n    padding-left: 0.3rem;\r\n}\r\n\r\n.last-article {\r\n    flex: 1;\r\n}\r\n\r\n.next-article {\r\n    flex: 1;\r\n    text-align: right;\r\n}\r\n\r\n.article-type {\r\n    flex: 1;\r\n    text-align: center;\r\n}\r\n\r\n.article-type-header {\r\n    padding: 0.1rem  0;\r\n}\r\n\r\n.blog-nav {\r\n    background-color: #FFF;\r\n}\r\n\r\n.article-detail {\r\n    margin-top: 0.1rem;\r\n}\r\n\r\n.relative-article {\r\n\r\n    height: 0.6rem;\r\n}\r\n\r\n.relative-article > p {\r\n    padding-left: 0.3rem;\r\n}\r\n\r\n.leave-msg-item {\r\n    padding: 0 0 0.1rem 0.3rem;\r\n\r\n}\r\n\r\n.leave-msg-content {\r\n    padding: 0 0.15rem;\r\n}\r\n\r\n.leave-msg-other {\r\n    text-align: right;\r\n    font-size: 0.14rem;\r\n    padding: 0 0.2rem 0.1rem 0;\r\n    border-bottom: 1px #c6c6c6 solid;\r\n}\r\n\r\n.msg-reference {\r\n    padding: 0 0.25rem;\r\n    background-color: #e1e1e1;\r\n    margin: 0 0.2rem;\r\n}\r\n\r\n.public-msg {\r\n    padding: 0 0.3rem 0.2rem 0;\r\n\r\n}\r\n\r\n.search-bar {\r\n    overflow: hidden;\r\n}\r\n\r\n.comment {\r\n    border-bottom: 1px solid #B6B6B6;\r\n    padding-bottom: 0.1rem;\r\n}\r\n\r\n.comment > textarea {\r\n    height: 1rem;\r\n}\r\n\r\n.comment-btn {\r\n    float: right;\r\n    margin-right: 0.5rem;\r\n}\r\n\r\n.left-function {\r\n    background-color: #FFF;\r\n    position: fixed;\r\n    width: 100%;\r\n    height: 0.3rem;\r\n    z-index: 35;\r\n}\r\n\r\n.tag-list {\r\n    padding: 0.1rem;\r\n}\r\n\r\n.tag {\r\n    padding: 0.025rem 0.05rem;\r\n    border-radius: 0.08rem;\r\n    margin: 0.05rem;\r\n}\r\n\r\n@media (min-width: 992px) {\r\n    .left-function-position {\r\n        width: 0.4rem;\r\n        height: 100%;\r\n        padding: 1rem 0 0 0;\r\n\r\n    }\r\n\r\n    .bootom-function {\r\n        height: 50%;\r\n        bottom: 0;\r\n    }\r\n\r\n    .content-box {\r\n        width: 100%;\r\n        position: absolute;\r\n        margin-top: 0.85rem;\r\n    }\r\n\r\n    .left-function > div > a {\r\n        text-align: center;\r\n        display: block;\r\n        line-height: 0.4rem;\r\n        width: 0.4rem;\r\n        height: 0.4rem;\r\n        margin-bottom: 0.1rem;\r\n    }\r\n\r\n    .login-nav {\r\n        position: absolute;\r\n        bottom: 0.3rem;\r\n    }\r\n\r\n    .fc-item-index:hover:after, .fc-item-blog:hover:after, .fc-item-type:hover:after,\r\n    .fc-item-user:hover:after, .fc-item-articleMan:hover:after, .fc-item-typeMan:hover:after, .fc-item-comment:hover:after {\r\n        content: \"\\4E3B\\9875\";\r\n        display: inline-block;\r\n        width: 0.55rem;\r\n        height: 0.2rem;\r\n        background-color: #bfbfbf;\r\n        position: absolute;\r\n        float: right;\r\n        margin-left: 0.15rem;\r\n        line-height: 0.15rem;\r\n        font-size: 0.12rem;\r\n        border-radius: 0.05rem;\r\n        text-align: center;\r\n        font-weight: bold;\r\n    }\r\n\r\n    .fc-item-blog:hover:after {\r\n        content: \"\\535A\\5BA2\";\r\n    }\r\n\r\n    .fc-item-type:hover:after {\r\n        content: \"\\5206\\7C7B\\6807\\7B7E\";\r\n    }\r\n\r\n    .fc-item-user:hover:after {\r\n        content: \"\\4E2A\\4EBA\\8D44\\6599\";\r\n    }\r\n\r\n    .fc-item-articleMan:hover:after {\r\n        content: \"\\6587\\7AE0\\7BA1\\7406\";\r\n    }\r\n\r\n    .fc-item-typeMan:hover:after {\r\n        content: \"\\5206\\7C7B\\7BA1\\7406\";\r\n    }\r\n\r\n    .fc-item-comment:hover:after {\r\n        content: \"\\8BC4\\8BBA\\7BA1\\7406\";\r\n    }\r\n}\r\n\r\n@media (max-width: 991px) {\r\n    .left-function-position {\r\n        margin-top: 0.59rem;\r\n        line-height: 0.35rem;\r\n        border-bottom: 1px solid #e1e1e1;\r\n        padding: 0;\r\n    }\r\n\r\n    .content-box {\r\n        margin-top: 1.45rem;\r\n    }\r\n\r\n    .normal-nav, .login-nav {\r\n        font-size: 0;\r\n        height: 0.35rem;\r\n        background-color: #fff;\r\n    }\r\n\r\n    .normal-nav > a, .login-nav > a {\r\n        display: inline-block;\r\n        line-height: 0.3rem;\r\n        width: 32.8%;\r\n        height: 0.3rem;\r\n        text-align: center;\r\n    }\r\n\r\n    .normal-nav > a:nth-child(2), .login-nav > a:nth-child(3) {\r\n        border-right: 1px solid #e1e1e1;\r\n        border-left: 1px solid #e1e1e1;\r\n\r\n    }\r\n\r\n    .login-nav {\r\n        border-top: 1px solid #e1e1e1;\r\n    }\r\n\r\n    .login-nav > a:nth-child(2) {\r\n        border-left: 1px #e1e1e1 solid;\r\n    }\r\n\r\n    .login-nav > a {\r\n        width: 24.3%;\r\n    }\r\n\r\n    .bootom-function {\r\n        margin-top: 0.94rem;\r\n    }\r\n}\r\n\r\n.fc-item {\r\n    margin-top: 0.07rem;\r\n    display: inline-block;\r\n    font-size: 0.2rem;\r\n    width: 0.2rem;\r\n    height: 0.2rem;\r\n\r\n}\r\n\r\n.ease1 {\r\n    -webkit-transition: All 1s ease;\r\n    -moz-transition: All 1s ease;\r\n    -o-transition: All 1s ease;\r\n    /*-ms-transition: All 1s ease;*/\r\n    transition: All 1s ease;\r\n}\r\n\r\n.ease2 {\r\n    -webkit-transition: All 2s ease;\r\n    -moz-transition: All 2s ease;\r\n    -o-transition: All 2s ease;\r\n    /*-ms-transition: All 2s ease;*/\r\n    transition: All 2s ease;\r\n}\r\n\r\n.personal-box {\r\n    background-color: #FFF;\r\n    height: auto;\r\n    padding: 0.1rem;\r\n    margin-bottom: 0.3rem;\r\n    overflow: hidden;\r\n}\r\n\r\n.fix-float {\r\n    overflow: hidden;\r\n}\r\n\r\n.fix-tag {\r\n    padding: 0 0.3rem 0 0;\r\n}\r\n\r\n.info-box-top {\r\n    width: 50%;\r\n}\r\n\r\n.user-img {\r\n    width: 1.5rem;\r\n    height: 1.5rem;\r\n    border-radius: 1.5rem;\r\n    background-color: #00aaff;\r\n    position: absolute;\r\n    right: 25%;\r\n    top: 0;\r\n    margin-top: 0.5rem;\r\n    margin-right: -0.75rem;\r\n}\r\n\r\n.upload-btn {\r\n    opacity: 0;\r\n}\r\n\r\n.article-btn-group {\r\n    float: right;\r\n    margin-right: 0.15rem;\r\n}\r\n\r\n.article-btn-group button {\r\n    color: #393939 !important;\r\n}\r\n\r\n.article-list-btn {\r\n    padding: 0.02rem 0.07rem;\r\n    font-size: 0.12rem;\r\n}\r\n\r\n.title-text {\r\n    display: inline-block;\r\n}\r\n\r\nth, td {\r\n    text-align: center !important;\r\n    background-color: #FFF !important;\r\n}\r\n\r\n.article-btn-add {\r\n    margin-right: 0.15rem;\r\n    float: right;\r\n}\r\n\r\n.loader {\r\n    background-color: #FFF;\r\n    box-sizing: border-box;\r\n    display: flex;\r\n    flex: 0 1 auto;\r\n    flex-direction: column;\r\n    flex-grow: 1;\r\n    flex-shrink: 0;\r\n    flex-basis: 25%;\r\n    height: 100%;\r\n    width: 100%;\r\n    align-items: center;\r\n    justify-content: center;\r\n    z-index: 99;\r\n    position: fixed;\r\n}\r\n\r\n@-webkit-keyframes ball-triangle-path-1 {\r\n    33% {\r\n        -webkit-transform: translate(25px, -50px);\r\n        transform: translate(25px, -50px);\r\n    }\r\n\r\n    66% {\r\n        -webkit-transform: translate(50px, 0px);\r\n        transform: translate(50px, 0px);\r\n    }\r\n\r\n    100% {\r\n        -webkit-transform: translate(0px, 0px);\r\n        transform: translate(0px, 0px);\r\n    }\r\n}\r\n\r\n@keyframes ball-triangle-path-1 {\r\n    33% {\r\n        -webkit-transform: translate(25px, -50px);\r\n        transform: translate(25px, -50px);\r\n    }\r\n\r\n    66% {\r\n        -webkit-transform: translate(50px, 0px);\r\n        transform: translate(50px, 0px);\r\n    }\r\n\r\n    100% {\r\n        -webkit-transform: translate(0px, 0px);\r\n        transform: translate(0px, 0px);\r\n    }\r\n}\r\n\r\n@-webkit-keyframes ball-triangle-path-2 {\r\n    33% {\r\n        -webkit-transform: translate(25px, 50px);\r\n        transform: translate(25px, 50px);\r\n    }\r\n\r\n    66% {\r\n        -webkit-transform: translate(-25px, 50px);\r\n        transform: translate(-25px, 50px);\r\n    }\r\n\r\n    100% {\r\n        -webkit-transform: translate(0px, 0px);\r\n        transform: translate(0px, 0px);\r\n    }\r\n}\r\n\r\n@keyframes ball-triangle-path-2 {\r\n    33% {\r\n        -webkit-transform: translate(25px, 50px);\r\n        transform: translate(25px, 50px);\r\n    }\r\n\r\n    66% {\r\n        -webkit-transform: translate(-25px, 50px);\r\n        transform: translate(-25px, 50px);\r\n    }\r\n\r\n    100% {\r\n        -webkit-transform: translate(0px, 0px);\r\n        transform: translate(0px, 0px);\r\n    }\r\n}\r\n\r\n@-webkit-keyframes ball-triangle-path-3 {\r\n    33% {\r\n        -webkit-transform: translate(-50px, 0px);\r\n        transform: translate(-50px, 0px);\r\n    }\r\n\r\n    66% {\r\n        -webkit-transform: translate(-25px, -50px);\r\n        transform: translate(-25px, -50px);\r\n    }\r\n\r\n    100% {\r\n        -webkit-transform: translate(0px, 0px);\r\n        transform: translate(0px, 0px);\r\n    }\r\n}\r\n\r\n@keyframes ball-triangle-path-3 {\r\n    33% {\r\n        -webkit-transform: translate(-50px, 0px);\r\n        transform: translate(-50px, 0px);\r\n    }\r\n\r\n    66% {\r\n        -webkit-transform: translate(-25px, -50px);\r\n        transform: translate(-25px, -50px);\r\n    }\r\n\r\n    100% {\r\n        -webkit-transform: translate(0px, 0px);\r\n        transform: translate(0px, 0px);\r\n    }\r\n}\r\n\r\n.ball-triangle-path {\r\n    position: relative;\r\n    -webkit-transform: translate(-25px, -25px);\r\n    -ms-transform: translate(-25px, -25px);\r\n    transform: translate(-25px, -25px);\r\n}\r\n\r\n.ball-triangle-path > div:nth-child(1) {\r\n    -webkit-animation-name: ball-triangle-path-1;\r\n    animation-name: ball-triangle-path-1;\r\n    -webkit-animation-duration: 2s;\r\n    animation-duration: 2s;\r\n    -webkit-animation-timing-function: ease-in-out;\r\n    animation-timing-function: ease-in-out;\r\n    -webkit-animation-iteration-count: infinite;\r\n    animation-iteration-count: infinite;\r\n}\r\n\r\n.ball-triangle-path > div:nth-child(2) {\r\n    -webkit-animation-name: ball-triangle-path-2;\r\n    animation-name: ball-triangle-path-2;\r\n    -webkit-animation-duration: 2s;\r\n    animation-duration: 2s;\r\n    -webkit-animation-timing-function: ease-in-out;\r\n    animation-timing-function: ease-in-out;\r\n    -webkit-animation-iteration-count: infinite;\r\n    animation-iteration-count: infinite;\r\n}\r\n\r\n.ball-triangle-path > div:nth-child(3) {\r\n    -webkit-animation-name: ball-triangle-path-3;\r\n    animation-name: ball-triangle-path-3;\r\n    -webkit-animation-duration: 2s;\r\n    animation-duration: 2s;\r\n    -webkit-animation-timing-function: ease-in-out;\r\n    animation-timing-function: ease-in-out;\r\n    -webkit-animation-iteration-count: infinite;\r\n    animation-iteration-count: infinite;\r\n}\r\n\r\n.ball-triangle-path > div {\r\n    -webkit-animation-fill-mode: both;\r\n    animation-fill-mode: both;\r\n    position: absolute;\r\n    width: 0.15rem;\r\n    height: 0.15rem;\r\n    background-color: #5d5d5d;\r\n    border-radius: 100%;\r\n    border: 1px solid #5d5d5d;\r\n}\r\n\r\n.ball-triangle-path > div:nth-of-type(1) {\r\n    top: 50px;\r\n}\r\n\r\n.ball-triangle-path > div:nth-of-type(2) {\r\n    left: 25px;\r\n}\r\n\r\n.ball-triangle-path > div:nth-of-type(3) {\r\n    top: 50px;\r\n    left: 50px;\r\n}\r\n/*显示操作*/\r\n.content-box.ng-enter{opacity:0;}\r\n.content-box.ng-enter.ng-enter-active{opacity:1;}\r\n/*隐藏操作*/\r\n.content-box.ng-leave{opacity:1;}\r\n.content-box.ng-leave.ng-leave-active{opacity:0;}", ""]);
+	exports.push([module.id, "* {\r\n    margin: 0;\r\n    padding: 0;\r\n    font-family: Tahoma, Helvetica, Arial, \"\\5B8B\\4F53\", sans-serif;\r\n}\r\n\r\nhtml {\r\n    width: 100%;\r\n    height: 100%;\r\n    font-size: 100px;\r\n}\r\n\r\nbody {\r\n    background: #ebebeb;\r\n    padding-bottom: 0.25rem;\r\n}\r\n\r\nheader {\r\n    position: fixed;\r\n    width: 100%;\r\n    background: #FFF;\r\n    height: 0.6rem;\r\n    border-bottom: 1px solid #e1e1e1;\r\n    z-index: 36;\r\n}\r\n\r\n.blog-head-title {\r\n    float: left;\r\n    margin-top: 0.1rem;\r\n    background-color: #FFF;\r\n}\r\n\r\n.search-box {\r\n    margin-top: 0.13rem;\r\n    float: right;\r\n}\r\n\r\n.search-input {\r\n    float: left;\r\n    border-radius: 4px 0 0 4px;\r\n}\r\n\r\n.search-input:focus {\r\n\r\n}\r\n\r\n.search-btn {\r\n    padding: 6.2px 12px;\r\n    border-left: 0;\r\n    border-radius: 0 4px 4px 0;\r\n}\r\n\r\n.left-box {\r\n    padding: 0 0.1rem 0.1rem 0.1rem;\r\n    margin-bottom: 0.25rem;\r\n    border-radius: 0.05rem;\r\n    border: 1px solid #d8d8d8;\r\n    background-color: #FFF;\r\n}\r\n\r\n.left-box-title {\r\n    padding: 0.15rem 0 0.1rem 0;\r\n    font-size: 0.2rem;\r\n    font-weight: bold;\r\n    border-bottom: 1px #e1e1e1 solid;\r\n}\r\n\r\n.ulist {\r\n    margin-left: 0.15rem;\r\n    list-style-position: inside;\r\n}\r\n\r\n.ulist li {\r\n    height: 0.35rem;\r\n    line-height: 0.35rem;\r\n    width: 100%;\r\n    overflow: hidden;\r\n    text-overflow: ellipsis;\r\n    white-space: nowrap;\r\n}\r\n\r\n.new-article-box {\r\n    overflow: hidden;\r\n    margin-bottom: 0.25rem;\r\n    background-color: #FFF;\r\n    border-radius: 0.05rem;\r\n    border: 1px solid #d8d8d8;\r\n}\r\n\r\n.article-box-sample {\r\n    padding: 0.1rem;\r\n    overflow: hidden;\r\n    border-bottom: 1px #e1e1e1 solid;\r\n}\r\n\r\n.article-box-title {\r\n    padding: 0.1rem;\r\n    border-bottom: 1px #e1e1e1 solid;\r\n}\r\n\r\n.article-box-type {\r\n    float: right;\r\n}\r\n\r\n.article-box-post {\r\n    padding: 0.1rem;\r\n    float: left;\r\n    width: 100%;\r\n}\r\n\r\n.btn-read-more {\r\n    border-radius: 0;\r\n    padding: 0.03rem 0.12rem;\r\n}\r\n\r\n.article-read-more {\r\n    float: left;\r\n}\r\n\r\n.article-bottom-box {\r\n    margin-top: 0.06rem;\r\n    float: right;\r\n    line-height: 0.17rem;\r\n}\r\n\r\n.article-bottom-box > div {\r\n    color: #616161;\r\n    float: left;\r\n    margin-left: 0.15rem;\r\n}\r\n\r\n.article-bottom-box > div > span {\r\n\r\n}\r\n\r\n.img-head {\r\n    margin: 0.2rem;\r\n    border-radius: 0.7rem;\r\n    width: 0.7rem;\r\n    height: 0.7rem;\r\n    background-color: pink;\r\n    float: left;\r\n}\r\n\r\n.article-font-img {\r\n    width: 100%;\r\n    height: 1.8rem;\r\n    background-color: #00aaff;\r\n}\r\n\r\n.msg-box {\r\n    padding: 0.25rem 0.1rem;\r\n}\r\n\r\n.about-msg {\r\n    font-size: 0.17rem;\r\n}\r\n\r\n.about-msg-md {\r\n    font-size: 0.15rem;\r\n}\r\n\r\n.about-msg-sm {\r\n    font-size: 0.1rem;\r\n}\r\n\r\n.about-msg-ss {\r\n    font-size: 0.13rem;\r\n}\r\n\r\n.about-msg-xl {\r\n    font-size: 0.2rem;\r\n}\r\n\r\n.about-msg-xll {\r\n    font-size: 0.25rem;\r\n}\r\n\r\n.type-detail {\r\n    float: right;\r\n    margin-right: 0.15rem;\r\n}\r\n\r\n.border-shadow {\r\n    border: 1px solid #d8d8d8;\r\n}\r\n\r\n.type-title {\r\n    box-sizing: border-box;\r\n    padding: 0.1rem 0.1rem 0 0.3rem;\r\n}\r\n\r\nh2, h4 {\r\n    border-bottom: 1px solid #d1d1d1;\r\n    padding: 0.1rem ;\r\n}\r\n\r\n.type-article-list {\r\n    background-color: #FFF;\r\n    margin: 0.3rem 0;\r\n    padding-left: 0.3rem;\r\n}\r\n\r\n.last-article {\r\n    flex: 1;\r\n}\r\n\r\n.next-article {\r\n    flex: 1;\r\n    text-align: right;\r\n}\r\n\r\n.article-type {\r\n    flex: 1;\r\n    text-align: center;\r\n}\r\n\r\n.article-type-header {\r\n    padding: 0.1rem  0;\r\n}\r\n\r\n.blog-nav {\r\n    background-color: #FFF;\r\n}\r\n\r\n.article-detail {\r\n    margin-top: 0.1rem;\r\n}\r\n\r\n.relative-article {\r\n\r\n    height: 0.6rem;\r\n}\r\n\r\n.relative-article > p {\r\n    padding-left: 0.3rem;\r\n}\r\n\r\n.leave-msg-item {\r\n    padding: 0 0 0.1rem 0.3rem;\r\n\r\n}\r\n\r\n.leave-msg-content {\r\n    padding: 0 0.15rem;\r\n}\r\n\r\n.leave-msg-other {\r\n    text-align: right;\r\n    font-size: 0.14rem;\r\n    padding: 0 0.2rem 0.1rem 0;\r\n    border-bottom: 1px #c6c6c6 solid;\r\n}\r\n\r\n.msg-reference {\r\n    padding: 0 0.25rem;\r\n    background-color: #e1e1e1;\r\n    margin: 0 0.2rem;\r\n}\r\n\r\n.public-msg {\r\n    padding: 0 0.3rem 0.2rem 0;\r\n\r\n}\r\n\r\n.search-bar {\r\n    overflow: hidden;\r\n}\r\n\r\n.comment {\r\n    border-bottom: 1px solid #B6B6B6;\r\n    padding-bottom: 0.1rem;\r\n}\r\n\r\n.comment > textarea {\r\n    height: 1rem;\r\n}\r\n\r\n.comment-btn {\r\n    float: right;\r\n    margin-right: 0.5rem;\r\n}\r\n\r\n.left-function {\r\n    background-color: #FFF;\r\n    position: fixed;\r\n    width: 100%;\r\n    height: 0.3rem;\r\n    z-index: 35;\r\n}\r\n\r\n.tag-list {\r\n    padding: 0.1rem;\r\n}\r\n\r\n.tag {\r\n    padding: 0.025rem 0.05rem;\r\n    border-radius: 0.08rem;\r\n    margin: 0.05rem;\r\n}\r\n\r\n@media (min-width: 992px) {\r\n    .left-function-position {\r\n        width: 0.4rem;\r\n        height: 100%;\r\n        padding: 1rem 0 0 0;\r\n\r\n    }\r\n\r\n    .bootom-function {\r\n        height: 50%;\r\n        bottom: 0;\r\n    }\r\n\r\n    .content-box {\r\n        width: 100%;\r\n        position: absolute;\r\n        margin-top: 0.85rem;\r\n    }\r\n\r\n    .left-function > div > a {\r\n        text-align: center;\r\n        display: block;\r\n        line-height: 0.4rem;\r\n        width: 0.4rem;\r\n        height: 0.4rem;\r\n        margin-bottom: 0.1rem;\r\n    }\r\n\r\n    .login-nav {\r\n        position: absolute;\r\n        bottom: 0.3rem;\r\n    }\r\n\r\n    .fc-item-index:hover:after, .fc-item-blog:hover:after, .fc-item-type:hover:after,\r\n    .fc-item-user:hover:after, .fc-item-articleMan:hover:after, .fc-item-typeMan:hover:after, .fc-item-comment:hover:after {\r\n        content: \"\\4E3B\\9875\";\r\n        display: inline-block;\r\n        width: 0.55rem;\r\n        height: 0.2rem;\r\n        background-color: #bfbfbf;\r\n        position: absolute;\r\n        float: right;\r\n        margin-left: 0.15rem;\r\n        line-height: 0.15rem;\r\n        font-size: 0.12rem;\r\n        border-radius: 0.05rem;\r\n        text-align: center;\r\n        font-weight: bold;\r\n    }\r\n\r\n    .fc-item-blog:hover:after {\r\n        content: \"\\535A\\5BA2\";\r\n    }\r\n\r\n    .fc-item-type:hover:after {\r\n        content: \"\\5206\\7C7B\\6807\\7B7E\";\r\n    }\r\n\r\n    .fc-item-user:hover:after {\r\n        content: \"\\4E2A\\4EBA\\8D44\\6599\";\r\n    }\r\n\r\n    .fc-item-articleMan:hover:after {\r\n        content: \"\\6587\\7AE0\\7BA1\\7406\";\r\n    }\r\n\r\n    .fc-item-typeMan:hover:after {\r\n        content: \"\\5206\\7C7B\\7BA1\\7406\";\r\n    }\r\n\r\n    .fc-item-comment:hover:after {\r\n        content: \"\\8BC4\\8BBA\\7BA1\\7406\";\r\n    }\r\n}\r\n\r\n@media (max-width: 991px) {\r\n    .left-function-position {\r\n        margin-top: 0.59rem;\r\n        line-height: 0.35rem;\r\n        border-bottom: 1px solid #e1e1e1;\r\n        padding: 0;\r\n    }\r\n\r\n    .content-box {\r\n        margin-top: 1.45rem;\r\n    }\r\n\r\n    .normal-nav, .login-nav {\r\n        font-size: 0;\r\n        height: 0.35rem;\r\n        background-color: #fff;\r\n    }\r\n\r\n    .normal-nav > a, .login-nav > a {\r\n        display: inline-block;\r\n        line-height: 0.3rem;\r\n        width: 32.8%;\r\n        height: 0.3rem;\r\n        text-align: center;\r\n    }\r\n\r\n    .normal-nav > a:nth-child(2), .login-nav > a:nth-child(3) {\r\n        border-right: 1px solid #e1e1e1;\r\n        border-left: 1px solid #e1e1e1;\r\n\r\n    }\r\n\r\n    .login-nav {\r\n        border-top: 1px solid #e1e1e1;\r\n    }\r\n\r\n    .login-nav > a:nth-child(2) {\r\n        border-left: 1px #e1e1e1 solid;\r\n    }\r\n\r\n    .login-nav > a {\r\n        width: 24.3%;\r\n    }\r\n\r\n    .bootom-function {\r\n        margin-top: 0.94rem;\r\n    }\r\n}\r\n\r\n.fc-item {\r\n    margin-top: 0.07rem;\r\n    display: inline-block;\r\n    font-size: 0.2rem;\r\n    width: 0.2rem;\r\n    height: 0.2rem;\r\n\r\n}\r\n\r\n.ease1 {\r\n    -webkit-transition: All 1s ease;\r\n    -moz-transition: All 1s ease;\r\n    -o-transition: All 1s ease;\r\n    /*-ms-transition: All 1s ease;*/\r\n    transition: All 1s ease;\r\n}\r\n\r\n.ease2 {\r\n    -webkit-transition: All 2s ease;\r\n    -moz-transition: All 2s ease;\r\n    -o-transition: All 2s ease;\r\n    /*-ms-transition: All 2s ease;*/\r\n    transition: All 2s ease;\r\n}\r\n\r\n.personal-box {\r\n    background-color: #FFF;\r\n    height: auto;\r\n    padding: 0.1rem;\r\n    margin-bottom: 0.3rem;\r\n    overflow: hidden;\r\n}\r\n\r\n.fix-float {\r\n    overflow: hidden;\r\n}\r\n\r\n.fix-tag {\r\n    padding: 0 0.3rem 0 0;\r\n}\r\n\r\n.info-box-top {\r\n    width: 50%;\r\n}\r\n\r\n.user-img {\r\n    width: 1.5rem;\r\n    height: 1.5rem;\r\n    border-radius: 1.5rem;\r\n    background-color: #00aaff;\r\n    position: absolute;\r\n    right: 25%;\r\n    top: 0;\r\n    margin-top: 0.5rem;\r\n    margin-right: -0.75rem;\r\n}\r\n\r\n.upload-btn {\r\n    opacity: 0;\r\n}\r\n\r\n.article-btn-group {\r\n    float: right;\r\n    margin-right: 0.15rem;\r\n}\r\n\r\n.article-btn-group button {\r\n    color: #393939 !important;\r\n}\r\n\r\n.article-list-btn {\r\n    padding: 0.02rem 0.07rem;\r\n    font-size: 0.12rem;\r\n}\r\n\r\n.title-text {\r\n    display: inline-block;\r\n}\r\n\r\nth, td {\r\n    text-align: center !important;\r\n    background-color: #FFF !important;\r\n}\r\n\r\n.article-btn-add {\r\n    margin-right: 0.15rem;\r\n    float: right;\r\n}\r\n\r\n.loader {\r\n    opacity: 0.75;\r\n    background-color: #FFF;\r\n    box-sizing: border-box;\r\n    display: flex;\r\n    flex: 0 1 auto;\r\n    flex-direction: column;\r\n    flex-grow: 1;\r\n    flex-shrink: 0;\r\n    flex-basis: 25%;\r\n    height: 100%;\r\n    width: 100%;\r\n    align-items: center;\r\n    justify-content: center;\r\n    z-index: 99;\r\n    position: fixed;\r\n}\r\n\r\n@-webkit-keyframes ball-triangle-path-1 {\r\n    33% {\r\n        -webkit-transform: translate(25px, -50px);\r\n        transform: translate(25px, -50px);\r\n    }\r\n\r\n    66% {\r\n        -webkit-transform: translate(50px, 0px);\r\n        transform: translate(50px, 0px);\r\n    }\r\n\r\n    100% {\r\n        -webkit-transform: translate(0px, 0px);\r\n        transform: translate(0px, 0px);\r\n    }\r\n}\r\n\r\n@keyframes ball-triangle-path-1 {\r\n    33% {\r\n        -webkit-transform: translate(25px, -50px);\r\n        transform: translate(25px, -50px);\r\n    }\r\n\r\n    66% {\r\n        -webkit-transform: translate(50px, 0px);\r\n        transform: translate(50px, 0px);\r\n    }\r\n\r\n    100% {\r\n        -webkit-transform: translate(0px, 0px);\r\n        transform: translate(0px, 0px);\r\n    }\r\n}\r\n\r\n@-webkit-keyframes ball-triangle-path-2 {\r\n    33% {\r\n        -webkit-transform: translate(25px, 50px);\r\n        transform: translate(25px, 50px);\r\n    }\r\n\r\n    66% {\r\n        -webkit-transform: translate(-25px, 50px);\r\n        transform: translate(-25px, 50px);\r\n    }\r\n\r\n    100% {\r\n        -webkit-transform: translate(0px, 0px);\r\n        transform: translate(0px, 0px);\r\n    }\r\n}\r\n\r\n@keyframes ball-triangle-path-2 {\r\n    33% {\r\n        -webkit-transform: translate(25px, 50px);\r\n        transform: translate(25px, 50px);\r\n    }\r\n\r\n    66% {\r\n        -webkit-transform: translate(-25px, 50px);\r\n        transform: translate(-25px, 50px);\r\n    }\r\n\r\n    100% {\r\n        -webkit-transform: translate(0px, 0px);\r\n        transform: translate(0px, 0px);\r\n    }\r\n}\r\n\r\n@-webkit-keyframes ball-triangle-path-3 {\r\n    33% {\r\n        -webkit-transform: translate(-50px, 0px);\r\n        transform: translate(-50px, 0px);\r\n    }\r\n\r\n    66% {\r\n        -webkit-transform: translate(-25px, -50px);\r\n        transform: translate(-25px, -50px);\r\n    }\r\n\r\n    100% {\r\n        -webkit-transform: translate(0px, 0px);\r\n        transform: translate(0px, 0px);\r\n    }\r\n}\r\n\r\n@keyframes ball-triangle-path-3 {\r\n    33% {\r\n        -webkit-transform: translate(-50px, 0px);\r\n        transform: translate(-50px, 0px);\r\n    }\r\n\r\n    66% {\r\n        -webkit-transform: translate(-25px, -50px);\r\n        transform: translate(-25px, -50px);\r\n    }\r\n\r\n    100% {\r\n        -webkit-transform: translate(0px, 0px);\r\n        transform: translate(0px, 0px);\r\n    }\r\n}\r\n\r\n.ball-triangle-path {\r\n    position: relative;\r\n    -webkit-transform: translate(-25px, -25px);\r\n    -ms-transform: translate(-25px, -25px);\r\n    transform: translate(-25px, -25px);\r\n}\r\n\r\n.ball-triangle-path > div:nth-child(1) {\r\n    -webkit-animation-name: ball-triangle-path-1;\r\n    animation-name: ball-triangle-path-1;\r\n    -webkit-animation-duration: 2s;\r\n    animation-duration: 2s;\r\n    -webkit-animation-timing-function: ease-in-out;\r\n    animation-timing-function: ease-in-out;\r\n    -webkit-animation-iteration-count: infinite;\r\n    animation-iteration-count: infinite;\r\n}\r\n\r\n.ball-triangle-path > div:nth-child(2) {\r\n    -webkit-animation-name: ball-triangle-path-2;\r\n    animation-name: ball-triangle-path-2;\r\n    -webkit-animation-duration: 2s;\r\n    animation-duration: 2s;\r\n    -webkit-animation-timing-function: ease-in-out;\r\n    animation-timing-function: ease-in-out;\r\n    -webkit-animation-iteration-count: infinite;\r\n    animation-iteration-count: infinite;\r\n}\r\n\r\n.ball-triangle-path > div:nth-child(3) {\r\n    -webkit-animation-name: ball-triangle-path-3;\r\n    animation-name: ball-triangle-path-3;\r\n    -webkit-animation-duration: 2s;\r\n    animation-duration: 2s;\r\n    -webkit-animation-timing-function: ease-in-out;\r\n    animation-timing-function: ease-in-out;\r\n    -webkit-animation-iteration-count: infinite;\r\n    animation-iteration-count: infinite;\r\n}\r\n\r\n.ball-triangle-path > div {\r\n    -webkit-animation-fill-mode: both;\r\n    animation-fill-mode: both;\r\n    position: absolute;\r\n    width: 0.15rem;\r\n    height: 0.15rem;\r\n    background-color: #5d5d5d;\r\n    border-radius: 100%;\r\n    border: 1px solid #5d5d5d;\r\n}\r\n\r\n.ball-triangle-path > div:nth-of-type(1) {\r\n    top: 50px;\r\n}\r\n\r\n.ball-triangle-path > div:nth-of-type(2) {\r\n    left: 25px;\r\n}\r\n\r\n.ball-triangle-path > div:nth-of-type(3) {\r\n    top: 50px;\r\n    left: 50px;\r\n}\r\n/*显示操作*/\r\n.content-box.ng-enter{opacity:0;}\r\n.content-box.ng-enter.ng-enter-active{opacity:1;}\r\n/*隐藏操作*/\r\n.content-box.ng-leave{opacity:1;}\r\n.content-box.ng-leave.ng-leave-active{opacity:0;}", ""]);
 
 	// exports
 

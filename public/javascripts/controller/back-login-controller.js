@@ -43,7 +43,7 @@ require('../service/http');
             $scope.loginValidate = function(){
                 HttpService.ajax('/user/login', {loginId:$scope.loginId,password:$scope.password},function (data) {
                     if(data.status == '0'){
-                        //$rootScope.user = {
+                        // $rootScope.user = {
                         //    loginId:"fishelly",
                         //    name : "fishelly.",
                         //    position : "Java开发工程师 & Web前端工程师",
@@ -52,7 +52,7 @@ require('../service/http');
                         //    introduce : "~~~耐得住寂寞，经得起诱惑，受得起挫折.",
                         //
                         //    headImg : "images/fish1.jpg"
-                        //};
+                        // };
                         //$http.post('/user/saveOrUpdateUser',{
                         //    isUpdate:false,
                         //    user:$rootScope.user,

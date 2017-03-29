@@ -6,9 +6,10 @@
         <li><a href="#/type/0">分类</a></li>
     </ol>
     <div class="new-article-box type-title border-shadow">
-        <p class="about-msg"><span>{{typeDetail.flag?'分类名称':'标签名称'}}：{{typeDetail.name}}</span>&nbsp;→&nbsp;<span></span>共有{{typeDetail.count}}篇文章</p>
+        <p class="about-msg"><span>{{typeDetail.flag?'分类名称':'标签名称'}}：
+            {{typeDetail.name}}</span>&nbsp;→&nbsp;<span></span>共有{{typeDetail.count}}篇文章</p>
     </div>
-    <div class="type-article-list border-shadow" ng-repeat="detail in typeDetail.detail">
+    <div class="type-article-list border-shadow" ng-repeat="detail in typeDetail.detail" >
         <h2>{{detail.year}}</h2>
         <ul class="about-msg ulist">
             <li ng-repeat="article in detail.articleList">
@@ -35,8 +36,8 @@
             <span>标签.</span>
         </div>
         <div class="tag-list">
-            <span ng-click="displayTagArticle(tag);" class="btn btn-info tag" ng-repeat="tag in tags">
-                <a>{{tag.name}}</a>
+            <span  class="btn btn-info tag" ng-repeat="tag in tags">
+                <a href="#/type/{{tag.id}}">{{tag.name}}</a>
             </span>
         </div>
     </div>

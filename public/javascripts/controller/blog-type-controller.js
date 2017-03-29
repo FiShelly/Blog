@@ -21,7 +21,17 @@
         '$routeParams',
         'HttpService',
         function ($rootScope,$scope, $route, $routeParams, HttpService) {
-            
+            $rootScope.isReady = false;
+            var myself = localStorage.getItem('myself');
+            if(myself){
+                $rootScope.myself = JSON.parse(myself);
+            }
+            var typetags = sessionStorage.getItem('types');
+            if(typetags){
+                $rootScope.types = JSON.parse(typetags);
+            }
+
+
             var queryType = function(flag){
                 HttpService.ajax('/typetag/page/1/1000000',{type: flag},function(data){
                     if(data && flag){
@@ -33,8 +43,8 @@
                         for(var i = 0;i<data.typetags.length;i++){
                             if(data.typetags[i].id == id){
                                 $scope.firstTypeName = data.typetags[i].name;
-                                if(flag){
-                                    queryTypePage();
+                                if(data.typetags[i].type){
+                                    queryTypePage(true);
                                 } else {
                                     $scope.displayTagArticle({name:$scope.firstTypeName});
                                 }
@@ -48,21 +58,15 @@
 
             $scope.displayTagArticle = function(tag){
                 $scope.firstTypeName = tag.name;
-                HttpService.ajax('/article/page/query',{query:{"tag.name":tag.name}},function(data) {
-                        $scope.articleList = data.articles;
-                        $scope.typeDetail = {
-                            name:$scope.firstTypeName,
-                            count:data.articles.length,
-                            flag:false,
-                            detail:[]
-                        };
-                        filterArticle();
-                        
-                });
+               queryTypePage();
             };
 
-            var queryTypePage = function(){
-                HttpService.ajax('/article/page/query',{query:{type:$scope.firstTypeName,status:2}},function(data) {
+            var queryTypePage = function(type){
+                var query = {type:$scope.firstTypeName,status:2};
+                if(!type){
+                    query = {'tag.name':$scope.firstTypeName,status:2};
+                }
+                HttpService.ajax('/article/page/query',{query:query},function(data) {
                     if (data.articles.length != 0) {
                         $scope.articleList = data.articles;
                         $scope.typeDetail = {
@@ -72,21 +76,27 @@
                             detail:[]
                         };
                         filterArticle();
-                        
+                    } else {
+                        $rootScope.isReady = true;
+                        $scope.typeDetail = {
+                            name: $scope.firstTypeName,
+                            detail:[],
+                            count:0
+                        }
                     }
                 });
             };
             var queryTypeName = function(id){
-                if($rootScope.types){
-                    for(var i = 0;i<$rootScope.types.length;i++){
-                        if($rootScope.types[i].id == id){
-                            $rootScope.firstTypeName = $rootScope.types[i].name;
-                            queryTypePage();
-                        }
-                    }
-                } else {
+                // if($rootScope.types){
+                //     for(var i = 0;i<$rootScope.types.length;i++){
+                //         if($rootScope.types[i].id == id){
+                //             $rootScope.firstTypeName = $rootScope.types[i].name;
+                //             queryTypePage();
+                //         }
+                //     }
+                // } else {
                     queryType(true);
-                }
+                // }
                 queryType(false);
             };
             var queryAuthor = function(){
@@ -116,7 +126,7 @@
                 }
                 temp.articleList.push($scope.articleList[i]);
                 $scope.typeDetail.detail.push(temp);
-
+                $rootScope.isReady = true;
             };
             var id = $routeParams.id;
             if(id != 0){

@@ -111,7 +111,6 @@ User.updateHeadImg = function(loginId,headImg,callback){
 
 User.get = function(loginId, callback) {
     pool.acquire(function(err, db) {
-
         db.authenticate(settings.user,settings.pwd ,function(){
             db.collection('users', function(err, collection) {
                 if (err) {

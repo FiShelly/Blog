@@ -12,6 +12,7 @@ var User = require('../models/user.js');
 router.post('/getAuthor', function (req, res, next) {
     User.get(req.body.loginId, function (err, user) {
         if (user) {
+            delete user.password;
             res.json({status: '1', author: user});
         } else {
             res.json({status: '0',msg:'查询失败'});

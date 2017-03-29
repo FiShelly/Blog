@@ -10,7 +10,7 @@
             <span>上一篇：</span>
             <a href="#/article/{{article.pre.id}}" ng-show="article.pre.title">{{article.pre.title||"没有了"}}</a>
         </div>
-        <div class="col-sm-12 col-md-4"><span>类别：<a href="#">{{article.type}}</a></span></div>
+        <div class="col-sm-12 col-md-4"><span>类别：<a href="#/type/{{article.type.id}}">{{article.type.name}}</a></span></div>
         <div class="col-sm-12 col-md-4">
             <span>下一篇：</span>
             <a href="#/article/{{article.next.id}}" ng-show="article.next.title">{{article.next.title||"没有了"}}</a>

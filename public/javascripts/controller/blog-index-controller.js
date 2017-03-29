@@ -24,7 +24,23 @@ moduleBlogIndex.controller('BlogIndexController', [
         '$routeParams',
         'HttpService',
         function ($rootScope,$scope, $route, $routeParams,HttpService) {
-            
+            $rootScope.isReady = false;
+
+            var myself = localStorage.getItem('myself');
+            if(myself){
+                $rootScope.myself = JSON.parse(myself);
+            }
+            var typetags = sessionStorage.getItem('types');
+            if(typetags){
+                $rootScope.types = JSON.parse(typetags);
+            }
+            var sessionArticle = sessionStorage.getItem('article');
+            if(sessionArticle){
+                $scope.article = JSON.parse(sessionArticle);
+                $scope.articleList = JSON.parse(sessionStorage.getItem('articleList'));
+                $rootScope.isReady = true;
+            }
+
             var i = 0;
             var validateReady = function(){
                 if(i==2){
@@ -39,6 +55,7 @@ moduleBlogIndex.controller('BlogIndexController', [
                     validateReady();
                     if(data){
                         $rootScope.types = data.typetags;
+                        sessionStorage.setItem('types',JSON.stringify(data.typetags));
                     }
                 });
                 HttpService.ajax('/user/getAuthor',{loginId: 'fishelly'},function(data){
@@ -46,6 +63,7 @@ moduleBlogIndex.controller('BlogIndexController', [
                     if(data){
                         $rootScope.myself = data.author;
                         $rootScope.myself.follow = [{name: 'Github', url: 'https://github.com/FiShelly'}];
+                        localStorage.setItem('myself',JSON.stringify($rootScope.myself));
                         validateReady();
                     }
                 });
@@ -64,6 +82,9 @@ moduleBlogIndex.controller('BlogIndexController', [
                                 $scope.article.typeUrl = "#/type/"+$scope.types[i].id;
                             }
                         }
+                        sessionStorage.setItem('article',JSON.stringify($scope.article));
+                        sessionStorage.setItem('articleList',JSON.stringify(data.articles));
+                        $rootScope.isReady = true;
                     }
                     if(flag){
                         
@@ -72,11 +93,11 @@ moduleBlogIndex.controller('BlogIndexController', [
                     }
                 });
             };
-            if(!$rootScope.myself){
+            // if(!$rootScope.myself){
                 queryAllType();
-            } else {
-                queryArticle(true);
-            }
+            // } else {
+            //     queryArticle(true);
+            // }
 
         }
     ]);
