@@ -22,7 +22,15 @@ var MongoStore = require('connect-mongo')(session);
 var settings = require('./settings');
 var util = require('util');
 
-
+var fs = require('fs');
+var FileStreamRotator = require('file-stream-rotator');
+var logDirectory = __dirname + '/logs';
+fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
+var accessLogStream = FileStreamRotator.getStream({
+  filename: logDirectory + '/log-%DATE%.log',
+  frequency: 'daily',
+  verbose: false
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -30,7 +38,7 @@ app.engine(".html", ejs.renderFile);
 app.set('view engine', 'html');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+app.use(logger('combined', {stream: accessLogStream}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
